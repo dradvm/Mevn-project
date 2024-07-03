@@ -6,20 +6,16 @@
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/myshop">My Shop</RouterLink>
       </nav>
       <div>
-        <!-- <RouterView/> -->
-        Items
-        <ul>
-          <Name v-for="item in items" :key="item._id" :name="item.name" :id="item._id" @deleteItem="fetchItems"> </Name>
-        </ul>
+        <RouterView/>
       </div>
     </div>
   </header>
 </template>
 
 <script>
-import { RouterView } from 'vue-router'
 import Name from './components/Name.vue'
 import NameService from './services/NameService';
 // import axios from "axios"

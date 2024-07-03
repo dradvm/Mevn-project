@@ -2,7 +2,8 @@ const express = require("express")
 const cors = require("cors")
 const morgan = require("./utils/morgan")
 const connection = require("./utils/connection")
-const nameRouter = require("./routes/NameRoute")
+const NameRouter = require("./routes/NameRoute")
+const VoucherRouter = require("./routes/VoucherRoute")
 
 require("dotenv").config()
 
@@ -15,9 +16,8 @@ app.use(morgan)
 
 connection()
 
-app.use("/name", nameRouter)
-
-
+app.use("/name", NameRouter)
+app.use("/voucher", VoucherRouter)
 
 app.listen(port, () => {
     console.log(`Server running at port: ${port}`)
