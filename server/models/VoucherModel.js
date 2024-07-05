@@ -1,5 +1,11 @@
 const mongoose = require("mongoose")
 
+function getDateString(date) {
+    const pad = (n) => n < 10 ? "0" + n : "" + n
+    date = new Date(date)
+    return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())} ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+}
+
 const VoucherSchema = mongoose.Schema({
     code: {
         type: String,
@@ -8,20 +14,22 @@ const VoucherSchema = mongoose.Schema({
     startDate: {
         type: Date,
         required: true,
-        default: Date()
+        default: Date(),
+        get: getDateString
     },
     expiredDate: {
         type: Date,
-        required: true
+        required: true,
+        get: getDateString
     },
     state: {
         type: String,
-        enum: ["Waiting", "Active", "OutDated", "OutStock", "Cancel"],
+        enum: ["Upcoming", "Active", "Expired", "Out Of Stock", "Canceled"],
         required: true
     },
     type: {
         type: String,
-        enum: ["PercentOne", "PercentMany", "PercentAll", "FixedMoney", "FirstOrder", "Quantity"],
+        enum: ["Percent One", "Percent Many", "Percent All", "Fixed Money", "First Order", "Quantity"],
         required: true
     },
     condition: {
@@ -65,7 +73,9 @@ const VoucherSchema = mongoose.Schema({
                 message: "Used Quantity must be Integer"
             },
             {
-                validator: (value) => value <= this.quantity,
+                validator: function (value) {
+                    return value <= this.quantity
+                },
                 message: "Used Quantity must less or equal Quantity"
             }
         ]
@@ -86,7 +96,7 @@ const VoucherSchema = mongoose.Schema({
             ref: "Product"
         }
     ]
-})
+}, { toJSON: { getters: true } })
 
 const VoucherModel = mongoose.model("Voucher", VoucherSchema)
 

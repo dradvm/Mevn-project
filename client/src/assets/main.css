@@ -30,3 +30,25 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.fs-7 {
+  font-size: .8rem !important;
+}
+
+.fs-8 {
+  font-size: .6rem !important;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+button:active {
+  border: 0 !important;
+}
+
+.my-btn {
+  cursor: pointer;
+}
