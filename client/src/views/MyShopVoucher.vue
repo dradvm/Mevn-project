@@ -1,11 +1,14 @@
 <template>
-    <div class="container">
+    <div class="m-3">
         <div class="d-flex justify-content-between">
             <div>
                 <button>Add new voucher</button>
             </div>
             <div>
-                <input/>
+                <div class="my-input-group mb-3">
+                    <span><font-awesome-icon :icon="['fas', 'magnifying-glass']" /></span>
+                    <input type="text" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
             </div>
         </div>
         <div class="rounded px-4 py-3 bg-light mt-3">
@@ -19,26 +22,26 @@
                 <div class="fw-bold" style="width: 20%">
                     Type
                 </div>
-                <div class="fw-bold" style="width: 30%">
+                <div class="fw-bold" style="width: 29%">
                     Details
                 </div>
                 <div class="fw-bold" style="width: 10%">
                     State
                 </div>
-                <div class="fw-bold" style="width: 10%">
+                <div class="fw-bold" style="width: 11%">
                     Action
                 </div>
             </div>
             <div v-for="item in items" :key="item._id">
                 <div class="bg-white border px-3 py-2 mb-3 rounded">
-                    <div class="v-stack">
+                    <div class="vstack">
                         <div class="d-flex justify-content-between text-center align-items-center">
                             
                             <div class="fw-bold" style="width: 10%">
-                                    {{ item.code }}
+                                    {{item.code}}
                             </div>         
                             <div class="v-stack fs-7" style="width: 20%">
-                                <div>
+                                <div class="fw-bold">
                                     {{ item.startDate }}
                                 </div>
                                 <div>
@@ -52,7 +55,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div style="width: 30%;">
+                            <div style="width: 29%;">
 
                             </div>
                             <div style="width: 10%">
@@ -62,7 +65,7 @@
                                     </div>
                                 </div>    
                             </div>
-                            <div  style="width: 10%">
+                            <div  style="width: 11%">
                                 <div class="d-flex justify-content-between">
                                     <button class="rounded px-3 py-1 bg-primary text-white">
                                         <font-awesome-icon :icon="['fas', 'pen']" />
@@ -143,4 +146,22 @@ export default {
         }
     }
 }
+</script>
+<template>
+  <div class="text-center">
+    <v-pagination
+      v-model="page"
+      :length="15"
+      :total-visible="7"
+    ></v-pagination>
+  </div>
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        page: 1,
+      }
+    },
+  }
 </script>

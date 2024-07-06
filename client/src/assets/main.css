@@ -52,3 +52,20 @@ button:active {
 .my-btn {
   cursor: pointer;
 }
+a {
+  text-decoration: none;
+}
+
+.my-input-group {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: .1rem .4rem;
+}
+.my-input-group input {
+  border: 0px;
+  outline: 0;
+  padding: .4rem;
+}
+.my-input-group>span:first-child {
+  padding: .4rem;
+}
