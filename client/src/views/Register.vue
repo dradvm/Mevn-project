@@ -1,4 +1,5 @@
 <template>
+<div class="login-main">
 	<div class="main">  
 		<input type="checkbox" id="chk" aria-hidden="true">
 
@@ -24,11 +25,12 @@
                 <button>Sign up</button>
             </form>
         </div>
-    </div>	
+    </div>
+</div>
 </template>
 
-<style scope>
-body{
+<style scoped>
+.login-main{
 	margin: 0;
 	padding: 0;
 	display: flex;
