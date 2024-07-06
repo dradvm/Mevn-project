@@ -22,13 +22,13 @@
                 <div class="fw-bold" style="width: 20%">
                     Type
                 </div>
-                <div class="fw-bold" style="width: 29%">
+                <div class="fw-bold" style="width: 30%">
                     Details
                 </div>
                 <div class="fw-bold" style="width: 10%">
                     State
                 </div>
-                <div class="fw-bold" style="width: 11%">
+                <div class="fw-bold" style="width: 10%">
                     Action
                 </div>
             </div>
@@ -93,10 +93,9 @@
             </div>
             <div class="d-flex justify-content-end">
                 <v-pagination v-model="page" 
-                    :length="4" 
+                    :length="pages" 
                     next-icon="mdi-menu-right"
                     prev-icon="mdi-menu-left"
-                    :active-color="text-danger"
                 >
                 </v-pagination>
             </div>
@@ -112,11 +111,13 @@ export default {
     data() {
         return {
             page: 1,
+            pages: 0,
             items: []
         }
     },
     created() {
         this.fetchItems()
+        this.getPages()
     },
     methods: {
         fetchItems() {
@@ -153,26 +154,16 @@ export default {
                 }
             }
             return cssString.join(" ")
+        },
+        getPages() {
+            VoucherService.getPages()
+                .then((res) => this.pages = res.data.count)
+                .catch((err) => console.log(err))
         }
     }
 }
 </script>
 
 <style scoped>
-.my-pagination .v-pagination {
-  color: #4CAF50 !important; /* Thay đổi màu văn bản của pagination */
-}
 
-.my-pagination .v-pagination .v-btn {
-  background-color: #4CAF50; /* Thay đổi màu nền của pagination button */
-  color: white; /* Thay đổi màu văn bản của pagination button */
-}
-
-.my-pagination .v-pagination .v-btn:hover {
-  background-color: #388E3C; /* Thay đổi màu nền của pagination button khi hover */
-}
-
-.my-pagination .v-pagination .v-btn.v-btn--active {
-  background-color: #388E3C; /* Thay đổi màu nền của pagination button khi active */
-}
 </style>
