@@ -1,5 +1,5 @@
 <template>
-  
+
 	<div class="main">  	
 		<input type="checkbox" id="chk" aria-hidden="true">
 
@@ -7,7 +7,7 @@
 				<form>
 					<label for="chk" aria-hidden="true">Sign up</label>
 					<input type="email" name="email" placeholder="Email" required="">
-          <input type="String" name="phone" placeholder="Phone Number" required="">
+                    <input type="String" name="phone" placeholder="Phone Number" required="">
 					<input type="password" name="pswd" placeholder="Password" required="">
 					<RouterLink to="/register" style="text-decoration: none;"><button>Continue</button></RouterLink>
 				</form>
@@ -16,9 +16,9 @@
 			<div class="login">
 				<form>
 					<label for="chk" aria-hidden="true">Login</label>
-					<input type="email1" name="email" placeholder="Email" required="">
-					<input type="password1" name="pswd" placeholder="Password" required="">
-					<button>Login</button>
+					<input type="email" name="email" placeholder="Email" required="">
+					<input type="password" name="pswd" placeholder="Password" required="">
+					<button class="login-but">Login</button>
 				</form>
 			</div>
 	</div>
@@ -57,7 +57,7 @@ label{
 	font-size: 2.3em;
 	justify-content: center;
 	display: flex;
-	margin: 60px;
+	margin: 50px;
 	font-weight: bold;
 	cursor: pointer;
 	transition: .5s ease-in-out;
@@ -65,7 +65,7 @@ label{
 input{
 	width: 60%;
 	height: 35px;
-	background: gainsboro;
+	background: rgb(180, 206, 243);
 	justify-content: center;
 	display: flex;
 	margin: 15px auto;
@@ -75,18 +75,6 @@ input{
 	border-radius: 5px;
 }
 
-input[type="email1"] {
-  background: rgba(61, 116, 164, 0.521);
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-input[type="password1"] {
-  background: rgba(61, 116, 164, 0.521);
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
 
 button{
 	width: 60%;
@@ -105,18 +93,21 @@ button{
 	transition: .2s ease-in;
 	cursor: pointer;
 }
+.login-but{
+    background: #076eae;
+}
 button:hover{
-	background: #0c44d1;
+	background: #41adf0;
 }
 .login{
 	height: 460px;
-	background: gainsboro;
+	background: #0c85d1;
 	border-radius: 60% / 10%;
 	transform: translateY(-180px);
 	transition: .8s ease-in-out;
 }
 .login label{
-	color: #0c44d1;
+	color: #ffffff;
 	transform: scale(.6);
 }
 

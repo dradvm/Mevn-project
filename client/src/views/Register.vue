@@ -1,4 +1,3 @@
-@@ -0,0 +1,164 @@
 <template>
 	<div class="main">  
 		<input type="checkbox" id="chk" aria-hidden="true">
@@ -6,10 +5,11 @@
     
         <div class="signup">
             <form>
-                <label for="chk" aria-hidden="true">Sign up</label>
-                <span>
-                    <input type="text" name="name" placeholder="Full name" required="">
-                </span>
+                <div class="sign-up">Sign up</div>
+                <div class="Username">
+                    <p for="name">User name</p>
+                    <input type="name" name="name" placeholder="Full name" required="">
+                </div>
                 
                 
                 <div class="input-birthday">
@@ -55,12 +55,13 @@ body{
 	width:100%;
 	height: 100%;
 }
-label{
+.sign-up{
 	color: #fff;
 	font-size: 2.3em;
 	justify-content: center;
 	display: flex;
-	margin: 60px;
+	margin: 50px;
+    margin-bottom: 20px;
 	font-weight: bold;
 	cursor: pointer;
 	transition: .5s ease-in-out;
@@ -68,7 +69,7 @@ label{
 input{
 	width: 60%;
 	height: 35px;
-	background: gainsboro;
+	background: rgb(180, 206, 243);
 	justify-content: center;
 	display: flex;
 	margin: 15px auto;
@@ -81,7 +82,7 @@ input{
     align-items: center;
     width: 60%;
 	height: 35px;
-	background: gainsboro;
+	background: rgb(180, 206, 243);
 	justify-content: center;
 	display: flex;
 	margin: 15px auto;
@@ -130,9 +131,20 @@ button{
 	cursor: pointer;
 }
 button:hover{
-	background: #0c44d1;
+	background: #41adf0;
 }
-.login{
+
+p{
+    font-size: 0.8em;
+    color: rgb(0, 59, 110);
+	width: 60%;
+	height: 10px;
+	display: flex;
+	margin: 10px auto;
+	padding: 10px;
+
+}
+/*.login{
 	height: 460px;
 	background: gainsboro;
 	border-radius: 60% / 10%;
@@ -152,7 +164,7 @@ button:hover{
 }
 #chk:checked ~ .signup label{
 	transform: scale(.6);
-}
+}*/
 
 </style>
 
