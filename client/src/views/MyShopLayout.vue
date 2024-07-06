@@ -23,7 +23,6 @@
                 </div>
             </div>
             <div style="width: 85%">
-                <button @click="printData($router.currentRoute)">Click</button>
                 <RouterView/>
             </div>
         </div>
@@ -34,9 +33,6 @@
 export default {
     name: "MyShopLayout",
     methods: {
-        printData(data) {
-            console.log(data)
-        }
     }
 }
 </script>

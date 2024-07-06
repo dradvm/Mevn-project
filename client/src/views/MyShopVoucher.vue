@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <div class="rounded px-4 py-3 bg-light mt-3">
+        <div class="rounded px-4 py-3 mt-3">
             <div class="px-3 fw-bold d-flex align-items-center justify-content-between text-center mb-3">
                 <div class="fw-bold" style="width: 10%">
                     Code
@@ -41,10 +41,10 @@
                                     {{item.code}}
                             </div>         
                             <div class="v-stack fs-7" style="width: 20%">
-                                <div class="fw-bold">
+                                <div class="fw-medium">
                                     {{ item.startDate }}
                                 </div>
-                                <div>
+                                <div class="fw-medium">
                                     {{ item.expiredDate }}
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div style="width: 29%;">
+                            <div style="width: 30%;">
 
                             </div>
                             <div style="width: 10%">
@@ -65,19 +65,19 @@
                                     </div>
                                 </div>    
                             </div>
-                            <div  style="width: 11%">
-                                <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-center"  style="width: 10%">
+                                <div class="d-flex">
                                     <button class="rounded px-3 py-1 bg-primary text-white">
                                         <font-awesome-icon :icon="['fas', 'pen']" />
                                     </button>
-                                    <button class="rounded px-3 py-1 bg-danger text-white">
+                                    <button class="rounded px-3 py-1 bg-danger text-white ms-3">
                                         <font-awesome-icon :icon="['fas', 'delete-left']" />
                                     </button>
                                 </div>
                             </div>
                             
                         </div>
-                        <div class="d-flex align-items-center justify-content-end mt-2">
+                        <div class="d-flex align-items-center justify-content-end mt-2 text-body-tertiary">
                             <div class="d-flex align-items-center fs-7">
                                 <font-awesome-icon :icon="['fas', 'box-open']" />
                                 <div class="ms-1 fw-medium">{{item.quantity}}</div>
@@ -91,6 +91,15 @@
                     
                 </div>
             </div>
+            <div class="d-flex justify-content-end">
+                <v-pagination v-model="page" 
+                    :length="4" 
+                    next-icon="mdi-menu-right"
+                    prev-icon="mdi-menu-left"
+                    :active-color="text-danger"
+                >
+                </v-pagination>
+            </div>
         </div>
     </div>
 </template>
@@ -102,6 +111,7 @@ export default {
     name: "MyShopVoucher",
     data() {
         return {
+            page: 1,
             items: []
         }
     },
@@ -147,21 +157,22 @@ export default {
     }
 }
 </script>
-<template>
-  <div class="text-center">
-    <v-pagination
-      v-model="page"
-      :length="15"
-      :total-visible="7"
-    ></v-pagination>
-  </div>
-</template>
-<script>
-  export default {
-    data () {
-      return {
-        page: 1,
-      }
-    },
-  }
-</script>
+
+<style scoped>
+.my-pagination .v-pagination {
+  color: #4CAF50 !important; /* Thay đổi màu văn bản của pagination */
+}
+
+.my-pagination .v-pagination .v-btn {
+  background-color: #4CAF50; /* Thay đổi màu nền của pagination button */
+  color: white; /* Thay đổi màu văn bản của pagination button */
+}
+
+.my-pagination .v-pagination .v-btn:hover {
+  background-color: #388E3C; /* Thay đổi màu nền của pagination button khi hover */
+}
+
+.my-pagination .v-pagination .v-btn.v-btn--active {
+  background-color: #388E3C; /* Thay đổi màu nền của pagination button khi active */
+}
+</style>
