@@ -3,5 +3,8 @@ const VoucherController = require("../controllers/VoucherController")
 const VoucherRouter = express.Router()
 
 VoucherRouter.get("/", VoucherController.findAll)
-VoucherRouter.get("/count", VoucherController.countAllDocument)
+VoucherRouter.get("/pages/", VoucherController.getPagesOfItemsActive)
+VoucherRouter.get("/page/:page", VoucherController.findItemsActiveByPage)
+VoucherRouter.get("/pages/:search", VoucherController.getPagesOfItemsActive)
+VoucherRouter.get("/page/:page/:search", VoucherController.findItemsActiveByPage)
 module.exports = VoucherRouter

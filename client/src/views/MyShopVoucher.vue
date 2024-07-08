@@ -7,11 +7,11 @@
             <div>
                 <div class="my-input-group mb-3">
                     <span><font-awesome-icon :icon="['fas', 'magnifying-glass']" /></span>
-                    <input type="text" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                    <input v-model="search" type="text" placeholder="Search" aria-label="search" aria-describedby="basic-addon1">
                 </div>
             </div>
         </div>
-        <div class="rounded px-4 py-3 mt-3">
+        <div class="rounded bg-light px-4 py-3 mt-3">
             <div class="px-3 fw-bold d-flex align-items-center justify-content-between text-center mb-3">
                 <div class="fw-bold" style="width: 10%">
                     Code
@@ -91,11 +91,12 @@
                     
                 </div>
             </div>
-            <div class="d-flex justify-content-end">
+            <div v-if="pages>1" class="d-flex justify-content-end">
                 <v-pagination v-model="page" 
                     :length="pages" 
                     next-icon="mdi-menu-right"
                     prev-icon="mdi-menu-left"
+                    :total-visible="3"
                 >
                 </v-pagination>
             </div>
@@ -112,16 +113,27 @@ export default {
         return {
             page: 1,
             pages: 0,
+            search: "",
             items: []
         }
     },
     created() {
-        this.fetchItems()
-        this.getPages()
+        this.fetchItems(this.page, this.search)
+        this.getPages(this.search)
+    },
+    watch: {
+        page(newPage) {
+            this.fetchItems(newPage, this.search)
+        },
+        search(newSearch) {
+            this.page = 1
+            this.fetchItems(this.page, newSearch)
+            this.getPages(newSearch)
+        }
     },
     methods: {
-        fetchItems() {
-            VoucherService.getAll()
+        fetchItems(pageValue, searchValue) {
+            VoucherService.getByPage(pageValue, searchValue)
                 .then((res) => this.items = res.data)
                 .catch((err) => console.log(err))
         },
@@ -136,7 +148,7 @@ export default {
                     cssString.push("text-white")
                     break
                 }
-                case "Waiting": {
+                case "Upcoming": {
                     cssString.push("bg-warning")
                     cssString.push("text-white")
                     break
@@ -155,15 +167,11 @@ export default {
             }
             return cssString.join(" ")
         },
-        getPages() {
-            VoucherService.getPages()
-                .then((res) => this.pages = res.data.count)
+        getPages(searchValue) {
+            VoucherService.getPages(searchValue)
+                .then((res) => this.pages = res.data.count )
                 .catch((err) => console.log(err))
         }
     }
 }
 </script>
-
-<style scoped>
-
-</style>
