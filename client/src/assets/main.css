@@ -69,3 +69,9 @@ a {
 .my-input-group>span:first-child {
   padding: .4rem;
 }
+.cur-p {
+  cursor: pointer;
+}
+.cur-d {
+  cursor: default;
+}
