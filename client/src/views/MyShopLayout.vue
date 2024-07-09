@@ -17,7 +17,7 @@
                         <font-awesome-icon class="me-3" :icon="['fas', 'store']" />Shop
                     </RouterLink>
                     <RouterLink class="routerItemNav fw-medium px-3 py-2 rounded mb-2" 
-                    :class="{ 'routerItemNavActive': $router.currentRoute._rawValue.name === 'voucher', }" to="/myshop/voucher">
+                    :class="{ 'routerItemNavActive': ['voucher', 'voucherAdd'].includes($router.currentRoute._rawValue.name)  }" to="/myshop/voucher">
                         <font-awesome-icon class="me-3" :icon="['fas', 'ticket']" />Voucher 
                     </RouterLink>
                 </div>
