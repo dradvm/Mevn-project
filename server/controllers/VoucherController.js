@@ -1,26 +1,31 @@
 const VoucherModel = require("../models/VoucherModel");
 
+const available = ["Upcoming", "Active"]
+const notAvailable = ["Expired", "Out Of Stock", "Canceled"]
+
 const VoucherController = {
-    findAll: async (req, res) => {
-        VoucherModel.find()
-            .then((data) => res.status(200).json(data))
-            .catch((err) => res.status(500).json(err.message))
-    },
-    findItemsActiveByPage: async (req, res) => {
-        console.log(req.params)
-        const regex = new RegExp(req.params.search !== undefined ? req.params.search : "")
+    findItems: async (req, res) => {
+        const { page, search, check, sort } = req.query
+        const regex = new RegExp(search !== undefined ? search : "")
+        var sortObj = JSON.parse(sort)
+        var sortValue = Object.keys(sortObj).reduce((obj, sortItem) => {
+            obj[sortItem] = sortObj[sortItem] === true ? 1 : -1
+            return obj
+        }, {})
         VoucherModel.find({
-            state: ["Upcoming", "Active"],
+            state: check === "true" ? available : notAvailable,
             code: regex
-        }).skip((req.params.page - 1) * 5).limit(5)
+        })
+            .sort(sortValue)
+            .skip((page - 1) * 5).limit(5)
             .then((data) => res.status(200).json(data))
             .catch((err) => res.status(500).json(err.message))
     },
     getPagesOfItemsActive: async (req, res) => {
-
-        const regex = new RegExp(req.params.search !== undefined ? req.params.search : "")
+        const { search, check } = req.query
+        const regex = new RegExp(search !== undefined ? search : "")
         VoucherModel.countDocuments({
-            state: ["Upcoming", "Active"],
+            state: check === "true" ? available : notAvailable,
             code: regex
         })
             .then((data) => res.status(200).json({ count: Math.ceil(parseInt(data) / 5) }))
