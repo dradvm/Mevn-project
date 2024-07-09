@@ -5,21 +5,22 @@
 
 		<div class="login">
 				<form class="vstack gap">
-                    <div class="title">Login</div>
+                    <div class="title">Log In</div>
                     <div class="form">
                         <p for="name">Email:</p>
-                        <input type="email" name="email" required="">
-                        
+                        <input type="email" id="email" name="email" required>
+					</div>
+                    <div class="form">
                         <p for="name">Password:</p>
-                        <input type="password" name="pswd" required="">
+                        <input type="password" id="password" name="password" onblur="validatePassword()" required>
                     </div>
 					<div class="d-flex justify-content-around">
-						<button>Login</button>
+						<button type="submit">SIGN IN</button>
 					</div>
 					
 					<div class="bottom">
-						<span class="forget-pass">Forget password</span>
-                    	<span class="form-tip"><RouterLink to="/register">Sign up</RouterLink></span>
+						<span class="forget-pass">Forgot password?</span>
+                    	<span class="sign-up">Don't have an account? <RouterLink to="/register" style="color: #035e96;">Sign up</RouterLink></span>
 					</div>
 					
 				</form>
@@ -47,72 +48,73 @@
 	align-items: center;
 	height: 100vh;
 	font-family: 'Jost', sans-serif;
-	background: #0c86d19a;
+	background: #035e96;
 }
 .main{
-	width: 600px;
-	height: 400px;
-	background: #2a95bf;
+	width: 30%;
+	height: 80%;
+	background: #fff;
 	overflow: hidden;
 	border-radius: 10px;
 	box-shadow: 5px 20px 50px #000;
 }
 .title{
-	color: #021534;
+	color: #23395d;;
 	font-size: 2.5em;
 	justify-content: center;
 	display: flex;
 	font-weight: bold;
 	cursor: pointer;
 	margin: 20px auto;
-	text-shadow: 2px 2px 3px rgba(124, 158, 221, 0.695);
+	text-shadow: 2px 2px 3px #2a95bf;
 }
+
 #chk{
 	display: none;
 }
 input{
-	width: 60%;
-	height: 35px;
-	background: rgba(124, 158, 221, 0.695);
+	width: 80%;
+	height: 45px;
 	justify-content: center;
 	display: flex;
 	margin: 15px auto;
-	padding: 10px 20px;
-	border: none;
+	padding: 12px 24px;
+	border: 1px solid #035e96;
 	outline: none;
-	border-radius: 5px;
-	margin: 30px auto;
+	border-radius: 2px;
+	margin: 20px auto;
 }
 
 button{
 	align-items: center;
-	width: 130px;
+	width: 80%;
 	height: 45px;
 	justify-content: center;
 	display: flex;
 	color: #fff;
-	background: #0c85d1;
-	font-size: 1.5em;
-	font-weight: bold;
+	background: #035e96db;
+	font-size: 1.2em;
+	font-weight: 400;
 	outline: none;
 	border: none;
-	border-radius: 5px;
+	border-radius: 2px;
 	transition: .2s ease-in;
 	cursor: pointer;
+	margin-top: 12px;
 	
 }
 button:hover{
-	background: #126DA6;
+	background: #199aeb;
 }
 
 p{
     font-size: 1em;
-    color: #021534;
+    color: #035e96;
 	width: 100%;
 	height: 5px;
 	display: flex;
 	justify-content: left;
-	margin-left: 130px;
+	margin-left: 40px;
 }
 .bottom {
 	display: flex;
@@ -124,42 +126,50 @@ p{
   
   .forget-pass {
 	font-size: 14px;
-	margin-top: 5px;
+	margin-top: 12px;
+	color: #035e96;
   }
-  .forget-tip {
+  .sign-up {
 	font-size: 14px;
+	color: #212529;
   }
 </style>
 
 
  
 <script>
-function login(userNameOrEmail, password, callback) {
-  // Send credentials to external database API
-  let hashedPassword = hash(password);
+	export default {
+		name: "Login"
+	}
 
-  let options = {
-    url: "https://example.com/api/authenticate",
-    body: {
-      email: userNameOrEmail,
-      password: hashedPassword
-    }
-  };
+	function ValidateEmail() {
+		var email = document.getElementById("email");
+		var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-  send(options, (err, profileData) => {
-    // Return error in callback if authentication is unsuccessful
-    if (err) {
-      return callback(new WrongUsernameOrPasswordError(userNameOrEmail, "My custom error message."));
-    } else {
-      // Return profile data in callback if authentication is successful
-      let profile = {
-        username: profileData.username,
-        email: profileData.emailAddress,
-        user_id: profileData.userId
-      };
+		if (email.value.match(validRegex)) {
+			alert("Valid email address!");
+			document.form1.text1.focus();
+			return true;
+		} else {
 
-      return callback(null, profile);
-    }
-  });
+			alert("Invalid email address!");
+			document.form1.text1.focus();
+			return false;
+		}
+
+	}
+	function validatePassword() {
+  		var passwordField = document.getElementById("password");
+  		var password = passwordField.value;
+
+  		if (password.length < 6) {
+    		alert("Mật khẩu phải có ít nhất 6 ký tự.");
+    		passwordField.focus();
+    		return false;
+  		}
+
+  	return true;
 }
+
+
 </script>

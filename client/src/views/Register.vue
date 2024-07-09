@@ -4,60 +4,70 @@
       <input type="checkbox" id="chk" aria-hidden="true">
       <div class="login">
 
-        <div class="title">Sign up</div>
+        <div class="title">Sign Up</div>
         <div class="content">
-          <form action="#" class="vstack gap">
+          <form action="#" class="container" method="post">
             
-            <div class="user-details">
+            <div class="row">
 
-              <div class="input-two-col">
+              <div class="col-sm">
                 <span class="details">Full name:</span>
-                <input type="text" name="name" placeholder="Enter your full name" required>
+                <input type="text" name="fullname" id="fullname" placeholder="Enter your full name" required>
               </div>
 
-              <div class="input-two-col">
+              <div class="col-sm">
                   <span class="details">Birthday:</span>
-                  <input type="date" name="birthday">
+                  <input type="date" name="birthday" required>
               </div>
 
-              <div class="gender-details">
+              <div class="col-sm">
                 <span class="details">Gender:</span>
-                <select id="gender" name="gender">
+                <select class="form-select form-select-sm" aria-label=".form-select-sm example" required>
+                  <option selected>Choose your gender</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                   <option value="other">Other</option>
                 </select>
               </div>
 
-              <div class="email-col">
-                <span class="details">Email:</span>
-                <input type="text" name="email" placeholder="Enter your email" required>
-              </div>
-
-              <div class="phone-col">
-                <span class="details">Phone number:</span>
-                <input type="text" name="phone" placeholder="Enter your number" required>
-              </div>
-
-
-
-              <div class="input-two-col">
-                <span class="details">Password</span>
-                <input type="text" placeholder="Enter your password" required>
-              </div>
-
-              <div class="input-two-col">
-                <span class="details">Confirm Password</span>
-                <input type="text" placeholder="Confirm your password" required>
-              </div>
-              <div class="input-two-col">
-                <span class="details">Address:</span>
-                <input type="text" name="address" placeholder="Enter your address" required>
-              </div>
-              
             </div>
 
-            <button class="login-but">Sign up</button>
+
+            <div class="row">
+              <div class="col-sm-8">
+                <span class="details">Email:</span>
+                <input type="text" name="email" id="email" placeholder="Enter your email" required>
+              </div>
+
+              <div class="col-sm-4">
+                <span class="details">Phone number:</span>
+                <input type="text" name="phone" id="phone" placeholder="Enter your number" required>
+              </div>
+            </div>
+              
+
+
+            <div class="row">
+              <div class="col-sm">
+                <span class="details">Password:</span>
+                <input type="text" name="password" id="password" placeholder="Enter your password" required>
+              </div>
+
+              <div class="col-sm">
+                <span class="details">Confirm Password:</span>
+                <input type="text" name="password-confirmation" id="password-confirmation" placeholder="Confirm your password" required>
+              </div>
+              <div class="col-sm">
+                <span class="details">Address:</span>
+                <input type="text" name="address" id="address" placeholder="Enter your address" required>
+              </div>
+
+            </div>
+
+            <button class="login-but" type="submit">SIGN UP</button>
+            <div class="bottom">
+              <span class="log-in">Already have an account? <RouterLink to="/login" style="color: #035e96;">Log in</RouterLink></span>
+            </div>
           </form>
             
         </div>
@@ -69,350 +79,154 @@
     
     
 <style scoped>
-    :root {
+  :root {
         --button-hover: #1261A6;
         --button: #2a95bf;
         --pastel: #73C6D9;
         --dark-blue: #126DA6;
         --grey: #5c6677;
         --navy: #23395d;
-      }
-    .register-main{
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: 'Jost', sans-serif;
-      background: #0c86d19a;
-    }
-    .main{
-      width: 600px;
-      height: 400px;
-      background: #2a95bf;
-      overflow: hidden;
-      border-radius: 10px;
-      box-shadow: 5px 20px 50px #000;
-    }
-
-    .title{
-	color: #021534;
-	font-size: 2.5em;
-	justify-content: center;
-	display: flex;
-	font-weight: bold;
-	cursor: pointer;
-	margin: 20px auto;
-	text-shadow: 2px 2px 3px rgba(124, 158, 221, 0.695);
-    }
-    #chk{
-      display: none;
-    }
-
-    
-    .user-details {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-gap: 10px;
-      margin: 10px 20px;
-    }
-    
-    .input-two-col {
-      grid-column: span 1;
-    }
-    
-    .input-one-col {
-      grid-column: span 1;
-    }
-    
-    .email-col {
-      grid-column: span 2;
-    }
-    
-    .phone-col {
-      grid-column: span 1;
-    }
-    
-    .gender-details {
-      grid-column: span 1;
-    }
-    
-    @media (max-width: 768px) {
-      .user-details {
-        grid-template-columns: 1fr;
-      }
-    
-      .input-two-col,
-      .input-one-col,
-      .email-col,
-      .phone-col,
-      .gender-details {
-        grid-column: span 1;
-      }
-    }
-
-input{
-      width: 100%;
-      height: 35px;
-      background: rgba(124, 158, 221, 0.695);
-      justify-content: center;
-      display: flex;
-      margin: 10px 20px;
-      padding: 10px 20px;
-      border: none;
-      outline: none;
-      border-radius: 5px;
   }
-  form .input-two-col span.details{
-      font-size: 1em;
-      color: #021534;
-      width: 100%;
-      height: 5px;
-      display: flex;
-      margin: 5px auto;
-      padding: 10px 20px;
+  .register-main{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Jost', sans-serif;
+    background: #035e96;
   }
-  form .input-one-col span.details{
+  .main{
+    width: 60%;
+    height: 85%;
+    background: #fff;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 5px 20px 50px #000;
+    justify-content: center;
+    display: flex;
+  }
+
+  .title{
+    color: #23395d;
+    font-size: 2.5em;
+    justify-content: center;
+    display: flex;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 20px auto;
+    text-shadow: 2px 2px 3px #2a95bf;
+  }
+  #chk{
+    display: none;
+  }
+  .container{
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  input, select{
+    width: 100%;
+    height: 45px;
+    justify-content: center;
+    display: flex;
+    padding: 12px 24px;
+    border: 1px solid #035e96;
+    padding: 10px 20px;
+    outline: none;
+    border-radius: 2px;
+    margin-bottom: 20px;
+  }
+  span{
     font-size: 1em;
-    color: #021534;
+    color: #035e96;
     width: 100%;
     height: 5px;
     display: flex;
-    margin: 5px auto;
-    padding: 10px 20px;
-}
-form .gender-details span.details{
-  font-size: 1em;
-  color: #021534;
-  width: 100%;
-  height: 5px;
-  display: flex;
-  margin: 5px auto;
-  padding: 10px 20px;
-}
-form .gender-details #gender{
-  width: 100%;
-  height: 35px;
-  background: rgba(124, 158, 221, 0.695);
-  justify-content: center;
-  display: flex;
-  margin: 10px 40px;
-  padding: 10px 20px;
-  border: none;
-  outline: none;
-  border-radius: 5px;
-}
-
-button{
-	width: 130px;
-	height: 45px;
-	margin: 20px auto;
-	justify-content: center;
-	display: block;
-	color: #fff;
-	background: #0c85d1;
-	font-size: 1.5em;
-	font-weight: bold;
-
-    margin-bottom: 50px;
-	outline: none;
-	border: none;
-	border-radius: 5px;
-	transition: .2s ease-in;
-	cursor: pointer;
-}
-button:hover{
-	background: #126DA6;
-}
-    /*.content form .user-details{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin: 5px 100px 5px 100px;
-      }
-      form .user-details .input-two-col{
-        width: calc(100% / 2 - 20px);
-      }
-      form .user-details .input-one-col{
-        width: 100%;
-      }
-    input{
-        width: 100%;
-        height: 35px;
-        background: rgba(124, 158, 221, 0.695);
-        justify-content: center;
-        display: flex;
-        margin: 10px auto 5px auto;
-        padding: 10px 20px;
-        border: none;
-        outline: none;
-        border-radius: 5px;
-    }
-    form .input-two-col span.details{
-        font-size: 1em;
-        color: #021534;
-        width: 100%;
-        height: 5px;
-        display: flex;
-        margin: 5px auto;
-        padding: 10px 20px;
-    }
-    form .input-one-col span.details{
-      font-size: 1em;
-      color: #021534;
-      width: 60%;
-      height: 5px;
-      display: flex;
-      margin: 5px auto;
-      padding: 10px 20px;
+    justify-content: left;
+    margin-left: 10px;
+    margin-bottom: 20px;
+  }
+  .bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+  }
+    
+  .log-in {
+    font-size: 14px;
+    margin-top: 8px;
+    justify-content: center;
+    color: #212529;
   }
 
-
-
-       form .category label{
-         display: flex;
-         align-items: center;
-         cursor: pointer;
-       }
-       form .category label .dot{
-        height: 18px;
-        width: 18px;
-        border-radius: 50%;
-        margin-right: 10px;
-        background: #d9d9d9;
-        border: 5px solid transparent;
-        transition: all 0.3s ease;
-      }
-       #dot-1:checked ~ .category label .one,
-       #dot-2:checked ~ .category label .two,
-       #dot-3:checked ~ .category label .three{
-         background: #9b59b6;
-         border-color: #d9d9d9;
-       }
-       form input[type="radio"]{
-         display: none;
-       }
-       form .button{
-         height: 45px;
-         margin: 35px 0
-       }
-       button{
-        width: 130px;
-        height: 45px;
-        margin: 20px auto;
-        justify-content: center;
-        display: block;
-        color: #fff;
-        background: #0c85d1;
-        font-size: 1.5em;
-        font-weight: bold;
-      
-          margin-bottom: 50px;
-        outline: none;
-        border: none;
-        border-radius: 5px;
-        transition: .2s ease-in;
-        cursor: pointer;
-      }
-      button:hover{
-        background: #126DA6;
-      }
-       @media(max-width: 584px){
-       .container{
-        max-width: 100%;
-      }
-      form .user-details .input-box{
-          margin-bottom: 15px;
-          width: 100%;
-        }
-        form .category{
-          width: 100%;
-        }
-        .content form .user-details{
-          max-height: 300px;
-          overflow-y: scroll;
-        }
-        .user-details::-webkit-scrollbar{
-          width: 5px;
-        }
-        }
-        @media(max-width: 459px){
-        .container .content .category{
-          flex-direction: column;
-        }
-      }
-      #chk{
-        display: none;
-    }*/
-
-
-
-    /*.title{
-        color: #021534;
-        font-size: 2.5em;
-        justify-content: center;
-        display: flex;
-        margin: 50px;
-        margin-bottom: 5px;
-        font-weight: bold;
-        cursor: pointer;
-        text-shadow: 2px 2px 3px rgba(124, 158, 221, 0.695);
-    }
-    #chk{
-        display: none;
-    }
-    input{
-        width: 60%;
-        height: 35px;
-        background: rgba(124, 158, 221, 0.695);
-        justify-content: center;
-        display: flex;
-        margin: 10px auto 5px auto;
-        padding: 10px 20px;
-        border: none;
-        outline: none;
-        border-radius: 5px;
-    }
-      
-    button{
-        width: 25%;
-        height: 40px;
-        margin: 20px auto;
-        justify-content: center;
-        display: block;
-        color: #fff;
-        background: #0c85d1;
-        font-size: 1.2em;
-        font-weight: bold;
+  button{
+    align-items: center;
+    width: 100%;
+    height: 45px;
     
-        margin-bottom: 50px;
-        outline: none;
-        border: none;
-        border-radius: 5px;
-        transition: .2s ease-in;
-        cursor: pointer;
-    }
-    button:hover{
-        background: #126DA6;
-    }
-    
-    p{
-        font-size: 1em;
-        color: #021534;
-        width: 60%;
-        height: 5px;
-        display: flex;
-        margin: 5px auto;
-        padding: 10px;
-    }*/
+    display: flex;
+    color: #fff;
+    background: #035e96db;
+    font-size: 1.2em;
+    font-weight: 400;
+    outline: none;
+    border: none;
+    border-radius: 2px;
+    transition: .2s ease-in;
+    cursor: pointer;
+    margin-top: 4px;
+    justify-content: center;
+  }
+  button:hover{
+    background: #199aeb;
+  }
+
     
 </style>
 
 <script>
-export default {
-    name: "Register"
-}
+  export default {
+      name: "Register"
+  }
+
+  function validateForm() {
+    var name = document.getElementById("fullname");
+    var email = document.getElementById("email");
+    var phone = document.getElementById("phone");
+    var address = document.getElementById("address");
+    var pass = document.getElementById("password");
+    var pass2 = document.getElementById("password-confirmation");
+
+    if(name.value != ""){
+    } else {
+      alert("Username is required!");
+      name.focus();
+    }
+
+    if(pass.value != ""){
+      if(pass.value.length < 6){
+        alert("Make the password longer!");
+        pass.focus();
+      }
+
+    } else {
+      alert("Password is required!");
+      pass.focus();
+    }
+
+    if(pass2.value != ""){
+      if(pass2.value != pass.value){
+        alert("Confirm Password is incorrect!");
+        pass2.focus();
+      }
+
+    } else {
+      alert("Confirm Password is required!");
+      pass2.focus();
+    }
+  }
 
 
 </script>

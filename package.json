@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "vee-validate": "^4.5.8"
+  }
+}

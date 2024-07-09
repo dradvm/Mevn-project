@@ -1,4 +1,5 @@
 <template>
+    
     <header>
     <div class="wrapper">
         <nav>
@@ -16,4 +17,5 @@
 export default {
     name: "Home"
 }
+
 </script>
