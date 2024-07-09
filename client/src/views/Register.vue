@@ -36,12 +36,12 @@
             <div class="row">
               <div class="col-sm-8">
                 <span class="details">Email:</span>
-                <input type="text" name="email" id="email" placeholder="Enter your email" required>
+                <input type="text" name="email" id="email" placeholder="Enter your email" @click="validateForm" required>
               </div>
 
               <div class="col-sm-4">
                 <span class="details">Phone number:</span>
-                <input type="text" name="phone" id="phone" placeholder="Enter your number" required>
+                <input type="text" name="phone" id="phone" placeholder="Enter your number" @click="validateForm" required>
               </div>
             </div>
               
@@ -50,12 +50,12 @@
             <div class="row">
               <div class="col-sm">
                 <span class="details">Password:</span>
-                <input type="text" name="password" id="password" placeholder="Enter your password" required>
+                <input type="text" name="password" id="password" placeholder="Enter your password" @click="validateForm" required>
               </div>
 
               <div class="col-sm">
                 <span class="details">Confirm Password:</span>
-                <input type="text" name="password-confirmation" id="password-confirmation" placeholder="Confirm your password" required>
+                <input type="text" name="password-confirmation" id="password-confirmation" placeholder="Confirm your password" @click="validateForm" required>
               </div>
               <div class="col-sm">
                 <span class="details">Address:</span>
@@ -64,9 +64,9 @@
 
             </div>
 
-            <button class="login-but" type="submit">SIGN UP</button>
+            <button class="login-but" type="button" @click="validateForm">SIGN UP</button>
             <div class="bottom">
-              <span class="log-in">Already have an account? <RouterLink to="/login" style="color: #035e96;">Log in</RouterLink></span>
+              <span class="log-in">Already have an account? <RouterLink to="/login" style="color: #EF8121;">Log in</RouterLink></span>
             </div>
           </form>
             
@@ -95,7 +95,7 @@
     align-items: center;
     height: 100vh;
     font-family: 'Jost', sans-serif;
-    background: #035e96;
+    background: #F3FBFF;
   }
   .main{
     width: 60%;
@@ -109,14 +109,14 @@
   }
 
   .title{
-    color: #23395d;
+    color: #225771;
     font-size: 2.5em;
     justify-content: center;
     display: flex;
     font-weight: bold;
     cursor: pointer;
     margin: 20px auto;
-    text-shadow: 2px 2px 3px #2a95bf;
+    text-shadow: 2px 2px 3px  #EF8121;
   }
   #chk{
     display: none;
@@ -131,7 +131,7 @@
     justify-content: center;
     display: flex;
     padding: 12px 24px;
-    border: 1px solid #035e96;
+    border: 1px solid #225771;
     padding: 10px 20px;
     outline: none;
     border-radius: 2px;
@@ -139,7 +139,7 @@
   }
   span{
     font-size: 1em;
-    color: #035e96;
+    color: #225771;
     width: 100%;
     height: 5px;
     display: flex;
@@ -158,7 +158,7 @@
     font-size: 14px;
     margin-top: 8px;
     justify-content: center;
-    color: #212529;
+    color: #021534;
   }
 
   button{
@@ -168,7 +168,7 @@
     
     display: flex;
     color: #fff;
-    background: #035e96db;
+    background: #225771;
     font-size: 1.2em;
     font-weight: 400;
     outline: none;
@@ -180,7 +180,8 @@
     justify-content: center;
   }
   button:hover{
-    background: #199aeb;
+    background: #F3FBFF;
+    color: #225771;
   }
 
     
@@ -188,45 +189,50 @@
 
 <script>
   export default {
-      name: "Register"
+      name: "Register",
+      methods: {
+        validateForm() {
+          var name = document.getElementById("fullname");
+          var email = document.getElementById("email");
+          var phone = document.getElementById("phone");
+          var address = document.getElementById("address");
+          var pass = document.getElementById("password");
+          var pass2 = document.getElementById("password-confirmation");
+
+          if(name.value != ""){
+          } else {
+            alert("Username is required!");
+            name.focus();
+          }
+
+          if(pass.value != ""){
+            if(pass.value.length < 6){
+              alert("Make the password longer!");
+              pass.focus();
+            }
+
+          } else {
+            alert("Password is required!");
+            pass.focus();
+          }
+
+          if(pass2.value != ""){
+            if(pass2.value != pass.value){
+              alert("Confirm Password is incorrect!");
+              pass2.focus();
+            }
+
+          } else {
+            alert("Confirm Password is required!");
+            pass2.focus();
+          }
+        }
+      }
+      
+
   }
 
-  function validateForm() {
-    var name = document.getElementById("fullname");
-    var email = document.getElementById("email");
-    var phone = document.getElementById("phone");
-    var address = document.getElementById("address");
-    var pass = document.getElementById("password");
-    var pass2 = document.getElementById("password-confirmation");
-
-    if(name.value != ""){
-    } else {
-      alert("Username is required!");
-      name.focus();
-    }
-
-    if(pass.value != ""){
-      if(pass.value.length < 6){
-        alert("Make the password longer!");
-        pass.focus();
-      }
-
-    } else {
-      alert("Password is required!");
-      pass.focus();
-    }
-
-    if(pass2.value != ""){
-      if(pass2.value != pass.value){
-        alert("Confirm Password is incorrect!");
-        pass2.focus();
-      }
-
-    } else {
-      alert("Confirm Password is required!");
-      pass2.focus();
-    }
-  }
+  
 
 
 </script>
