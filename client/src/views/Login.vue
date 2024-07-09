@@ -3,8 +3,8 @@
 	<div class="main">  	
 		<input type="checkbox" id="chk" aria-hidden="true">
 
-		<div class="login">
-				<form class="vstack gap">
+		<form class="login">
+				<div class="vstack gap">
                     <div class="title">Log In</div>
                     <div class="form">
                         <p for="name">Email:</p>
@@ -12,19 +12,19 @@
 					</div>
                     <div class="form">
                         <p for="name">Password:</p>
-                        <input type="password" id="password" name="password" onblur="validatePassword()" required>
+                        <input type="password" id="password" name="password" required>
                     </div>
 					<div class="d-flex justify-content-around">
-						<button type="submit">SIGN IN</button>
+						<button type="button" @click="ValidateForm">SIGN IN</button>
 					</div>
 					
 					<div class="bottom">
 						<span class="forget-pass">Forgot password?</span>
-                    	<span class="sign-up">Don't have an account? <RouterLink to="/register" style="color: #035e96;">Sign up</RouterLink></span>
+                    	<span class="sign-up">Don't have an account? <RouterLink to="/register" style="color: #EF8121;">Sign up</RouterLink></span>
 					</div>
 					
-				</form>
-        </div>
+				</div>
+        </form>
 	</div>
 </div>
 </template>
@@ -48,7 +48,7 @@
 	align-items: center;
 	height: 100vh;
 	font-family: 'Jost', sans-serif;
-	background: #035e96;
+	background: #F3FBFF;
 }
 .main{
 	width: 30%;
@@ -59,14 +59,14 @@
 	box-shadow: 5px 20px 50px #000;
 }
 .title{
-	color: #23395d;;
+	color: #225771;
 	font-size: 2.5em;
 	justify-content: center;
 	display: flex;
 	font-weight: bold;
 	cursor: pointer;
 	margin: 20px auto;
-	text-shadow: 2px 2px 3px #2a95bf;
+	text-shadow: 2px 2px 3px #EF8121;
 }
 
 #chk{
@@ -79,7 +79,7 @@ input{
 	display: flex;
 	margin: 15px auto;
 	padding: 12px 24px;
-	border: 1px solid #035e96;
+	border: 1px solid #225771;
 	outline: none;
 	border-radius: 2px;
 	margin: 20px auto;
@@ -92,7 +92,7 @@ button{
 	justify-content: center;
 	display: flex;
 	color: #fff;
-	background: #035e96db;
+	background: #225771;
 	font-size: 1.2em;
 	font-weight: 400;
 	outline: none;
@@ -104,12 +104,13 @@ button{
 	
 }
 button:hover{
-	background: #199aeb;
+	background: #F3FBFF;
+	color: #225771;
 }
 
 p{
     font-size: 1em;
-    color: #035e96;
+    color: #225771;
 	width: 100%;
 	height: 5px;
 	display: flex;
@@ -127,50 +128,56 @@ p{
   .forget-pass {
 	font-size: 14px;
 	margin-top: 12px;
-	color: #035e96;
+	color: #EF8121;
   }
   .sign-up {
 	font-size: 14px;
-	color: #212529;
+	color: #212425;
   }
 </style>
 
 
  
 <script>
-	export default {
-		name: "Login"
-	}
+export default {
+	name: "Login",
 
-	function ValidateEmail() {
-		var email = document.getElementById("email");
-		var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+	methods: {
 
-		if (email.value.match(validRegex)) {
-			alert("Valid email address!");
-			document.form1.text1.focus();
-			return true;
-		} else {
+		ValidateEmail() {
+			console.log("Hàm email");
+			var email = document.getElementById("email");
+			var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-			alert("Invalid email address!");
-			document.form1.text1.focus();
-			return false;
+			if (email.value.match(validRegex)) {
+				//alert("Valid email address!");
+				// document.focus();
+				// return true;
+			} else {
+
+				alert("Invalid email address!");
+				document.focus();
+				return false;
+			}
+
+		},
+		ValidatePassword() {
+			console.log("Hàm email");
+			var passwordField = document.getElementById("password");
+			var password = passwordField.value;
+
+			if (password.length < 6) {
+				alert("Mật khẩu phải có ít nhất 6 ký tự.");
+				passwordField.focus();
+
+			}
+		},
+		ValidateForm(){
+			this.ValidateEmail();
+			this.ValidateForm();
 		}
-
 	}
-	function validatePassword() {
-		console.log("A")
-  		var passwordField = document.getElementById("password");
-  		var password = passwordField.value;
 
-  		if (password.length < 6) {
-    		alert("Mật khẩu phải có ít nhất 6 ký tự.");
-    		passwordField.focus();
-    		return false;
-  		}
-
-  	return true;
 }
-
 
 </script>
