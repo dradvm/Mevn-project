@@ -159,6 +159,7 @@ p{
 
 	}
 	function validatePassword() {
+		console.log("A")
   		var passwordField = document.getElementById("password");
   		var password = passwordField.value;
 
