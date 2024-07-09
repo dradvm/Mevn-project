@@ -30,6 +30,13 @@ const VoucherController = {
         })
             .then((data) => res.status(200).json({ count: Math.ceil(parseInt(data) / 5) }))
             .catch((err) => res.status(500).json(err.message))
+    },
+    deleteItem: async (req, res) => {
+        VoucherModel.deleteOne({
+            _id: req.params.id
+        })
+            .then((data) => res.status(200).json({ message: "Xóa voucher thành công!" }))
+            .catch((err) => res.status(500).json(err.message))
     }
 }
 

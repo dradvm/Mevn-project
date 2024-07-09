@@ -15,7 +15,8 @@ const VoucherService = {
             search,
             check
         }
-    })
+    }),
+    deleteItem: (id) => axios.delete(`/${id}`)
 }
 
 export default VoucherService

@@ -1,9 +1,9 @@
 <template>
     <div class="m-3">
         <div class="d-flex justify-content-between align-items-center">
-            <div>
+            <RouterLink to="/myshop/voucherAdd">
                 <button class="px-3 py-1 fw-medium bg-primary rounded">Add new voucher</button>
-            </div>
+            </RouterLink>
             <div>
                 <div class="my-input-group mb-3">
                     <span><font-awesome-icon :icon="['fas', 'magnifying-glass']" /></span>
@@ -14,10 +14,10 @@
         
         <div class="">
             <v-switch v-model="check" :model-value="check"
-                    hide-details
-                    :label="`Voucher ${labelSwitcher}available`"
-                    color="primary"
-                ></v-switch>
+                hide-details
+                :label="`Voucher ${labelSwitcher}available`"
+                color="primary"
+            ></v-switch>
         </div>
         <div class="rounded bg-light px-4 py-3 mt-3">
             <div class="px-3 fw-bold d-flex align-items-center justify-content-between text-center mb-3">
@@ -94,7 +94,7 @@
                                     <button class="rounded px-3 py-1 bg-primary text-white">
                                         <font-awesome-icon :icon="['fas', 'pen']" />
                                     </button>
-                                    <button class="rounded px-3 py-1 bg-danger text-white ms-3">
+                                    <button class="rounded px-3 py-1 bg-danger text-white ms-3" @click="deleteItem(item._id)">
                                         <font-awesome-icon :icon="['fas', 'delete-left']" />
                                     </button>
                                 </div>
@@ -126,11 +126,12 @@
             </div>
         </div>
     </div>
+    <button @click="showToast">Click</button>
 </template>
 
 <script>
 import VoucherService from '@/services/VoucherService';
-
+import { toast } from 'vue3-toastify';
 export default {
     name: "MyShopVoucher",
     data() {
@@ -143,6 +144,7 @@ export default {
             typeSort: true,
             stateSort: true,
             sort: ["startDateSort", "typeSort", "stateSort"],
+            modal: false,
             items: []
         }
     },
@@ -225,7 +227,20 @@ export default {
             }
             console.log(this.page)
             this.fetchItemsAndGetPages({})
-        }
+        },
+        deleteItem(id) {
+            VoucherService.deleteItem(id)
+                .then((res) => {
+                    console.log(res)
+                    this.fetchItemsAndGetPages({})
+                } )
+                .catch((err) => console.log(err))
+        },
+        showToast() {
+            toast('This is a toast message!', {
+                type: 'success',
+            })
+        },
     }
 }
 </script>

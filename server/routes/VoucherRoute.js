@@ -4,4 +4,5 @@ const VoucherRouter = express.Router()
 
 VoucherRouter.get("/", VoucherController.findItems)
 VoucherRouter.get("/pages", VoucherController.getPagesOfItemsActive)
+VoucherRouter.delete("/:id", VoucherController.deleteItem)
 module.exports = VoucherRouter
