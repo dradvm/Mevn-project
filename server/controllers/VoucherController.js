@@ -18,7 +18,7 @@ const VoucherController = {
         })
             .sort(sortValue)
             .skip((page - 1) * 5).limit(5)
-            .then((data) => res.status(200).json(data))
+            .then((data) => setTimeout(() => res.status(200).json(data), 0))
             .catch((err) => res.status(500).json(err.message))
     },
     getPagesOfItemsActive: async (req, res) => {
