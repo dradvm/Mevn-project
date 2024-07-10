@@ -66,7 +66,7 @@
 
             <button class="login-but" type="button" @click="validateForm">SIGN UP</button>
             <div class="bottom">
-              <span class="log-in">Already have an account? <RouterLink to="/login" style="color: #EF8121;">Log in</RouterLink></span>
+              <div class="log-in">Already have an account? <RouterLink to="/login" style="color: #EF8121;">Log in</RouterLink></div>
             </div>
           </form>
             
@@ -79,14 +79,6 @@
     
     
 <style scoped>
-  :root {
-        --button-hover: #1261A6;
-        --button: #2a95bf;
-        --pastel: #73C6D9;
-        --dark-blue: #126DA6;
-        --grey: #5c6677;
-        --navy: #23395d;
-  }
   .register-main{
     margin: 0;
     padding: 0;
