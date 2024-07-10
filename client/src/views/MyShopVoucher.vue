@@ -53,8 +53,15 @@
                     Action
                 </div>
             </div>
-            <div v-if="items.length == 0" style="height: 300px">
-                <div class="d-flex fs-1 justify-content-center fw-bold align-items-center h-100">NO VOUCHER FOUND</div>
+            <div v-if="isLoading || items.length === 0" style="height: 400px">
+                <div class="d-flex fs-1 justify-content-center fw-bold align-items-center h-100">
+                    <div v-if="items.length !== 0" class="spinner">
+                        <div></div>
+                    </div>
+                    <div v-else>
+                        NO VOUCHER FOUND
+                    </div>
+                </div>
             </div>
             <div v-else v-for="item in items" :key="item._id">
                 <div class="bg-white border px-3 py-2 mb-3 rounded">
@@ -126,7 +133,6 @@
             </div>
         </div>
     </div>
-    <button @click="showToast">Click</button>
 </template>
 
 <script>
@@ -144,8 +150,8 @@ export default {
             typeSort: true,
             stateSort: true,
             sort: ["startDateSort", "typeSort", "stateSort"],
-            modal: false,
-            items: []
+            items: [],
+            isLoading: true
         }
     },
     computed: {
@@ -206,7 +212,10 @@ export default {
         },
         fetchItems(pageValue, searchValue, checkValue, sortValue) {
             VoucherService.getByPage(pageValue, searchValue, checkValue, sortValue)
-                .then((res) => this.items = res.data)
+                .then((res) => {
+                    this.items = res.data
+                    this.isLoading = false
+                })
                 .catch((err) => console.log(err))
         },
         getPages(searchValue, checkValue) {
@@ -215,6 +224,7 @@ export default {
                 .catch((err) => console.log(err))
         },
         fetchItemsAndGetPages({pageValue = this.page, searchValue = this.search, checkValue = this.check}) {
+            this.isLoading = true
             this.fetchItems(pageValue, searchValue, checkValue, this.jsonSort)
             this.getPages(searchValue, checkValue)
         },
@@ -225,27 +235,42 @@ export default {
                 this.sort.splice(this.sort.indexOf(sortValue), 1)
                 this.sort.unshift(sortValue)
             }
-            console.log(this.page)
             this.fetchItemsAndGetPages({})
         },
         deleteItem(id) {
             VoucherService.deleteItem(id)
                 .then((res) => {
-                    console.log(res)
                     this.fetchItemsAndGetPages({})
+                    toast(res.data.message, {
+                        type: 'success',
+                        autoClose: 2000
+                    })
                 } )
-                .catch((err) => console.log(err))
-        },
-        showToast() {
-            toast('This is a toast message!', {
-                type: 'success',
-            })
+                .catch((err) => {
+                    toast(err.message, {
+                        type: 'error',
+                    })
+                })
         },
     }
 }
 </script>
 
 <style scoped>
+.spinner div {
+    height: 120px;
+    width: 120px;
+    border: 6px solid;
+    border-color: red transparent red transparent;
+    border-radius: 50%;
+    animation: spin 1.4s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
 button {
     position: relative;
     transition: .2s
