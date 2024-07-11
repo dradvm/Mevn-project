@@ -2,6 +2,7 @@
 const mongoose = require("mongoose")
 const VoucherModel = require("../models/VoucherModel")
 require("dotenv").config()
+
 module.exports = function connection() {
     mongoose.connect(process.env.MONGODB_CONNECTION + "/" + process.env.MONGODB_DATABASE, {
         useNewUrlParser: true,
