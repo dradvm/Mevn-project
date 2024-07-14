@@ -4,26 +4,26 @@
 		<input type="checkbox" id="chk" aria-hidden="true">
 
 		<form class="login">
-				<div class="vstack gap">
-                    <div class="title">Log In</div>
-                    <div class="form">
-                        <p for="name">Email:</p>
-                        <input type="email" id="email" name="email" required>
-					</div>
-                    <div class="form">
-                        <p for="name">Password:</p>
-                        <input type="password" id="password" name="password" required>
-                    </div>
-					<div class="d-flex justify-content-around">
-						<button type="button" @click="ValidateForm">SIGN IN</button>
-					</div>
-					
-					<div class="bottom">
-						<span class="forget-pass">Forgot password?</span>
-                    	<span class="sign-up">Don't have an account? <RouterLink to="/register" style="color: #EF8121;">Sign up</RouterLink></span>
-					</div>
-					
+			<div class="vstack gap">
+				<div class="title">Log In</div>
+				<div class="form">
+					<p for="email">Email:</p>
+					<input type="text" v-model="email" name="email" required>
 				</div>
+				<div class="form">
+					<p for="password">Password:</p>
+					<input type="text" v-model="password" name="password" required>
+				</div>
+				<div class="d-flex justify-content-around">
+					<button type="button" @click="ValidateForm">SIGN IN</button>
+				</div>
+				
+				<div class="bottom">
+					<span class="forget-pass">Forgot password?</span>
+					<span class="sign-up">Don't have an account? <RouterLink to="/register" style="color: #EF8121;">Sign up</RouterLink></span>
+				</div>
+				
+			</div>
         </form>
 	</div>
 </div>
@@ -131,43 +131,49 @@ p{
 
  
 <script>
+import UsersService from '@/services/UsersService';
+
 export default {
 	name: "Login",
+	data(){
+		return {
+			email: "",
+			password: "",
+			check: true
+		}
+
+	},
 
 	methods: {
 
-		ValidateEmail() {
-			console.log("Hàm email");
-			var email = document.getElementById("email");
-			var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-			if (email.value.match(validRegex)) {
-				//alert("Valid email address!");
-				// document.focus();
-				// return true;
-			} else {
-
-				alert("Invalid email address!");
-				document.focus();
-				return false;
-			}
-
-		},
-		ValidatePassword() {
-			console.log("Hàm email");
-			var passwordField = document.getElementById("password");
-			var password = passwordField.value;
-
-			if (password.length < 6) {
-				alert("Mật khẩu phải có ít nhất 6 ký tự.");
-				passwordField.focus();
-
-			}
-		},
 		ValidateForm(){
 			this.ValidateEmail();
-			this.ValidateForm();
-		}
+			this.ValidatePassword();
+			if(this.check == true) {
+				UsersService.login(this.email, this.password)
+				.then((res) => alert("Đăng nhập thành công!"))
+				.catch((res) => alert("Đăng nhập không thành công!"))
+          	}
+		},
+
+		ValidateEmail(){
+          if(this.email.match(UsersService.getOne({}))){
+          } else {
+			alert("Không tồn tại tài khoản");
+            document.focus();
+            this.check = false;
+            return false;
+		  }
+        },
+		ValidatePassword(){
+          if(this.password.match(UsersService.getAll({}))){
+          } else {
+			alert("Sai mật khẩu");
+            document.focus();
+            this.check = false;
+            return false;
+		  }
+        },
 	}
 
 }

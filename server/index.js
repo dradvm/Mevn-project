@@ -4,6 +4,7 @@ const morgan = require("./utils/morgan")
 const connection = require("./utils/connection")
 const NameRouter = require("./routes/NameRoute")
 const VoucherRouter = require("./routes/VoucherRoute")
+const UsersRouter = require("./routes/UsersRoute")
 
 require("dotenv").config()
 
@@ -18,6 +19,7 @@ connection()
 
 app.use("/name", NameRouter)
 app.use("/voucher", VoucherRouter)
+app.use("/user", UsersRouter)
 
 app.listen(port, () => {
     console.log(`Server running at port: ${port}`)

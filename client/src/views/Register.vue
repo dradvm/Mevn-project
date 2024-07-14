@@ -2,28 +2,28 @@
   <div class="register-main">
     <div class="main">  	
       <input type="checkbox" id="chk" aria-hidden="true">
-      <div class="login">
+      <form class="register">
 
         <div class="title">Sign Up</div>
         <div class="content">
-          <form action="#" class="container" method="post">
+          <div class="container">
             
             <div class="row">
 
               <div class="col-sm">
                 <span class="details">Full name:</span>
-                <input type="text" name="fullname" id="fullname" placeholder="Enter your full name" required>
+                <input type="text" name="fullname" v-model="name" placeholder="Enter your full name" required>
               </div>
 
               <div class="col-sm">
                   <span class="details">Birthday:</span>
-                  <input type="date" name="birthday" required>
-              </div>
+                  <input type="date" name="birthday" v-model="birthday" required>
+                </div>
 
               <div class="col-sm">
                 <span class="details">Gender:</span>
-                <select class="form-select form-select-sm" aria-label=".form-select-sm example" required>
-                  <option selected>Choose your gender</option>
+                <select class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="gender" required>
+                  <option selected value="">Choose your gender</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                   <option value="other">Other</option>
@@ -36,12 +36,12 @@
             <div class="row">
               <div class="col-sm-8">
                 <span class="details">Email:</span>
-                <input type="text" name="email" id="email" placeholder="Enter your email" @click="validateForm" required>
+                <input type="text" name="email" v-model="email" placeholder="Enter your email" @click="validateForm" required>
               </div>
 
               <div class="col-sm-4">
                 <span class="details">Phone number:</span>
-                <input type="text" name="phone" id="phone" placeholder="Enter your number" @click="validateForm" required>
+                <input type="text" name="phone" v-model="phone" maxlength="10" placeholder="Enter your number" @click="validateForm" required>
               </div>
             </div>
               
@@ -50,29 +50,32 @@
             <div class="row">
               <div class="col-sm">
                 <span class="details">Password:</span>
-                <input type="text" name="password" id="password" placeholder="Enter your password" @click="validateForm" required>
+                <input type="text" name="password" v-model="password" placeholder="Enter your password" pattern=".{6,}" title="Six or more characters">
+                <div class="error" id="passErr"></div>
               </div>
 
               <div class="col-sm">
                 <span class="details">Confirm Password:</span>
-                <input type="text" name="password-confirmation" id="password-confirmation" placeholder="Confirm your password" @click="validateForm" required>
+                <input type="password" name="password-confirmation" v-model="passwordconfirm" placeholder="Confirm your password" required>
+                <div class="error" id="re-passErr"></div>
               </div>
               <div class="col-sm">
                 <span class="details">Address:</span>
-                <input type="text" name="address" id="address" placeholder="Enter your address" required>
+                <input type="text" name="address" v-model="address" placeholder="Enter your address" required>
+                
               </div>
 
             </div>
 
-            <button class="login-but" type="button" @click="validateForm">SIGN UP</button>
+            <button class="login-but" type="button" @click="ValidateForm">SIGN UP</button>
             <div class="bottom">
               <div class="log-in">Already have an account? <RouterLink to="/login" style="color: #EF8121;">Log in</RouterLink></div>
             </div>
-          </form>
+          </div>
             
         </div>
 
-      </div>
+      </form>
     </div>
   </div>
 </template>
@@ -175,53 +178,147 @@
     background: #F3FBFF;
     color: #225771;
   }
+  .error{
+    color: red;
+    font-size: 90%;
+  }
+  .input-1{
+    background-repeat: no-repeat;
+    border: 1px solid #01cc40;
+  }
+  .input-2{
+    background-repeat: no-repeat;
+    border: 1px solid red;
+  }
+  
 
     
 </style>
 
 <script>
+import UsersService from '@/services/UsersService';
+
   export default {
-      name: "Register",
-      methods: {
-        validateForm() {
-          var name = document.getElementById("fullname");
-          var email = document.getElementById("email");
-          var phone = document.getElementById("phone");
-          var address = document.getElementById("address");
-          var pass = document.getElementById("password");
-          var pass2 = document.getElementById("password-confirmation");
+    name: "Register",
+    data(){
+      return {
+        name: "",
+        birthday: "",
+        gender: "",
+        email: "",
+        phone: "",
+        password: "",
+        passwordconfirm: "",
+        address: "",
+        check: true,
 
-          if(name.value != ""){
-          } else {
-            alert("Username is required!");
-            name.focus();
+      }
+    },
+    methods: {
+
+        ValidateForm(){
+          this.check = true;
+          this.ValidateName();
+          this.ValidateBirthday();
+          this.ValidateGender();
+          this.ValidateEmail();
+          this.ValidatePhone();
+          this.ValidatePassword();
+          this.ValidateRePass();
+          this.ValidateAddress();
+          if(this.check == true) {
+            UsersService.register(this.name, this.address, this.birthday, this.email, this.gender, this.password, this.phone)
+            .then((res) => alert("Đăng ký thành công!"))
+            .catch((res) => alert("Đăng ký không thành công!"))
           }
-
-          if(pass.value != ""){
-            if(pass.value.length < 6){
-              alert("Make the password longer!");
-              pass.focus();
-            }
-
-          } else {
-            alert("Password is required!");
-            pass.focus();
+        },
+        
+        ValidateName(){
+          if(this.name == ""){
+            alert("Full name can't be blank");
+            document.focus();
+            this.check = false;
+            return false;
           }
-
-          if(pass2.value != ""){
-            if(pass2.value != pass.value){
-              alert("Confirm Password is incorrect!");
-              pass2.focus();
-            }
+        },
+        ValidateBirthday(){
+          if(this.date == ""){
+            alert("Birthday can't be blank!");
+            document.focus();
+            this.check = false;
+            return false;
+          }
+        },
+        ValidateGender(){
+    
+          if(this.gender == ""){
+            alert("Gender can't be blank!");
+            document.focus();
+            this.check = false;
+            return false;
+          }
+        },
+        ValidateEmail() {
+  
+          var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+          if(this.email == ""){
+            alert("Email can't be blank!");
+            document.focus();
+            this.check = false;
+            return false;
+          } else if (this.email.match(validRegex)) {
 
           } else {
-            alert("Confirm Password is required!");
-            pass2.focus();
+    
+            alert("Email address is not valid!");
+            document.focus();
+            this.check = false;
+            return false;
+          }
+    
+        },
+        ValidatePhone(){
+      
+          if(this.phone == ""){
+            alert("Phone can't be blank!");
+            document.focus();
+            return false;
+          } else if(this.phone.length < 10){
+            alert("Phone number is not valid!");
+            document.focus();
+            this.check = false;
+            return false;
+          }
+        },
+        ValidatePassword() {
+          
+          if (this.password.length < 6) {
+            alert("Password must be at least 6 characters!");
+            document.focus();
+            this.check = false;
+            return false;
+    
+          }
+        },
+        ValidateRePass(){
+          if(this.passwordconfirm != this.password){
+            alert("Re-enter password is incorrect!");
+            document.focus();
+            this.check = false;
+            return false;
+          }
+        },
+        ValidateAddress(){
+          if(this.address == ""){
+            alert("Address can't be blank!");
+            document.focus();
+            this.check = false;
+            return false;
+    
           }
         }
-      }
       
-
+    }
   }
 
   
