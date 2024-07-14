@@ -25,7 +25,8 @@ const vuetify = createVuetify({
     },
 
 })
-
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -43,5 +44,6 @@ app.use(createPinia())
 app.use(router)
 app.use(vuetify)
 app.use(Toast)
+app.component('VueDatePicker', VueDatePicker);
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.mount('#app')

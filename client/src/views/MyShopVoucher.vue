@@ -7,7 +7,7 @@
             <div>
                 <div class="my-input-group mb-3">
                     <span><font-awesome-icon :icon="['fas', 'magnifying-glass']" /></span>
-                    <input v-model="search" type="text" placeholder="Search" aria-label="search" aria-describedby="basic-addon1">
+                    <input v-model="search" id="search" type="text" placeholder="Search" aria-label="search" aria-describedby="basic-addon1">
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
                 <div class="fw-bold" style="width: 10%">
                     Code
                 </div>
-                <div class="d-flex justify-content-around" style="width: 20%">
+                <div class="d-flex justify-content-around" style="width: 15%">
                     <div class="d-flex align-items-center fw-bold cur-p px-2 py-1 sortItem" @click="toggleSort('startDateSort')">
                         Date
                         <font-awesome-icon v-if="startDateSort" class="ms-1 sortIcon" style="margin-top: -4px;" :icon="['fas', 'sort-down']" />
@@ -42,7 +42,7 @@
                 <div class="fw-bold" style="width: 30%">
                     Details
                 </div>
-                <div class="d-flex justify-content-around" style="width: 10%">
+                <div class="d-flex justify-content-around" style="width: 15%">
                     <div class="d-flex align-items-center fw-bold cur-p px-2 py-1 sortItem" @click="toggleSort('stateSort')">
                         State
                         <font-awesome-icon v-if="stateSort" class="ms-1 sortIcon" style="margin-top: -4px;" :icon="['fas', 'sort-down']" />
@@ -71,7 +71,7 @@
                             <div class="fw-bold" style="width: 10%">
                                     {{item.code}}
                             </div>         
-                            <div class="v-stack fs-7" style="width: 20%">
+                            <div class="v-stack fs-7" style="width: 15%">
                                 <div class="fw-medium">
                                     {{ item.startDate }}
                                 </div>
@@ -87,9 +87,9 @@
                                 </div>
                             </div>
                             <div style="width: 30%;">
-
+                                {{ getDetailsString(item) }}
                             </div>
-                            <div style="width: 10%">
+                            <div style="width: 15%">
                                 <div class="d-flex justify-content-around" >
                                     <div class="fw-medium rounded px-3 py-1 cur-d" :class="getCssState(item.state)">
                                         {{ item.state }}
@@ -112,6 +112,10 @@
                             <div class="d-flex align-items-center fs-7">
                                 <font-awesome-icon :icon="['fas', 'box-open']" />
                                 <div class="ms-1 fw-medium">{{item.quantity}}</div>
+                            </div>
+                            <div class="d-flex align-items-center ms-3 fs-7">
+                                <font-awesome-icon :icon="['fas', 'user-plus']" />
+                                <div class="ms-1 fw-medium">{{item.limitEachUser}}</div>
                             </div>
                             <div class="d-flex align-items-center ms-3 fs-7">
                                 <font-awesome-icon :icon="['fas', 'user-check']" />
@@ -150,8 +154,8 @@ export default {
             typeSort: true,
             stateSort: true,
             sort: ["startDateSort", "typeSort", "stateSort"],
-            items: [],
-            isLoading: true
+            items: [""],
+            isLoading: true,
         }
     },
     computed: {
@@ -247,10 +251,76 @@ export default {
                     })
                 } )
                 .catch((err) => {
-                    toast(err.message, {
+                    toast(err, {
                         type: 'error',
                     })
                 })
+        },
+        getDetailsString(item) {
+            var str = ["Voucher giảm"]
+            switch (item.type) {
+                case "Percent One": {
+                    str.push(`${item.discount < 1 ? item.discount * 100 + "%" : item.discount}`)
+                    str.push("cho sản phẩm")
+                    str.push("DN đẹp trai")
+                    break
+                }
+                case "Percent All": {
+                    str.push(`${item.discount}%`)
+                    str.push("cho đơn hàng")
+                    if (item.condition === "<=") {
+                        str.push("dưới")
+                        str.push(`${item.conditionDiscount}`)
+                    }
+                    else if (item.condition === ">=") {
+                        str.push("trên")
+                        str.push(`${item.conditionDiscount}VNĐ`)
+                    }
+                    if (item.maxDiscount != 0) {
+                        str.push(`(tối đa ${item.maxDiscount}VNĐ)`)
+                    }
+                    break
+                }
+                case "Fixed All": {
+                    str.push(`${item.discount}VNĐ`)
+                    str.push("cho đơn hàng")
+                    if (item.condition === "<=") {
+                        str.push("dưới")
+                        str.push(`${item.conditionDiscount}`)
+                    }
+                    else if (item.condition === ">=") {
+                        str.push("trên")
+                        str.push(`${item.conditionDiscount}VNĐ`)
+                    }
+                    if (item.maxDiscount != 0) {
+                        str.push(`(tối đa ${item.maxDiscount}VNĐ)`)
+                    }
+                    break
+                }
+                case "Fixed One": {
+                    str.push(`${item.discount}VNĐ`)
+                    str.push("cho sản phẩm")
+                    str.push("DN đẹp trai")
+                    break
+                }
+                case "First Order Percent": {
+                    str.push(`${item.discount*100}%`)
+                    str.push("cho đơn hàng đầu tiên")
+                    if (item.maxDiscount != 0) {
+                        str.push(`(tối đa ${item.maxDiscount}VNĐ)`)
+                    }
+                    break
+                }
+                case "First Order Fixed": {
+                    str.push(`${item.discount}VNĐ`)
+                    str.push("cho đơn hàng đầu tiên")
+                    if (item.maxDiscount != 0) {
+                        str.push(`(tối đa ${item.maxDiscount}VNĐ)`)
+                    }
+                    break
+                }
+            }
+            return str.join(" ")
         },
     }
 }

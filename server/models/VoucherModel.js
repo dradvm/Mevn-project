@@ -9,6 +9,8 @@ function getDateString(date) {
 const VoucherSchema = mongoose.Schema({
     code: {
         type: String,
+        min: 8,
+        max: 8,
         required: true
     },
     startDate: {
@@ -29,29 +31,41 @@ const VoucherSchema = mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ["Percent One", "Percent Many", "Percent All", "Fixed Money", "First Order", "Quantity"],
+        enum: ["Percent One", "Percent All", "Fixed One", "Fixed All", "First Order"],
         required: true
     },
     condition: {
         type: String,
-        enum: ["<=", ">=", "null", "quantity"],
+        enum: ["<=", ">="],
         required: true,
+        default: null
     },
     discount: {
         type: Number,
         required: true,
         validate: {
-            validator: (value) => value > 0,
-            message: "Discount must be greater than 0"
-        }
+            validator: (value) => value >= 0,
+            message: "Discount must be greater than or equal 0"
+        },
+        default: null
     },
     maxDiscount: {
         type: Number,
         required: true,
         validate: {
-            validator: (value) => value > 0,
-            message: "Max discount must be greater than 0"
-        }
+            validator: (value) => value >= 0,
+            message: "Max discount must be greater than or equal 0 "
+        },
+        default: null
+    },
+    conditionDiscount: {
+        type: Number,
+        required: true,
+        validate: {
+            validator: (value) => value >= 0,
+            message: "Condition discount must be greater than or equal 0"
+        },
+        default: null
     },
     quantity: {
         type: Number,

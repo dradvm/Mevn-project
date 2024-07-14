@@ -198,7 +198,6 @@
           var address = document.getElementById("address");
           var pass = document.getElementById("password");
           var pass2 = document.getElementById("password-confirmation");
-
           if(name.value != ""){
           } else {
             alert("Username is required!");
