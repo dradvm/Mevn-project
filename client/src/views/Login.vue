@@ -31,15 +31,7 @@
 
 
 <style scoped>
-:root {
-    --button-hover: #1261A6;
-    --button: #2a95bf;
-    --pastel: #73C6D9;
-    --dark-blue: #126DA6;
-    --grey: #5c6677;
-    --navy: #23395d;
-	--text: #021534;
-}
+
 .login-main{
 	margin: 0;
 	padding: 0;
