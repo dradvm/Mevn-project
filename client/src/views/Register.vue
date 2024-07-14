@@ -229,7 +229,7 @@ import UsersService from '@/services/UsersService';
           if(this.check == true) {
             UsersService.register(this.name, this.address, this.birthday, this.email, this.gender, this.password, this.phone)
             .then((res) => alert("Đăng ký thành công!"))
-            .catch((res) => alert("Đăng ký không thành công!"))
+            .catch((err) => alert("Đăng ký không thành công!"))
           }
         },
         

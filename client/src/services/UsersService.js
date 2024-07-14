@@ -15,8 +15,9 @@ const UsersService = {
         email,
         password
     }),
-    getAll: ({}) => axios.get(`/`),
-    getOne: ({}) => axios.get(`/:id`)
+    checkAccount: (email) => axios.post(`/checkAccount`, {
+        email
+    })
 
 }
 export default UsersService

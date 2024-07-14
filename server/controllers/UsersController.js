@@ -23,28 +23,17 @@ const UsersController = {
         console.log(req.body)
         const{email, password} =  req.body
         UsersModel.find({email, password})
-        .then((data) => {
-            if(!email){
-                return res.status(401).json({ massage: `Không tìm thấy tài khoản` })
-            } else if(!password){
-                return res.status(401).json({ massage: `Sai mật khẩu` })
-            } else return res.status(200).json(data)
-        })
-        .catch((err) => res.status(500).json({ massage: `Error login! ${err}` }))
+        .then((data) => res.status(200).json(data))
+        .catch((err) => res.status(500).json({ message: `Error login! ${err}` }))
+    },
+    checkAccount: async(req, res) => {
+        console.log(req.body)
+        const{email} =  req.body
+        UsersModel.find({email})
+        .then((data) => res.status(200).json(data))
+        .catch((err) => res.status(500).json({ message: `Error checkAccount! ${err}` }))
     },
 
-    getAll: async (req, res) => {
-        UsersModel.find({})
-        .then((data) => res.status(200).json(data))
-        .catch((err) => res.status(500).json({ massage: "Error login!" }))
-    },
-    getOne: async (req, res) => {
-        console.log(req.body)
-        UsersModel.findById(req.params.id)
-        .then((data) => res.status(200).json(data))
-        .catch((err) => res.status(500).json({ massage: "Error login!" }))
-            
-    }
 
     // getOne: async (req, res) => {
     //     UsersModel.find({})

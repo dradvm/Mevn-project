@@ -148,32 +148,30 @@ export default {
 
 		ValidateForm(){
 			this.ValidateEmail();
-			this.ValidatePassword();
-			if(this.check == true) {
-				UsersService.login(this.email, this.password)
-				.then((res) => alert("Đăng nhập thành công!"))
-				.catch((res) => alert("Đăng nhập không thành công!"))
-          	}
+				if(this.check == true){
+					UsersService.login(this.email, this.password)
+					.then((res) => {
+						if(res.data.length != 0){
+							alert("Đăng nhập thành công");
+						} else alert("Sai mật khẩu");
+					})
+					.catch((err) => console.log(err))
+			}
+			
+
 		},
 
 		ValidateEmail(){
-          if(this.email.match(UsersService.getOne({}))){
-          } else {
-			alert("Không tồn tại tài khoản");
-            document.focus();
-            this.check = false;
-            return false;
-		  }
+          UsersService.checkAccount(this.email)
+		  .then((res) => {
+			if(res.data.length == 0){
+				alert("Tài khoản không tồn tại");
+				this.check = false;
+			}
+		  })
+		  .catch((err) => console.log(err))
         },
-		ValidatePassword(){
-          if(this.password.match(UsersService.getAll({}))){
-          } else {
-			alert("Sai mật khẩu");
-            document.focus();
-            this.check = false;
-            return false;
-		  }
-        },
+		
 	}
 
 }

@@ -1,10 +1,7 @@
 const VoucherModel = require("../models/VoucherModel");
-const randomstring = require("randomstring")
-
 
 const available = ["Upcoming", "Active"]
 const notAvailable = ["Expired", "Out Of Stock", "Canceled"]
-const voucherType = ["Percent One", "Percent All", "Fixed One", "Fixed All", "First Order Percent", "First Order Fixed"]
 
 const VoucherController = {
     findItems: async (req, res) => {
@@ -21,7 +18,7 @@ const VoucherController = {
         })
             .sort(sortValue)
             .skip((page - 1) * 5).limit(5)
-            .then((data) => res.status(200).json(data))
+            .then((data) => setTimeout(() => res.status(200).json(data), 0))
             .catch((err) => res.status(500).json(err.message))
     },
     getPagesOfItemsActive: async (req, res) => {
@@ -33,7 +30,6 @@ const VoucherController = {
         })
             .then((data) => res.status(200).json({ count: Math.ceil(parseInt(data) / 5) }))
             .catch((err) => res.status(500).json(err.message))
-
     },
     deleteItem: async (req, res) => {
         VoucherModel.deleteOne({
