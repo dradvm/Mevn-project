@@ -16,7 +16,26 @@ const VoucherService = {
             check
         }
     }),
-    deleteItem: (id) => axios.delete(`/${id}`)
+    getTypes: () => axios.get("/type"),
+    deleteItem: (id) => axios.delete(`/${id}`),
+    getRandomCode: () => axios.get("/randomcode"),
+    createVoucher: (code, startDate, expiredDate, state, type,
+        condition, discount, maxDiscount, conditionDiscount, quantity,
+        usedQuantity, limitEachUser, applicableProducts) => axios.post("/create", {
+            code,
+            startDate,
+            expiredDate,
+            state,
+            type,
+            condition,
+            discount,
+            maxDiscount,
+            conditionDiscount,
+            quantity,
+            usedQuantity,
+            limitEachUser,
+            applicableProducts
+        })
 }
 
 export default VoucherService
