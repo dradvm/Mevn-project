@@ -17,7 +17,8 @@ const UsersService = {
     }),
     checkAccount: (email) => axios.post(`/checkAccount`, {
         email
-    })
+    }),
+    getAll: ({}) => axios.get(`/`),
 
 }
 export default UsersService
