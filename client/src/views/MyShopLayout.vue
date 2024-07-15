@@ -1,14 +1,5 @@
 <template>
-    <div class="">
-        <nav>
-            <RouterLink to="/">Home</RouterLink>
-            <RouterLink to="/about">About</RouterLink>
-            <RouterLink to="/myshop">My Shop</RouterLink>
-        </nav>
-        <!-- <h1>Trang của shop</h1>
-        <h2>Trang chính</h2> -->
-    
-    
+    <div class="" style="min-height: 400px">
         <div class="w-100 d-flex">
             <div class="shadow-sm" style="width: 15%">
                 <div class="h-100 vstack mx-3 my-4">
