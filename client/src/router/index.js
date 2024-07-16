@@ -33,6 +33,8 @@ const router = createRouter({
           name: "voucherAdd",
           component: () => import("../views/MyShopVoucherAddAndUpdate.vue")
         }
+      
+
       ]
     },
 
@@ -52,7 +54,18 @@ const router = createRouter({
       path: "/detail",
       name: "detail",
       component: () => import("../views/Detail.vue")
+    },
+    {
+      path: "/changeproduct",
+      name: "changeproduct",
+      component: () => import("../views/changeproduct.vue") 
+    },
+    {
+      path: "/addproduct",
+      name: "addproduct",
+      component: () => import("../views/addproduct.vue") 
     }
+
     // {
     //   path: "/about",
     //   name: "about",

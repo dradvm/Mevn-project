@@ -2,9 +2,11 @@
     <div>
         <div class="filter">
             <span class="filter-label">Sắp xếp theo</span>
+           
             <button class="btn">Phổ biến</button>
             <button class="btn">Mới nhất</button>
             <button class="btn">Bán chạy</button>
+            
             <div class="select">
                 <span class="salect-label">
                     Giá
@@ -16,6 +18,10 @@
                 <i>></i>
                 
             </div>
+            <router-link to="/addproduct">
+                <button class="btn">Thêm sản phẩm</button>
+            </router-link>
+            
             <div class="filter-page">
                 <span class="page-num">
                     <span class="page-current">1</span>/1
@@ -31,10 +37,104 @@
             </div>
         </div>
     </div>
+    <div class="home-product">
+        <div class="row">
+            <div class="column2">
+                <!-- product item -->
+                <div class="home-product-item">
+                    <div class="home-product-item-img" style="background-image: url(https://product.hstatic.net/200000710797/product/hoan_thien_website__21__7a280b63740d4ee5ac5dfa641a8de2e0_master.png)">
+                        <h4 class="home-product-item-name">Dien Thoai Iphone 15</h4>
+                        <div class="home-product-item-price">15.500.000d</div>
+                        <div class="change">
+                           <router-link to="/changeproduct">
+                              <button>
+                                <font-awesome-icon :icon="['fas', 'pen']" />
+                            </button>
+                        </router-link>
+                        </div>
+                        <div class="delete">
+                          <button>  <font-awesome-icon :icon="['fas', 'delete-left']" /></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+        
+    </div>
 </template>
 
 
 <style scoped>
+
+
+.row{
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -12px;
+    margin-right: -12px;
+}
+.column2{
+    padding-left: 12px;
+    padding-right: 5px;
+    width: 20%;
+    
+}
+
+
+
+/* product */
+.home-product-item{
+    position: relative;
+    background: white;
+    margin-top: 10px;
+}
+.home-product-item-img{
+    padding-top: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+}
+.home-product-item-name{
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-color);
+    line-height: 1.4rem;
+    height: 2.8rem;
+    margin: 10px 10px;
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+
+}
+.home-product-item-price{
+    display: flex;
+    margin-left: 10px;
+    color: red;
+    font-size: 1.4rem;
+}
+.change{
+    position: absolute;
+    top: 0%;
+    background-color: blue;
+    border-radius: 0 4px 4px 0;
+}
+.delete{
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    background-color: #dc3545;
+    border-radius: 4px 0 0 4px;
+}
+
+
+
+
+/* filter */
 .filter{
     display: flex;
     align-items: center;
@@ -138,10 +238,6 @@
     width: 72px;
     height: 25px;
 }
-/* .page-button:first-child{
-    border-right: 1px solid #eee;
-
-} */
 </style>
 <script>
 export default {
