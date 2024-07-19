@@ -11,7 +11,6 @@ const router = createRouter({
       meta: {
         showNav: true
       }
-      
     },
     {
       path: "/myshop",
@@ -56,9 +55,9 @@ const router = createRouter({
 
     },
     {
-      path: "/detail",
-      name: "detail",
-      component: () => import("../views/Detail.vue")
+      path: "/detail/:productName",
+      name: "product-detail",
+      component: () => import("../views/Detail.vue"),
     },
     {
       path: "/changeproduct",
