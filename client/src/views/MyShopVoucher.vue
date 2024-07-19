@@ -98,9 +98,12 @@
                             </div>
                             <div  class="d-flex justify-content-center"  style="width: 10%">
                                 <div v-if="check" class="d-flex">
-                                    <button class="rounded px-3 py-1 bg-primary text-white">
-                                        <font-awesome-icon :icon="['fas', 'pen']" />
-                                    </button>
+                                    <RouterLink :to="{ name: 'voucherUpdate', params: {id: item.code}}">
+                                        <button class="rounded px-3 py-1 bg-primary text-white">
+                                            <font-awesome-icon :icon="['fas', 'pen']" />
+                                        </button>
+                                    </RouterLink>
+                                    
                                     <button class="rounded px-3 py-1 bg-danger text-white ms-3" @click="deleteItem(item._id)">
                                         <font-awesome-icon :icon="['fas', 'delete-left']" />
                                     </button>

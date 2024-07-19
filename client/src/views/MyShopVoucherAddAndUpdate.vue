@@ -152,6 +152,7 @@ export default {
         }
     },
     created() {
+        console.log(this.$router)
         this.generateRandomCode()
         this.getTypes()
     },

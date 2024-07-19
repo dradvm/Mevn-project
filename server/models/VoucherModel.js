@@ -11,7 +11,8 @@ const VoucherSchema = mongoose.Schema({
         type: String,
         min: 8,
         max: 8,
-        required: true
+        required: true,
+        unique: true
     },
     startDate: {
         type: Date,
