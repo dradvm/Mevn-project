@@ -1,14 +1,14 @@
 <template>
-
+  
   <div class="main">
-    <div class="card" style="width: 18rem;" v-if="items && items.length" v-for="item of items">
+    <div class="card" style="width: 18rem;" v-if="items && items.length" v-for="item of items" :key="item.name_product">
         <img class="card_img" :src=" item.image " alt="Ảnh sản phẩm">
       <div class="card_body">
         <a href="/detail">
           <h5 class="card_name">{{ item.name_product}}</h5>
         </a>
         <h6 class="card_price">{{ item.price }}</h6>
-        <button class="button"> <a href="/detail" ><h5 class="button_text">Mua ngay</h5></a></button>
+        <button class="button"> <h5 class="button_text"><router-link :to="'/detail/' + item.name_product">Mua Ngay</router-link></h5></button>
       </div>
     </div>
   </div>
@@ -31,8 +31,8 @@
               this.items = res.data
             })
             .catch((err) => console.log(err))
-        }
-      }
+        },
+}
 
 </script>
 
@@ -63,7 +63,7 @@
     border-style: solid;
     border-radius: 5px;
     padding: 5px;
-    background-color: blue;
+    /* background-color: red; */
     color: whitesmoke;
   }
   .button {
