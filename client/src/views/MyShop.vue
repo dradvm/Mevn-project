@@ -18,7 +18,7 @@
                 <i>></i>
                 
             </div>
-            <router-link to="/addproduct">
+            <router-link to="/myshop/addproduct">
                 <button class="btn">Thêm sản phẩm</button>
             </router-link>
             
@@ -46,7 +46,7 @@
                         <h4 class="home-product-item-name">Dien Thoai Iphone 15</h4>
                         <div class="home-product-item-price">15.500.000d</div>
                         <div class="change">
-                           <router-link to="/changeproduct">
+                           <router-link to="/myshop/changeproduct">
                               <button>
                                 <font-awesome-icon :icon="['fas', 'pen']" />
                             </button>
