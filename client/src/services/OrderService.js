@@ -1,6 +1,6 @@
 import createAxios from "@/utils/axios"
-const axios = createAxios("/product")
-const ProductService = {
+const axios = createAxios("/order")
+const OrderService = {
     getAll: () => axios.get("/"),
     findOne: (name_product) => axios.post(`/detail`, {
         name_product
@@ -11,4 +11,4 @@ const ProductService = {
 }
     
 
-export default ProductService
+export default OrderService
