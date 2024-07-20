@@ -33,7 +33,6 @@ const router = createRouter({
           component: () => import("../views/MyShopVoucherAddAndUpdate.vue")
         },
         {
-<<<<<<< HEAD
           path: "changeproduct",
           name: "changeproduct",
           component: () => import("../views/changeproduct.vue") 
@@ -42,11 +41,11 @@ const router = createRouter({
           path: "addproduct",
           name: "addproduct",
           component: () => import("../views/addproduct.vue") 
-=======
+        },
+        {
           path: "voucherUpdate/:id",
           name: "voucherUpdate",
           component: () => import("../views/MyShopVoucherAddAndUpdate.vue")
->>>>>>> 42cfea99828485a6a920b3d2a285e86f8d0aa37c
         }
 
       
@@ -67,11 +66,11 @@ const router = createRouter({
 
     },
     {
-<<<<<<< HEAD
       path: "/detail",
       name: "detail",
       component: () => import("../views/Detail.vue")
-=======
+    },
+    {
       path: "/detail/:productName",
       name: "product-detail",
       component: () => import("../views/Detail.vue"),
@@ -95,7 +94,6 @@ const router = createRouter({
       path: "/addproduct",
       name: "addproduct",
       component: () => import("../views/addproduct.vue") 
->>>>>>> 42cfea99828485a6a920b3d2a285e86f8d0aa37c
     }
 
     // {
