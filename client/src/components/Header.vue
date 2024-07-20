@@ -21,10 +21,10 @@
         <a href="#" class="p-2 bd-highlight">
           <font-awesome-icon :icon="['fas', 'user']" style="font-size: 32px;"/>
         </a>
-        <a href="#" class="p-2 bd-highlight">
+        <a href="/cart" class="p-2 bd-highlight">
           <font-awesome-icon :icon="['fas', 'cart-shopping']" style="font-size: 32px;"/>
         </a>
-        <a href="#" class="p-2 bd-highlight">
+        <a href="/order" class="p-2 bd-highlight">
           <font-awesome-icon :icon="['fas', 'receipt']" style="font-size: 32px;"/>
         </a>
         
