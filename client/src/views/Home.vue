@@ -5,7 +5,7 @@
         <img class="card_img" :src=" item.image " alt="Ảnh sản phẩm">
       <div class="card_body">       
           <h5 class="card_name">{{ item.name_product}}</h5>       
-        <h6 class="card_price">{{ item.price }}</h6>
+        <h6 class="card_price">{{ item.price }}đ</h6>
         <router-link :to="'/detail/' + item.name_product" class="routerlink">Mua Ngay</router-link>
       </div>
       <br>

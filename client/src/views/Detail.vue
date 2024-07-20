@@ -5,7 +5,7 @@
         <iframe width="560" height="315" :src="item.video"  frameborder="0" allowfullscreen></iframe>
         <hr>
         <h1>{{ item.name_product }}</h1>
-        <h4 style="color: red;">Giá: {{ item.price }}</h4>
+        <h4 style="color: red;">Giá: {{ item.price }}đ</h4>
         <hr>
         <h3>Information:</h3>
           <p>fromUserShop: {{ item.fromUserShop }}</p>
