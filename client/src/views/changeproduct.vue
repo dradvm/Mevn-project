@@ -21,3 +21,10 @@
 
 
 </style>
+<script>
+export default {
+    name: "changeproduct",
+    methods: {  
+    }
+}
+</script>
