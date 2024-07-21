@@ -1,6 +1,6 @@
 const VoucherModel = require("../models/VoucherModel");
 
-const randomstring = require("randomstring")
+const randomstring = require("randomstring");
 
 
 const available = ["Upcoming", "Active"]
@@ -73,7 +73,7 @@ const VoucherController = {
                 console.log(err)
                 res.status(500).json(err.message)
             })
-    }
+    },
 }
 
 module.exports = VoucherController

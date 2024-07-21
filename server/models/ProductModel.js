@@ -2,11 +2,7 @@ const mongoose = require("mongoose")
 
 const ProductSchema = mongoose.Schema ({
     
-    name_product: {
-        type: String, 
-        required: true,
-        unique: true
-    },
+    name_product: {type: String},
 
     screen: {type: String},
 
