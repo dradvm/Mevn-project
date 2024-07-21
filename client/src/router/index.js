@@ -11,7 +11,7 @@ const router = createRouter({
       meta: {
         showNav: true
       }
-      
+
     },
     {
       path: "/myshop",
@@ -34,11 +34,22 @@ const router = createRouter({
           component: () => import("../views/MyShopVoucherAddAndUpdate.vue")
         },
         {
+          path: "changeproduct",
+          name: "changeproduct",
+          component: () => import("../views/changeproduct.vue")
+        },
+        {
+          path: "addproduct",
+          name: "addproduct",
+          component: () => import("../views/addproduct.vue")
+        },
+        {
           path: "voucherUpdate/:id",
           name: "voucherUpdate",
           component: () => import("../views/MyShopVoucherAddAndUpdate.vue")
         }
-      
+
+
 
       ]
     },
@@ -61,16 +72,20 @@ const router = createRouter({
       component: () => import("../views/Detail.vue")
     },
     {
-      path: "/changeproduct",
-      name: "changeproduct",
-      component: () => import("../views/changeproduct.vue") 
+      path: "/detail/:productName",
+      name: "product-detail",
+      component: () => import("../views/Detail.vue"),
     },
     {
-      path: "/addproduct",
-      name: "addproduct",
-      component: () => import("../views/addproduct.vue") 
+      path: "/cart",
+      name: "cart-product",
+      component: () => import("../views/Cart.vue"),
+    },
+    {
+      path: "/order",
+      name: "order-product",
+      component: () => import("../views/Order.vue"),
     }
-
     // {
     //   path: "/about",
     //   name: "about",

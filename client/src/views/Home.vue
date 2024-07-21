@@ -1,18 +1,17 @@
 <template>
-  
+  <!-- <br> -->
   <div class="main">
     <div class="card" style="width: 18rem;" v-if="items && items.length" v-for="item of items" :key="item.name_product">
         <img class="card_img" :src=" item.image " alt="Ảnh sản phẩm">
-      <div class="card_body">
-        <a href="/detail">
-          <h5 class="card_name">{{ item.name_product}}</h5>
-        </a>
-        <h6 class="card_price">{{ item.price }}</h6>
-        <button class="button"> <h5 class="button_text"><router-link :to="'/detail/' + item.name_product">Mua Ngay</router-link></h5></button>
+      <div class="card_body">       
+          <h5 class="card_name">{{ item.name_product}}</h5>       
+        <h6 class="card_price">{{ item.price }}đ</h6>
+        <router-link :to="'/detail/' + item.name_product" class="routerlink">Mua Ngay</router-link>
       </div>
+      <br>
     </div>
   </div>
-
+  
 </template>
 
 <script>
@@ -37,6 +36,23 @@
 </script>
 
 <style>
+  .routerlink {
+    color: blue;
+    margin: 0px 33% 0px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 5px;
+  }
+  .routerlink.router-link-active,
+    .my-link.router-link-exact-active {
+        /* Màu cho liên kết khi đã được truy cập hoặc đang kích hoạt */
+        color: purple;
+    }
+
+    .routerlink:hover {
+        /* Màu khi di chuột qua liên kết */
+        color: green;
+    }
   .card {
     border: 5px solid rgba(30, 144, 255, 0.5);
     margin: auto;
@@ -52,12 +68,6 @@
   }
   .main {
     background-color: rgba(0, 255, 255, 0.2);
-    margin: auto;
-    columns: auto;
-    column-width: auto;
-    
-
-
   }
   .button_text {
     border-style: solid;
