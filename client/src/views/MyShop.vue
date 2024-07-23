@@ -41,10 +41,11 @@
         <div class="row">
             <div class="column2">
                 <!-- product item -->
-                <div class="home-product-item">
-                    <div class="home-product-item-img" style="background-image: url(https://product.hstatic.net/200000710797/product/hoan_thien_website__21__7a280b63740d4ee5ac5dfa641a8de2e0_master.png)">
-                        <h4 class="home-product-item-name">Dien Thoai Iphone 15</h4>
-                        <div class="home-product-item-price">15.500.000d</div>
+                <div class="home-product-item" v-if="items && items.length" v-for="item of items" :key="item.name_product">
+                    <div class="home-product-item-img">
+                        <img class="img" :src=" item.image ">
+                        <h4 class="home-product-item-name">{{ item.name_product}}</h4>
+                        <div class="home-product-item-price">{{ item.price }}</div>
                         <div class="change">
                            <router-link to="/myshop/changeproduct">
                               <button>
@@ -91,10 +92,16 @@
     margin-top: 10px;
 }
 .home-product-item-img{
-    padding-top: 100%;
+    padding-top: 0;
     background-repeat: no-repeat;
     background-size: contain;
+    
 
+}
+.img{
+   height: 240px;
+   width: 240px;
+   padding-top: -150px;
 }
 .home-product-item-name{
     font-size: 1rem;
@@ -148,7 +155,7 @@
     margin-right: 14px;
 }
 .btn{
-    margin-right: 5px;
+    margin-right: 15px;
     min-width: 100px;
     height: 34px;
     text-decoration: none;
@@ -240,7 +247,22 @@
 }
 </style>
 <script>
-export default {
-    name: "MyShop"
+    import ProductService from '@/services/ProductService';
+    // import { toast } from 'vue3-toastify';
+    export default {
+      name: "MyShop",
+      data() {
+        return {
+            items: [],
+        }
+      },
+        created() {
+          ProductService.getAll()
+            .then((res) => {
+              this.items = res.data
+            })
+            .catch((err) => console.log(err))
+        },
 }
+
 </script>
