@@ -1,27 +1,48 @@
 <template>
-    <div>
+
+    <div class="text">
       <hr>
-      <div class="text" v-if="items && items.length" v-for="item of items">
-        <iframe width="560" height="315" :src="item.video"  frameborder="0" allowfullscreen></iframe>
-        <hr>
-        <h1>{{ item.name_product }}</h1>
-        <h4 style="color: red;">Giá: {{ item.price }}đ</h4>
-        <hr>
-        <h3>Information:</h3>
-          <p>fromUserShop: {{ item.fromUserShop }}</p>
-          <p>quantity: {{ item.quantity }}</p>
-          <p>screen: {{ item.screen }}</p>
-          <p>operating_system: {{ item.operating_system }}</p>
-          <p>front_camera: {{ item.front_camera }}</p>
-          <p>rear_camera: {{ item.rear_camera }}</p>
-          <p>chip: {{ item.chip }}</p>
-          <p>ram: {{ item.ram }}</p>
-          <p>Storage_capacity: {{ item.Storage_capacity }}</p>
-          <p>pin: {{ item.pin }}</p>
-          <p>charger: {{ item.charger }}</p>
+      <div>
+        <div class="header-container">
+          <div>
+            <br>
+            <iframe width="560" height="385" :src="item.display.video"  frameborder="0" allowfullscreen></iframe>
+          </div>
+          <div>
+            <br>
+            <h1> {{ item.name_product }}</h1>
+            <h4 style="color: crimson;">{{ item.price }}đ</h4>
+            <div>
+              <div class="cards-container">
+                <div v-for="(image, index) in item.display.images" :key="index">
+                  <img :src="image" alt="Image {{ index + 1 }}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-</div>
-<hr>
+      <hr>
+        <h4>Mẫu mã: </h4>
+        <div class="quality-container">
+          <div class="alert alert-primary" role="alert" v-if="item.quantityList && item.quantityList.length" v-for="index of item.quantityList">
+            {{ index.properties }} <br>
+            SL: {{ index.quantity }}
+          </div>
+        </div>
+      <hr>
+      <div class="product-description">
+        <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="toggleDropdown">Infomation
+        </button>
+        <div v-if="showDropdown">
+          <p><pre>{{ item.description }}</pre></p>
+        </div>
+      </div>
+      <hr>
+
+    </div>
+    
+    
 </template>
 
 <script>
@@ -29,18 +50,23 @@ import ProductService from '@/services/ProductService';
 export default {
   data() {
     return {
-      items: [],
+      showDropdown: false,
+      item: []
     };
   },
   created() {
-    this.productName = this.$route.params.productName;
-    ProductService.showOne(this.productName)
+    this.id = this.$route.params.id;
+    ProductService.showOne(this.id)
             .then((res) => {
-              this.items = res.data
+              this.item = res.data
             })
             .catch((err) => console.log(err))
   },
-  
+  methods: {
+    toggleDropdown() {
+      this.showDropdown = !this.showDropdown; // Khi bấm vào nút, hiển thị/ẩn dropdown
+    }
+  }
 };
 </script>
 
@@ -49,5 +75,34 @@ export default {
     text-align: center;
     font-size: 20px;
   }
-  
+  .cards-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content:space-around /* Hoặc sử dụng space-around, space-evenly, etc. */
+  }
+  .header-container {
+    display: flex;
+    /* justify-content: space-evenly; */
+    /* flex-direction: row; */
+    /* flex-wrap: nowrap; */
+    height:auto;
+    width: auto;
+  }
+  .cards-container img {
+    max-width: 100%; /* Điều chỉnh kích thước ảnh theo ý muốn */
+    margin: 0px;
+  }
+  .product-description {
+    margin:0px 15% 0px;
+    text-align: left;
+    font-size: 12px;
+    
+  }
+  .quality-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content:space-around
+  }
 </style>

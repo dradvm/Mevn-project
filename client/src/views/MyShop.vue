@@ -43,7 +43,7 @@
                 <!-- product item -->
                 <div class="home-product-item" v-if="items && items.length" v-for="item of items" :key="item.name_product">
                     <div class="home-product-item-img">
-                        <img class="img" :src=" item.image ">
+                        <img class="img" :src=" item.display.coverPhoto ">
                         <h4 class="home-product-item-name">{{ item.name_product}}</h4>
                         <div class="home-product-item-price">{{ item.price }}</div>
                         <div class="change">
@@ -114,7 +114,7 @@
     display: block;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+
     text-overflow: ellipsis;
 
 }
