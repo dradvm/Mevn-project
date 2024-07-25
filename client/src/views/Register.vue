@@ -223,12 +223,16 @@ import UsersService from '@/services/UsersService';
           this.ValidateGender();
           this.ValidateEmail();
           this.ValidatePhone();
+          this.CheckAcc();
           this.ValidatePassword();
           this.ValidateRePass();
           this.ValidateAddress();
           if(this.check == true) {
             UsersService.register(this.name, this.address, this.birthday, this.email, this.gender, this.password, this.phone)
-            .then((res) => alert("Đăng ký thành công!"))
+            .then((res) => {
+              alert("Đăng ký thành công!");
+              this.$router.push('/login');
+            })
             .catch((err) => alert("Đăng ký không thành công!"))
           }
         },
@@ -242,8 +246,14 @@ import UsersService from '@/services/UsersService';
           }
         },
         ValidateBirthday(){
-          if(this.date == ""){
+          const today = new Date();
+          if(this.birthday == ""){
             alert("Birthday can't be blank!");
+            document.focus();
+            this.check = false;
+            return false;
+          } else if(this.birthday > today){
+            alert("Ngày không hợp lệ");
             document.focus();
             this.check = false;
             return false;
@@ -259,7 +269,6 @@ import UsersService from '@/services/UsersService';
           }
         },
         ValidateEmail() {
-  
           var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
           if(this.email == ""){
             alert("Email can't be blank!");
@@ -269,21 +278,34 @@ import UsersService from '@/services/UsersService';
           } else if (this.email.match(validRegex)) {
 
           } else {
-    
             alert("Email address is not valid!");
             document.focus();
             this.check = false;
             return false;
           }
-    
+
         },
+        CheckAcc(){
+          UsersService.checkAccount(this.email)
+          .then((res) => {
+            if(res.data.length != 0){
+              alert("Tài khoản đã tồn tại");
+              this.check = false;
+            }
+          })
+          .catch((err) => console.log(err))
+        },
+
+
         ValidatePhone(){
-      
+          var regexPhone = /^0[0-9]*$/;
           if(this.phone == ""){
             alert("Phone can't be blank!");
             document.focus();
             return false;
-          } else if(this.phone.length < 10){
+          } else if(this.phone.match(regexPhone)){
+
+          } else {
             alert("Phone number is not valid!");
             document.focus();
             this.check = false;

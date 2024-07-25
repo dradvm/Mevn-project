@@ -153,6 +153,7 @@ export default {
 					.then((res) => {
 						if(res.data.length != 0){
 							alert("Đăng nhập thành công");
+							this.$router.push('/');
 						} else alert("Sai mật khẩu");
 					})
 					.catch((err) => console.log(err))

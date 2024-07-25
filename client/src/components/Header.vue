@@ -18,9 +18,17 @@
         </form>
       </div>
       <div class="col-6 col-md-2 d-flex flex-row bd-highlight mb-3">
-        <a href="#" class="p-2 bd-highlight">
-          <font-awesome-icon :icon="['fas', 'user']" style="font-size: 32px;"/>
-        </a>
+        <div class="dropdown">
+          <a class="p-2 bd-highlight" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            <font-awesome-icon :icon="['fas', 'user']" style="font-size: 32px;"/>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li><a class="dropdown-item"><RouterLink :to="isLoggedIn ? '/logout' : '/login'" style="color: #225771;">{{isLoggedIn ? 'Log out' : 'Log in'}}</RouterLink></a></li>
+            <li><a class="dropdown-item"><RouterLink :to="isLoggedIn ? '/information' : '/register'" style="color: #225771;">{{isLoggedIn ? 'My Account' : 'Sign up'}}</RouterLink></a></li>
+          </ul>
+        </div>
+
+
         <a href="/cart" class="p-2 bd-highlight">
           <font-awesome-icon :icon="['fas', 'cart-shopping']" style="font-size: 32px;"/>
         </a>
@@ -37,8 +45,8 @@
         <a class="nav-link" aria-current="page"><RouterLink to="/" style="color: #fff;">Home</RouterLink></a>
         <a class="nav-link"><RouterLink to="/about" style="color: #fff;">About</RouterLink></a>
         <a class="nav-link"><RouterLink to="/myshop" style="color: #fff;">My Shop</RouterLink></a>
-        <a class="nav-link"><RouterLink to="/login" style="color: #fff;">Login</RouterLink></a>
-        <a class="nav-link"><RouterLink to="/register" style="color: #fff;">Sign up</RouterLink></a>
+        
+        
       </nav>
     </div>
   </div>
@@ -95,50 +103,21 @@
     padding: 4px 24px;
   }
 
-
 </style>
 
+<script>
+export default {
+	name: "Header",
+  data() {
+    return {
+      isLoggedIn: false
+    };
+  },
+  methods: {
+    loginSuccessful(){
+      this.isLoggedIn = true;
+    }
+  }
+}
 
-<!-- <div class="vstack gap">
-        <div class="header-top">
-
-        </div>
-
-        <div class="header-mid">
-          <a class="navbar-brand" href="../views/Home.vue">
-            <img src="../assets/logo.png" class="logo"/>
-          </a>
-          <h1>Tìm kiếm</h1>
-        </div>
-
-        <div class="header-menu">
-              <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                  </button>
-
-                  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                      <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="../views/Home.vue">Home</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                      </li>
-                    </ul>
-                    <form class="d-flex">
-                      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                      <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                  </div>
-                </div>
-              </nav>
-        </div>
-
-
-
-    </div> -->
+</script>
