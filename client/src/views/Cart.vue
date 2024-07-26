@@ -13,6 +13,7 @@
                         <div v-for="item in cart.items" :key="item._id">
                             <p>Product ID: {{ item.productId }}</p>
                             <p>Quantity: {{ item.quantity }}</p>
+                            <p>Properties: {{ item.properties }}</p>
                             <p>Price At Ordering: {{ item.priceAtOrdering }}</p>
                         </div>
                     </div>

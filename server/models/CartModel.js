@@ -10,7 +10,6 @@ const CartSchema = mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        unique: true
     },
     items: [
         {
@@ -23,7 +22,10 @@ const CartSchema = mongoose.Schema({
             }, 
             quantity: {
                 type: Number,
-            }
+            },
+            properties: {
+                type: String
+            },
         }
     ],
     createdAt: {
