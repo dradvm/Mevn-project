@@ -8,6 +8,11 @@ const CardService = {
     showOne: (name_product) => axios.post(`/detail`, {
         name_product
     }),
+    addToCart: (productId,properties,quantity) => axios.post(`/addProduct`, {
+        productId,
+        properties,
+        quantity
+    }),
 }
     
 
