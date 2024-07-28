@@ -1,36 +1,43 @@
 <template>
+    <!-- <div>
+        <h6>{{ order }}</h6>
+    </div> -->
+    
     <div class="main">
+        <hr>
         <h1>Orders-Product</h1>
+        <h4>User: {{ authStore.nameUser }}</h4>
+        <h3>User Id: {{ authStore.idUser }}</h3>
         <hr>
             <div>
-                <div v-if="orders && orders.length" v-for="order in orders" :key="order._id">
-                    <h2>Order Id: {{ order._id }}</h2>
-                    <h3>User Id: {{ order.userId }}</h3>
-                    <h3>Cart ID: {{ order.cartId }}</h3>
-                    <p>Status: {{ order.status }}</p>
-                    <p>TotalAmount: {{ order.totalAmount }}</p>
-                    <p>Created At: {{ order.createdAt }}</p>
-                    <p>Updated At: {{ order.updatedAt }}</p>
-                    <h3>Vouchers:</h3>
+                <div v-if="order && order.length" v-for="index in order" :key="index._id">
+                    <h5>Order Id: {{ index._id }}</h5>
+                    <h6>Cart ID: {{ index.cartId }}</h6>
+                    <p style="color: red;">Status: {{ index.status }}</p>
+                    <p>TotalAmount: {{ index.totalAmount }}</p>
+                    <h5>Vouchers:</h5>
                         <div>
-                            <div v-for="voucher in order.voucher" :key="voucher._id">
+                            <div v-for="voucher in index.voucher" :key="voucher._id">
                                         <p>Voucher ID: {{ voucher }}</p>
                             </div>
                         </div>
-                    <h3>Shipping:</h3>
+                    <h5>Shipping:</h5>
                         <div>
-                            <div v-for="shipping in order.shipping" :key="shipping._id">
+                            <div v-for="shipping in index.shipping" :key="shipping._id">
                                         <p>Address: {{ shipping.address }}</p>
                                         <p>ShippingCost: {{ shipping.shippingCost }}</p>
                                         <p>ShippingMethod: {{ shipping.shippingMethod }}</p>
                             </div>
                         </div>
-                    <h3>Payment:</h3>
+                    <h5>Payment:</h5>
                         <div>
-                            <p>Method: {{ order.payment.method }}</p>
-                            <p>TransactionId: {{ order.payment.transactionId }}</p>
-                            <p>StatusPayment: {{ order.payment.statusPayment }}</p>
+                            <p>Method: {{ index.payment.method }}</p>
+                            <p>TransactionId: {{ index.payment.transactionId }}</p>
+                            <p>StatusPayment: {{ index.payment.statusPayment }}</p>
                         </div>
+                    <div>
+                        <button class="delete-Order"> Hủy Đơn Hàng</button>
+                    </div>
                 <hr>
                 </div>
             </div>
@@ -39,20 +46,25 @@
 
 <script>
     import OrderService from '@/services/OrderService';
+    import { useAuthStore } from '@/stores/counter';
     export default {
-      name: "Cart",
-      data() {
-        return {
-            orders: [],
+        name: "Cart",
+        data() {
+            return {
+                order: [],
+                authStore: useAuthStore(),
         }
-      },
-        created() {
-            OrderService.getAll()
-            .then((res) => {
-              this.orders = res.data
-            })
-            .catch((err) => console.log(err))
         },
+        created() {
+           this.getOrder(this.authStore.idUser)
+        },
+        methods: {
+            getOrder(userId) {
+                OrderService.findOfUser(userId)
+                    .then((res) => {this.order = res.data})
+                    .catch((err) => console.log(err))
+            }
+        }
 }
 
 </script>
@@ -61,4 +73,15 @@
     .main {
         text-align: center;
     }
+    .delete-Order {
+        font-size: 20px;
+        font-weight: bold;
+        border: 5px solid green;
+        border-radius: 8px;
+        padding: 5px;
+    }
+    .delete-Order:hover {
+        border: 5px solid red;
+    }
+
 </style>

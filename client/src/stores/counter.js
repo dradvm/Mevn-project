@@ -14,10 +14,12 @@ import { defineStore } from 'pinia'
 //   },
 // })
 
-export const useAuthStore = defineStore('auth', {
+export const useAuthStore = defineStore('Login Account', {
   state: () => ({
     isLoggedIn: false,
     user: null,
+    idUser: null,
+    nameUser: null,
   }),
   actions: {
     login(user) {
@@ -28,5 +30,10 @@ export const useAuthStore = defineStore('auth', {
       this.isLoggedIn = false;
       this.user = null;
     },
+    addInfor(Id,name) {
+      this.idUser= Id;
+      this.nameUser= name;
+
+    }
   },
 });

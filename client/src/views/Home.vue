@@ -3,6 +3,8 @@
     <div v-if="authStore.isLoggedIn">
       <div v-if="userLogin && userLogin.length" v-for="user of userLogin" :key="user._id">
         <h1 style="text-align: center;">Chào bạn:   {{ user.name }} </h1>
+        {{ this.getIdUser(user._id) }}
+        {{ this.addUserInfor(user._id, user.name) }}
       </div>
     </div>
     <div class="main image-container">
@@ -31,36 +33,45 @@
             items: [],
             emailUser: '',
             userLogin: [],
+            userId: "",
             authStore: useAuthStore(),
         }
       },
         created() {
-          ProductService.getAll()
-            .then((res) => {
-              this.items = res.data
-            })
-            .catch((err) => console.log(err))
-          
-        
+          this.getProducts(),
           this.emailUser = this.authStore.user;
           this.getUser(this.emailUser)
 
         },
         methods: {
+          getProducts() {
+            ProductService.getAll()
+            .then((res) => {
+              this.items = res.data
+            })
+            .catch((err) => console.log(err))
+          },
           getUser(Email) {
             UsersService.checkAccount(Email)
             .then((res) => {
               this.userLogin = res.data
             })
             .catch((err) => console.log(err))
-          }
+          },
+          getIdUser(Id) {
+            this.userId= Id
+          },
+          addUserInfor(Id,name) {
+            const authStore = useAuthStore();
+			      authStore.addInfor(Id,name)
+      },
         },
         
 }
 
 </script>
 
-<style>
+<style scoped>
   .routerlink {
     color: blue;
     margin: 0px 33% 0px;

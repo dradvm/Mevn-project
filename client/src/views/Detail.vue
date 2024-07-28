@@ -5,10 +5,10 @@
           <div>
             <br>
             <h1> {{ item.name_product }}</h1>
-            <h4 style="color: crimson;">{{ item.price }}đ</h4>
+            <h2 style="color: crimson;">{{ item.price }}đ</h2>
             <div>
               <div class="cards-container">
-                <div v-for="image of item.display.images">
+                <div v-for="image in item.display.images">
                   <img :src="image" :alt="'Ảnh ' + item.name_product">
                 </div>
               </div>
@@ -25,22 +25,19 @@
               {{ index.properties }} <br>
               SL: {{ index.quantity }}
             </div>
-            <!-- <select name="mySelect">
-              <option value="option1">Option 1</option>
-              <option value="option2">Option 2</option>
-            </select> -->
           </button>
           </div>
         </div>
       <hr>
-        <h4>Lựa chọn của bạn: {{ chooseType }}</h4>
+        <h4>Mẫu bạn đã chọn: <h4 style="color:red;">{{ chooseType }}</h4></h4>
+        <h4>Chọn số lượng:</h4>
         <div class="quality">
           <button class="editQuality" @click="decrement">-</button>
-          <input class="editQuality" v-model="chooseQuality" placeholder="Enter your quantity"/>
+          <input class="editQuality" style="color:red;" v-model="chooseQuality" placeholder="Enter your quantity"/>
           <button class="editQuality" @click="increment">+</button>
         </div>
         <div>
-          <button class="button" @click="addTocart(item._id)">Thêm vào giỏ hàng</button>
+          <button class="button" @click="addToCart">Thêm vào giỏ hàng</button>
         </div>
       <hr>
       <div class="product-description">
@@ -51,11 +48,11 @@
         </div>
       </div>
       <hr>
-      <div>
-            <br>
-            <iframe width="560" height="385" :src="item.display.video"  frameborder="0" allowfullscreen></iframe>
-          </div>
-      <hr>
+      <div v-if="item.display.video!=''">
+        <br>
+          <iframe width="560" height="385" :src="item.display.video"  frameborder="0" allowfullscreen></iframe>
+          <hr>
+      </div>
 
     </div>
     
@@ -63,53 +60,82 @@
 </template>
 
 <script>
-import ProductService from '@/services/ProductService';
-import CartService from '@/services/CartService';
-export default {
-  data() {
-    return {
-      showDropdown: false,
-      item: [],
-      chooseType: "",
-      chooseQuality: 0,
-      idOfProduct: "",
-      index: 0,
-    };
-  },
-  created() {
-    this.id = this.$route.params.id;
-    ProductService.showOne(this.id)
-            .then((res) => {
-              this.item = res.data
-            })
-            .catch((err) => console.log(err))
-  },
-  methods: {
-    toggleDropdown() {
-      this.showDropdown = !this.showDropdown; // Khi bấm vào nút, hiển thị/ẩn dropdown
+  import ProductService from '@/services/ProductService';
+  import CartService from '@/services/CartService';
+  import { useAuthStore } from '@/stores/counter';
+  export default {
+    data() {
+      return {
+        showDropdown: false,
+        item: [],
+        idOfProduct: "",
+        chooseType: "",
+        chooseQuality: 0,
+        authStore: useAuthStore(),
+        check: false,
+      };
     },
-    increment() {
-        this.chooseQuality++;
+    created() {
+      this.idOfProduct = this.$route.params.id;
+      ProductService.showOne(this.idOfProduct)
+              .then((res) => {
+                this.item = res.data
+              })
+              .catch((err) => console.log(err))
+      // this.idOfProduct = item._id
     },
-    decrement() {
-      if (this.chooseQuality > 1) {
-        this.chooseQuality--;
-      }
-    },
-    addToCart(id) {
-      this.idOfProduct= id;
-      CartService.addToCart(this.idOfProduct, this.chooseType, this.chooseQuality)
-        .then((res) => alert("Đăng ký thành công!"))
-        .catch((err) => alert("Đăng ký không thành công!"))
-    },
-    handleChoose(option) {
-      this.chooseType = option;
-    },
-  }
-};
+    methods: {
+      toggleDropdown() {
+        this.showDropdown = !this.showDropdown;
+      },
+      increment() {
+          this.chooseQuality++;
+      },
+      decrement() {
+        if (this.chooseQuality > 1) {
+          this.chooseQuality--;
+        }
+      },
+      addToCart() {
+        if(this.authStore.isLoggedIn) {
+          this.check = true;
+          this.validateType()
+          this.validateQuality()
+          if(this.check == true) {
+            alert("Id_SP: "+this.idOfProduct+ "\ntype: "+this.chooseType+ "\nquality: "+this.chooseQuality+ "\nId_User: "+this.authStore.idUser);
+          }
+        }
+        else {
+          alert('Hãy đăng nhập để thêm được sản phẩm')
+          this.$router.push('/login');
+        }
+      },
+      handleChoose(option) {
+        this.chooseType = option;
+      },
+      validateType() {
+        if(this.chooseType == ""){
+            alert("Hãy chọn mẫu sản phẩm ");
+            // document.focus();
+            this.check = false;
+            return false;
+          }
+      },
+      validateQuality() {
+        if(this.chooseQuality == 0){
+            alert("Hãy chọn số lượng sản phẩm ");
+            // document.focus();
+            this.check = false;
+            return false;
+          }
+      },
+
+    }
+  };
+
 </script>
 
-<style>
+<style scoped>
   .text {
     text-align: center;
     font-size: 20px;
@@ -118,33 +144,27 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content:space-around /* Hoặc sử dụng space-around, space-evenly, etc. */
+    justify-content:space-around 
   }
   .header-container {
     display: flex;
-    /* justify-content: space-evenly; */
-    /* flex-direction: row; */
-    /* flex-wrap: nowrap; */
     height:auto;
     width: auto;
   }
   .cards-container img {
-    max-width: 100%; /* Điều chỉnh kích thước ảnh theo ý muốn */
+    max-width: 100%; 
     margin: 0px;
   }
   .product-description {
-    margin:0px 15% 0px;
+    margin:0px 33% 0px;
     text-align: left;
     font-size: 12px;
+    
     
   }
   .quality-container {
     display: flex;
-    /* flex-direction: row; */
-    /* flex-wrap: nowrap; */
     justify-content:space-around;
-    /* border-style: solid; */
-
   }
   .button {
     border: 2px solid blue;
@@ -163,7 +183,6 @@ export default {
     margin: 0px 33% 0px;
   }
   .editQuality {
-    /* border: 2px solid blue; */
     width: 50px;
     text-align: center;
     border: 2px solid blue;
