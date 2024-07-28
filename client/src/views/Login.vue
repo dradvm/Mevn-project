@@ -151,9 +151,9 @@ export default {
 				UsersService.login(this.email, this.password)
 				.then((res) => {
 					if(res.data.length != 0){
-						alert("Đăng nhập thành công");
+						alert("Login successful!");
 						this.$router.push('/');
-					} else alert("Sai mật khẩu");
+					} else alert("Incorrect password!");
 				})
 				.catch((err) => console.log(err))
 			}
@@ -169,7 +169,7 @@ export default {
           UsersService.checkAccount(this.email)
 		  .then((res) => {
 			if(res.data.length == 0){
-				alert("Tài khoản không tồn tại");
+				alert("Account not found!");
 				this.check = false;
 			}
 		  })

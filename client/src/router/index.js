@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router"
 import Home from "../views/Home.vue"
 import MyShopLayout from "../views/MyShopLayout.vue"
+import MyAccountLayout from "@/views/MyAccountLayout.vue"
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -69,7 +70,19 @@ const router = createRouter({
     {
       path: "/myaccount",
       name: "myaccount",
-      component: () => import("../views/MyAccount.vue")
+      component: MyAccountLayout,
+      children: [
+        {
+          path: "information",
+          name: "information",
+          component: () => import("../views/MyAccountInformation.vue")
+        },
+        {
+          path: "changePass",
+          name: "changePass",
+          component: () => import("../views/MyAccountChangePassword.vue")
+        }
+      ]
 
     },
 

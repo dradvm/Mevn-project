@@ -23,21 +23,21 @@
             <font-awesome-icon :icon="['fas', 'user']" style="font-size: 32px;"/>
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li v-if="isLoggedIn"><a class="dropdown-item"><RouterLink to="/myaccount">My account</RouterLink></a></li>
-            <li v-else><a class="dropdown-item"><RouterLink to="/register">Sign up</RouterLink></a></li>
-            <li v-if="isLoggedIn"><a class="dropdown-item" @click="confirmLogout">Log out</a></li>
-            <li v-else><a class="dropdown-item"><RouterLink to="/login">Log in</RouterLink></a></li>
-            
+            <li v-if="!isLoggedIn"><router-link to="/register" class="dropdown-item">Sign up</router-link></li>
+            <li v-else><div class="dropdown-item" @click="confirmLogout">Log out</div></li>
+            <li v-if="!isLoggedIn"><router-link to="/login" class="dropdown-item">Log in</router-link></li>
+            <li v-else><router-link to="/myaccount" class="dropdown-item">My account</router-link></li>
           </ul>
+
         </div>
+        
+        <router-link class="p-2 bd-highlight" to="/cart" v-if="isLoggedIn">
+            <font-awesome-icon :icon="['fas', 'cart-shopping']" style="font-size: 32px;"/>
+        </router-link>
 
-
-        <a href="/cart" class="p-2 bd-highlight">
-          <font-awesome-icon :icon="['fas', 'cart-shopping']" style="font-size: 32px;"/>
-        </a>
-        <a href="/order" class="p-2 bd-highlight" v-if="isLoggedIn">
+        <router-link class="p-2 bd-highlight" to="/order" v-if="isLoggedIn">
           <font-awesome-icon :icon="['fas', 'receipt']" style="font-size: 32px;"/>
-        </a>
+        </router-link>
         
       </div>
     </div>
@@ -120,18 +120,20 @@ export default {
     },
   },
   methods: {
-    //Có vấn đề
-    confirmLogout(){
-      if(window.confirm("CÓ CHẮC ĐĂNG XUẤT HONG?")){
+    confirmLogout() {
+      console.log("confirmLogout");
+      // Hiển thị cửa sổ xác nhận trước khi đăng xuất
+      if (confirm("Are you sure you want to log out?")) {
         this.logout();
       }
     },
     logout() {
       const authStore = useAuthStore();
-      authStore.isLoggedIn = false;
+      authStore.logout();
       const router = useRouter();
-      router.push('/login');
+      this.$router.push({name: "login"});
     },
   },
 };
+
 </script>
