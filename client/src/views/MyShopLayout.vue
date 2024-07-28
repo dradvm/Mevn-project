@@ -4,7 +4,7 @@
             <div class="shadow-sm" style="width: 15%">
                 <div class="h-100 vstack mx-3 my-4">
                     <RouterLink class="routerItemNav fw-medium px-3 py-2 rounded mb-2" 
-                        :class="{ 'routerItemNavActive': $router.currentRoute._rawValue.name === 'myshophome', }" to="/myshop/">
+                        :class="{ 'routerItemNavActive': $router.currentRoute.value.name === 'myshophome', }" to="/myshop/">
                         <font-awesome-icon class="me-3" :icon="['fas', 'store']" />Shop
                     </RouterLink>
                     <RouterLink class="routerItemNav fw-medium px-3 py-2 rounded mb-2" 
