@@ -43,7 +43,8 @@
                 <!-- product item -->
                 <div class="home-product-item" v-if="items && items.length" v-for="item of items" :key="item.name_product">
                     <div class="home-product-item-img">
-                        <img class="img" :src=" item.image ">
+                        <img class="img" :src=" item.display.coverPhoto ">
+
                         <h4 class="home-product-item-name">{{ item.name_product}}</h4>
                         <div class="home-product-item-price">{{ item.price }}</div>
                         <div class="change">
@@ -54,7 +55,7 @@
                         </router-link>
                         </div>
                         <div class="delete">
-                          <button>  <font-awesome-icon :icon="['fas', 'delete-left']" /></button>
+                          <button @click="deleteItem(item._id)" >  <font-awesome-icon :icon="['fas', 'delete-left']" /></button>
                         </div>
                     </div>
                 </div>
@@ -99,9 +100,10 @@
 
 }
 .img{
-   height: 240px;
-   width: 240px;
-   padding-top: -150px;
+    height: 240px;
+    width: 240px;
+    padding-top: -150px;
+  
 }
 .home-product-item-name{
     font-size: 1rem;
@@ -114,7 +116,7 @@
     display: block;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+        
     text-overflow: ellipsis;
 
 }
@@ -262,7 +264,7 @@
               this.items = res.data
             })
             .catch((err) => console.log(err))
-        },
+        }
 }
 
 </script>
