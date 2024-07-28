@@ -18,16 +18,30 @@
         </form>
       </div>
       <div class="col-6 col-md-2 d-flex flex-row bd-highlight mb-3">
-        <a href="#" class="p-2 bd-highlight">
-          <font-awesome-icon :icon="['fas', 'user']" style="font-size: 32px;"/>
-        </a>
-        <a href="/cart" class="p-2 bd-highlight">
-          <font-awesome-icon :icon="['fas', 'cart-shopping']" style="font-size: 32px;"/>
-        </a>
-        <a href="/order" class="p-2 bd-highlight">
-          <font-awesome-icon :icon="['fas', 'receipt']" style="font-size: 32px;"/>
-        </a>
-        
+        <div class="dropdown">
+          <a class="p-2 bd-highlight" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            <font-awesome-icon :icon="['fas', 'user']" style="font-size: 32px;"/>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li v-if="isLoggedIn"><a class="dropdown-item"><RouterLink to="/myaccount">My account</RouterLink></a></li>
+            <li v-else><a class="dropdown-item"><RouterLink to="/register">Sign up</RouterLink></a></li>
+            <li v-if="isLoggedIn"><a class="dropdown-item" @click="confirmLogout">Log out</a></li>
+            <li v-else><a class="dropdown-item"><RouterLink to="/login">Log in</RouterLink></a></li>
+            
+          </ul>
+        </div>
+        <div v-if="isLoggedIn" style="display: flex; flex-direction: row;">
+          <RouterLink to="/cart" class="p-2 bd-highlight"> 
+            <font-awesome-icon :icon="['fas', 'cart-shopping']" style="font-size: 32px;"/></RouterLink>
+          <RouterLink to="/order" class="p-2 bd-highlight"> 
+            <font-awesome-icon :icon="['fas', 'receipt']" style="font-size: 32px;"/></RouterLink>
+          <!-- <a href="/cart" class="p-2 bd-highlight">
+            <font-awesome-icon :icon="['fas', 'cart-shopping']" style="font-size: 32px;"/>
+          </a>
+          <a href="/order" class="p-2 bd-highlight" v-if="isLoggedIn">
+            <font-awesome-icon :icon="['fas', 'receipt']" style="font-size: 32px;"/>
+          </a> -->
+        </div>
       </div>
     </div>
   
@@ -36,9 +50,9 @@
       <nav class="nav">
         <a class="nav-link" aria-current="page"><RouterLink to="/" style="color: #fff;">Home</RouterLink></a>
         <a class="nav-link"><RouterLink to="/about" style="color: #fff;">About</RouterLink></a>
-        <a class="nav-link"><RouterLink to="/myshop" style="color: #fff;">My Shop</RouterLink></a>
-        <a class="nav-link"><RouterLink to="/login" style="color: #fff;">Login</RouterLink></a>
-        <a class="nav-link"><RouterLink to="/register" style="color: #fff;">Sign up</RouterLink></a>
+        <a v-if="isLoggedIn" class="nav-link"><RouterLink to="/myshop" style="color: #fff;">My Shop</RouterLink></a>
+        
+        
       </nav>
     </div>
   </div>
@@ -95,50 +109,32 @@
     padding: 4px 24px;
   }
 
-
 </style>
 
+<script>
 
-<!-- <div class="vstack gap">
-        <div class="header-top">
+import { useAuthStore } from '@/stores/counter';
+import { useRouter } from 'vue-router';
 
-        </div>
-
-        <div class="header-mid">
-          <a class="navbar-brand" href="../views/Home.vue">
-            <img src="../assets/logo.png" class="logo"/>
-          </a>
-          <h1>Tìm kiếm</h1>
-        </div>
-
-        <div class="header-menu">
-              <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                  </button>
-
-                  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                      <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="../views/Home.vue">Home</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                      </li>
-                    </ul>
-                    <form class="d-flex">
-                      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                      <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                  </div>
-                </div>
-              </nav>
-        </div>
-
-
-
-    </div> -->
+export default {
+  computed: {
+    isLoggedIn() {
+      return useAuthStore().isLoggedIn;
+    },
+  },
+  methods: {
+    //Có vấn đề
+    confirmLogout(){
+      if(window.confirm("CÓ CHẮC ĐĂNG XUẤT HONG?")){
+        this.logout();
+      }
+    },
+    logout() {
+      const authStore = useAuthStore();
+      authStore.isLoggedIn = false;
+      const router = useRouter();
+      router.push('/login');
+    },
+  },
+};
+</script>

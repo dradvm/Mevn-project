@@ -8,11 +8,11 @@
                     <div class="col-2 d-flex justify-content-center mt-2" style="height: 250px;" v-for="item in items">
                         <div class="">
                             <div class="border rounded overflow-hidden h-75">
-                                <img class="w-100 h-100" :src="item.image"/>
+                                <img class="w-100 h-100" :src="item.display.coverPhoto"/>
                             </div>
                             <div class="h-25 d-flex flex-column justify-content-evenly align-items-center">
                                 <div class="fw-medium">{{ currency(item.price) }}</div>
-                                <button class="w-100 fw-medium bg-primary">Select</button>
+                                <button class="w-100 fw-medium py-1" @click="addSelectedProduct(item._id)" :class="{'bg-success': checkSelected(item._id), 'bg-primary': !checkSelected(item._id),'btn-dis': checkDisable(item._id)}">{{ checkSelected(item._id) ? 'Selected' : 'Select' }}</button>
                             </div>
                         </div>
                     </div>
@@ -49,9 +49,9 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="fw-medium mb-1">Code</div>
-                                <div class="my-input-group bg-white">
+                                <div class="my-input-group bg-white d-flex align-items-center justify-content-between">
                                     <input required class="fw-medium" length="8" autocomplete="off" disabled v-model="code" type="text" aria-label="code" aria-describedby="basic-addon1">
-                                    <span class="cur-p" @click="generateRandomCode"><font-awesome-icon :icon="['fas', 'rotate-right']" /></span>
+                                    <span v-if="!isUpdate" class="cur-p px-3" @click="generateRandomCode"><font-awesome-icon :icon="['fas', 'rotate-right']" /></span>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-3">
+                        <div class="row mt-3" v-if="!['Percent One', 'Fixed One'].includes(typeSelected)">
                             <div class="col-6">
                                 <div class="fw-medium mb-1">Condition</div>
                                 <select class="form-select" aria-label="Default select example" v-model="condition">
@@ -104,7 +104,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-3">
+                        <div class="row mt-3" >
                             <div class="col-6">
                                 <div class="fw-medium mb-1">Quantity</div>
                                 <div class="my-input-group bg-white">
@@ -118,9 +118,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-3">
+                        <div class="row mt-3" v-if="['Percent One', 'Fixed One'].includes(typeSelected)">
                             <div class="col-6">
-                                <button @click="openModal" class="rounded px-3 py-1 bg-primary fw-medium"> Select Product</button>
+                                <button @click="openModal" class="rounded px-3 py-1 bg-primary fw-medium">Select Product</button>
                             </div>
                             <div class="col-6">
 
@@ -167,6 +167,7 @@ export default {
         const products = ref([])
         const modal = ref(false)
         const items = ref([])
+        const isUpdate = ref(false)
         return {
             check,
             code,
@@ -184,19 +185,34 @@ export default {
             limit,
             products,
             modal,
-            items
+            items,
+            isUpdate
         }
     },
     created() {
-        this.generateRandomCode()
         this.getTypes()
         this.getProducts()
+        switch (this.$router.currentRoute.value.name) {
+            case "voucherAdd": {
+                this.generateRandomCode()
+                break
+            }
+            case "voucherUpdate": {
+                this.fetchDataUpdate()
+                break
+            }
+        }
     },
     watch: {
         date(newDate) {
             this.startDate = this.getDateString(newDate[0])
             this.endDate = this.getDateString(newDate[1])
-        }
+        },
+        typeSelected(newTypeSelected, oldTypeSelected) {
+            if (newTypeSelected.length != 0 && oldTypeSelected.length != 0) {
+                this.products = []
+            }
+        },
     },
     methods: {
         generateRandomCode() {
@@ -216,6 +232,9 @@ export default {
         },
         getState() {
             var date = new Date()
+            console.log(typeof this.date[0])
+            console.log(typeof date)
+            console.log(typeof this.date[1])
             if (this.date[0] < date && date < this.date[1] ) {
                 return "Active"
             }
@@ -243,13 +262,6 @@ export default {
                 })
                 return 
             }
-            if (this.condition === "") {
-                toast("Must select condition!", {
-                    type: 'warning',
-                    autoClose: 2000
-                })
-                return 
-            }
             if (this.condition === "<=") {
                 if (this.conditionDiscount < 1000) {
                     toast("Min value for condition discount is 1000!", {
@@ -262,6 +274,13 @@ export default {
             else if (this.condition === ">=") {
 
             }
+            if (this.typeSelected.includes("One") && this.products.length === 0) {
+                toast("Please select product to discount", {
+                    type: 'warning',
+                    autoClose: 2000
+                })
+                return 
+            }
             var d = 0
             if (this.typeSelected.includes("Percent")) {
                 d = this.discount/100
@@ -269,9 +288,23 @@ export default {
             else {
                 d = this.discount
             }
-            VoucherService.createVoucher(this.code, this.date[0], this.date[1], this.getState(),this.typeSelected,
-            this.condition, d, this.maxDiscount, this.conditionDiscount, this.quantity,
-            0, this.limit, this.products )
+            var data = {
+                code: this.code,
+                startDate: this.date[0],
+                expiredDate: this.date[1],
+                state: this.getState(),
+                type: this.typeSelected,
+                condition: this.condition,
+                discount: d,
+                maxDiscount: this.maxDiscount,
+                conditionDiscount: this.conditionDiscount,
+                quantity: this.quantity,
+                usedQuantity: 0,
+                limitEachUser: this.limit,
+                applicableProducts: this.products
+            }
+            if (this.isUpdate) {
+                VoucherService.updateVoucher(this.$router.currentRoute.value.params.id, data)
                 .then((res) => {
                     toast(res.data.message, {
                         type: 'success',
@@ -287,6 +320,25 @@ export default {
                         autoClose: 2000
                     })
                 })
+            }
+            else {
+                VoucherService.createVoucher(data)
+                .then((res) => {
+                    toast(res.data.message, {
+                        type: 'success',
+                        autoClose: 2000,
+                        onClose: () => {
+                            this.$router.push({name: "voucher"})
+                        }
+                    })
+                })
+                .catch((err) => {
+                    toast(err, {
+                        type: 'error',
+                        autoClose: 2000
+                    })
+                })
+            }
         },
         openModal() {
             this.modal = true
@@ -296,7 +348,7 @@ export default {
         },
         getProducts() {
             ProductService.getAll()
-                .then((res) => this.items = [...res.data, ...res.data, ...res.data])
+                .then((res) => this.items = res.data)
                 .catch((err) => console.log(err))
         },
         currency(value, locale = 'vi-VN', currency = 'VND') {
@@ -307,6 +359,43 @@ export default {
                 style: 'currency',
                 currency: currency
             }).format(value);
+        },
+        addSelectedProduct(product) {
+            if (this.products.includes(product)) {
+                this.products.splice(this.products.indexOf(product), 1)
+            }
+            else if (this.products.length === 0){
+                this.products.push(product)
+            }
+        },
+        checkSelected(product) {
+            return this.products.includes(product)
+        },
+        checkDisable(product) {
+            return (!this.checkSelected(product) && this.products.length !== 0)
+        },
+        fetchDataUpdate() {
+            VoucherService.getVoucher(this.$router.currentRoute.value.params.id)
+                .then((res) => {
+                    var voucher = res.data
+                    this.code = voucher.code
+                    this.date = [new Date(voucher.startDate), new Date(voucher.expiredDate)]
+                    this.typeSelected = voucher.type
+                    this.condition = voucher.condition
+                    if (voucher.type.includes("Percent")) {
+                        this.discount = voucher.discount*100
+                    }
+                    else {
+                        this.discount = voucher.discount
+                    }
+                    this.maxDiscount = voucher.maxDiscount
+                    this.conditionDiscount = voucher.conditionDiscount
+                    this.quantity = voucher.quantity
+                    this.limit = voucher.limitEachUser
+                    this.products.push(...voucher.applicableProducts)
+                    this.isUpdate = true
+                })
+                .catch((err) => console.log(err))
         }
     }
 }
@@ -325,5 +414,15 @@ button:active {
 }
 .modal {
     background-color: rgba(0,0,0, 0.3);
+}
+button.btn-dis {
+    background-color: #bbb !important;
+    color: white !important;
+}
+button.btn-dis:active {
+    transform: translateY(0px);
+}
+button.btn-dis {
+    transform: translateY(0px);
 }
 </style>

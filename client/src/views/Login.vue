@@ -132,35 +132,39 @@ p{
  
 <script>
 import UsersService from '@/services/UsersService';
-
+import { useAuthStore } from '@/stores/counter';
 export default {
 	name: "Login",
 	data(){
 		return {
 			email: "",
 			password: "",
-			check: true
+			check: true,
 		}
 
 	},
 
 	methods: {
-
 		ValidateForm(){
 			this.ValidateEmail();
-				if(this.check == true){
-					UsersService.login(this.email, this.password)
-					.then((res) => {
-						if(res.data.length != 0){
-							alert("Đăng nhập thành công");
-						} else alert("Sai mật khẩu");
-					})
-					.catch((err) => console.log(err))
+			if(this.check == true){
+				UsersService.login(this.email, this.password)
+				.then((res) => {
+					if(res.data.length != 0){
+						alert("Đăng nhập thành công");
+						this.login(this.email);
+						this.$router.push('/');
+					} else alert("Sai mật khẩu");
+				})
+				.catch((err) => console.log(err))
 			}
 			
 
 		},
-
+		login(Email) {
+			const authStore = useAuthStore();
+			authStore.login( Email );
+		},
 		ValidateEmail(){
           UsersService.checkAccount(this.email)
 		  .then((res) => {

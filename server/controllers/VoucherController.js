@@ -8,7 +8,14 @@ const notAvailable = ["Expired", "Out Of Stock", "Canceled"]
 const voucherType = ["Percent One", "Percent All", "Fixed One", "Fixed All", "First Order Percent", "First Order Fixed"]
 
 const VoucherController = {
-    findItems: async (req, res) => {
+    findVoucher: async (req, res) => {
+        VoucherModel.findOne({
+            code: req.params.code
+        })
+            .then((data) => res.status(200).json(data))
+            .catch((err) => res.status(500).json(err.message))
+    },
+    findVouchers: async (req, res) => {
         const { page, search, check, sort } = req.query
         const regex = new RegExp(search !== undefined ? search : "")
         var sortObj = JSON.parse(sort)
@@ -20,12 +27,16 @@ const VoucherController = {
             state: check === "true" ? available : notAvailable,
             code: regex
         })
+            .populate({
+                path: "applicableProducts",
+                select: "name_product"
+            })
             .sort(sortValue)
             .skip((page - 1) * 5).limit(5)
             .then((data) => res.status(200).json(data))
             .catch((err) => res.status(500).json(err.message))
     },
-    getPagesOfItemsActive: async (req, res) => {
+    getPagesOfVouchersActive: async (req, res) => {
         const { search, check } = req.query
         const regex = new RegExp(search !== undefined ? search : "")
         VoucherModel.countDocuments({
@@ -35,12 +46,22 @@ const VoucherController = {
             .then((data) => res.status(200).json({ count: Math.ceil(parseInt(data) / 5) }))
             .catch((err) => res.status(500).json(err.message))
     },
-    deleteItem: async (req, res) => {
+    deleteVoucher: async (req, res) => {
         VoucherModel.deleteOne({
             _id: req.params.id
         })
             .then((data) => res.status(200).json({ message: "Xóa voucher thành công!" }))
             .catch((err) => res.status(500).json(err.message))
+    },
+    updateVoucher: async (req, res) => {
+        VoucherModel.updateOne({
+            code: req.params.code
+        }, req.body)
+            .then((data) => res.status(200).json({ message: "Cập nhật voucher thành công" }))
+            .catch((err) => {
+                console.log(err)
+                res.status(500).json(err.message)
+            })
     },
     isExist: async (req, res) => {
         VoucherModel.countDocuments({

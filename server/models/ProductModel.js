@@ -2,52 +2,15 @@ const mongoose = require("mongoose")
 
 const ProductSchema = mongoose.Schema({
 
+    fromShopId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
     name_product: {
         type: String,
-        required: true,
-        unique: true
+        // required: true
     },
-    screen: {
-        type: String,
-        required: true
-    },
-    operating_system: {
-        type: String,
-        required: true
-    },
-    front_camera: {
-        type: String,
-        required: true
-    },
-    rear_camera: {
-        type: String,
-        required: true
-    },
-    chip: {
-        type: String,
-        required: true
-    },
-    ram: {
-        type: String,
-        required: true
-    },
-    Storage_capacity: {
-        type: String,
-        required: true
-    },
-    pin: {
-        type: String,
-        required: true
-    },
-    charger: {
-        type: String,
-        required: true
-    },
-    image: {
-        type: String,
-        required: true
-    },
-    video: {
+    description: {
         type: String,
         required: true
     },
@@ -55,14 +18,45 @@ const ProductSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    fromUserShop: {
-        type: mongoose.Schema.Types.ObjectId,
+    categories: {
+        type: String,
         required: true
     },
-    quantity: {
-        type: Number,
-        required: true
-    }
+    quantityList: [
+        {
+            properties: {
+                type: String
+            },
+            quantity: {
+                type: Number
+            }
+        }
+    ],
+    detail: [
+        {
+            key: {
+                type: String
+            },
+            value: {
+                type: String
+            }
+        }
+    ],
+    display: {
+        coverPhoto: {
+            type: String,
+            required: true
+        },
+        video: {
+            type: String,
+            required: true
+        },
+        images: [
+            {
+                type: String
+            }
+        ]
+    },
 })
 
 const ProductModel = mongoose.model("Product", ProductSchema)

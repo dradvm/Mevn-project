@@ -44,7 +44,10 @@
                 <div class="home-product-item" v-if="items && items.length" v-for="item of items" :key="item.name_product">
                     <div class="home-product-item-img">
                         <img class="img" :src=" item.display.coverPhoto ">
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d04ee63a8dff4229572627c2e9fcb741d0b86d4
                         <h4 class="home-product-item-name">{{ item.name_product}}</h4>
                         <div class="home-product-item-price">{{ item.price }}</div>
                         <div class="change">
@@ -116,7 +119,6 @@
     display: block;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-        
     text-overflow: ellipsis;
 
 }

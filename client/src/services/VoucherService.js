@@ -2,6 +2,7 @@ import createAxios from "@/utils/axios"
 const axios = createAxios("/voucher")
 const VoucherService = {
     getAll: () => axios.get(""),
+    getVoucher: (code) => axios.get(`/find/${code}`),
     getByPage: (page, search, check, sort) => axios.get(`/`, {
         params: {
             page,
@@ -19,23 +20,8 @@ const VoucherService = {
     getTypes: () => axios.get("/type"),
     deleteItem: (id) => axios.delete(`/${id}`),
     getRandomCode: () => axios.get("/randomcode"),
-    createVoucher: (code, startDate, expiredDate, state, type,
-        condition, discount, maxDiscount, conditionDiscount, quantity,
-        usedQuantity, limitEachUser, applicableProducts) => axios.post("/create", {
-            code,
-            startDate,
-            expiredDate,
-            state,
-            type,
-            condition,
-            discount,
-            maxDiscount,
-            conditionDiscount,
-            quantity,
-            usedQuantity,
-            limitEachUser,
-            applicableProducts
-        })
+    createVoucher: (data) => axios.post("/create", data),
+    updateVoucher: (code, data) => axios.post(`/update/${code}`, data)
 }
 
 export default VoucherService

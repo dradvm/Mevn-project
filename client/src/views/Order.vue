@@ -5,6 +5,7 @@
             <div>
                 <div v-if="orders && orders.length" v-for="order in orders" :key="order._id">
                     <h2>Order Id: {{ order._id }}</h2>
+                    <h3>User Id: {{ order.userId }}</h3>
                     <h3>Cart ID: {{ order.cartId }}</h3>
                     <p>Status: {{ order.status }}</p>
                     <p>TotalAmount: {{ order.totalAmount }}</p>

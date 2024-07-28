@@ -1,27 +1,37 @@
 <template>
-  <!-- <br> -->
-  <div class="main">
-    <div class="card" style="width: 18rem;" v-if="items && items.length" v-for="item of items" :key="item.name_product">
-        <img class="card_img" :src=" item.image " alt="Ảnh sản phẩm">
-      <div class="card_body">       
-          <h5 class="card_name">{{ item.name_product}}</h5>       
-        <h6 class="card_price">{{ item.price }}đ</h6>
-        <router-link :to="'/detail/' + item.name_product" class="routerlink">Mua Ngay</router-link>
+  <div>
+    <div v-if="authStore.isLoggedIn">
+      <div v-if="userLogin && userLogin.length" v-for="user of userLogin" :key="user._id">
+        <h1 style="text-align: center;">Chào bạn:   {{ user.name }} </h1>
       </div>
-      <br>
+    </div>
+    <div class="main image-container">
+      <div class="card" style="width: 18rem;" v-if="items && items.length" v-for="item of items" :key="item._id">
+          <img class="card_img" :src=" item.display.coverPhoto " alt="Ảnh sản phẩm">
+        <div class="card_body">       
+            <h5 class="card_name">{{ item.name_product}}</h5>       
+          <h6 class="card_price">{{ item.price }}đ</h6>
+          <router-link :to="'/detail/' + item._id" class="routerlink">Xem Ngay</router-link>
+        </div>
+        <br>
+      </div>
     </div>
   </div>
-  
 </template>
 
 <script>
     import ProductService from '@/services/ProductService';
+    import UsersService from '@/services/UsersService';
+    import { useAuthStore } from '@/stores/counter';
     // import { toast } from 'vue3-toastify';
     export default {
       name: "Home",
       data() {
         return {
             items: [],
+            emailUser: '',
+            userLogin: [],
+            authStore: useAuthStore(),
         }
       },
         created() {
@@ -30,7 +40,22 @@
               this.items = res.data
             })
             .catch((err) => console.log(err))
+          
+        
+          this.emailUser = this.authStore.user;
+          this.getUser(this.emailUser)
+
         },
+        methods: {
+          getUser(Email) {
+            UsersService.checkAccount(Email)
+            .then((res) => {
+              this.userLogin = res.data
+            })
+            .catch((err) => console.log(err))
+          }
+        },
+        
 }
 
 </script>
@@ -49,13 +74,8 @@
         color: purple;
     }
 
-    .routerlink:hover {
-        /* Màu khi di chuột qua liên kết */
-        color: green;
-    }
-  .card {
-    border: 5px solid rgba(30, 144, 255, 0.5);
-    margin: auto;
+  .routerlink:hover {
+    color: green;
   }
   .card_name {
     text-align: center;
@@ -79,5 +99,16 @@
   .button {
     margin: 5px 33% 5px;
   }
-  
+  .image-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Hoặc sử dụng space-around, space-evenly, etc. */
+    
+  }
+  .card {
+    border: 5px solid rgba(30, 144, 255, 0.5);
+    max-width: 100%; 
+    margin: 0px;
+  }
 </style>

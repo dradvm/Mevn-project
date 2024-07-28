@@ -1,10 +1,5 @@
 const mongoose = require("mongoose")
 
-function getDateString(date) {
-    const pad = (n) => n < 10 ? "0" + n : "" + n
-    date = new Date(date)
-    return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())} ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-}
 
 const VoucherSchema = mongoose.Schema({
     code: {
@@ -18,12 +13,10 @@ const VoucherSchema = mongoose.Schema({
         type: Date,
         required: true,
         default: Date(),
-        get: getDateString
     },
     expiredDate: {
         type: Date,
         required: true,
-        get: getDateString
     },
     state: {
         type: String,
@@ -37,7 +30,7 @@ const VoucherSchema = mongoose.Schema({
     },
     condition: {
         type: String,
-        enum: ["<=", ">="],
+        enum: ["<=", ">=", ""],
         required: true,
         default: null
     },
