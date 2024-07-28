@@ -23,10 +23,10 @@
             <font-awesome-icon :icon="['fas', 'user']" style="font-size: 32px;"/>
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li v-if="isLoggedIn"><a class="dropdown-item"><RouterLink to="/myaccount">My account</RouterLink></a></li>
-            <li v-else><a class="dropdown-item"><RouterLink to="/register">Sign up</RouterLink></a></li>
+            <li v-if="isLoggedIn"><RouterLink class="dropdown-item" to="/myaccount">My account</RouterLink></li>
+            <li v-else><RouterLink class="dropdown-item" to="/register">Sign up</RouterLink></li>
             <li v-if="isLoggedIn"><a class="dropdown-item" @click="confirmLogout">Log out</a></li>
-            <li v-else><a class="dropdown-item"><RouterLink to="/login">Log in</RouterLink></a></li>
+            <li v-else><RouterLink class="dropdown-item" to="/login">Log in</RouterLink></li>
             
           </ul>
         </div>
