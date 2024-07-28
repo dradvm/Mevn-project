@@ -39,9 +39,9 @@
     </div>
     <div class="home-product">
         <div class="row">
-            <div class="column2">
+            <div class="column2" v-for="item of items" :key="item.name_product">
                 <!-- product item -->
-                <div class="home-product-item" v-if="items && items.length" v-for="item of items" :key="item.name_product">
+                <div class="home-product-item" v-if="items && items.length">
                     <div class="home-product-item-img">
                         <img class="img" :src=" item.display.coverPhoto ">
                         <h4 class="home-product-item-name">{{ item.name_product}}</h4>
@@ -64,81 +64,88 @@
 </template>
 
 <style scoped>
-.row{
+.row {
     display: flex;
     flex-wrap: wrap;
     margin-left: -12px;
     margin-right: -12px;
 }
-.column2{
+.column2 {
     padding-left: 12px;
-    padding-right: 5px;
-    width: 20%;
+    padding-right: 12px;
+    width: 20%; /* 100% / 5 = 20% */
+    box-sizing: border-box;
 }
 
 /* product */
-.home-product-item{
+.home-product-item {
     position: relative;
     background: white;
     margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
-.home-product-item-img{
+.home-product-item-img {
     padding-top: 0;
     background-repeat: no-repeat;
     background-size: contain;
+    text-align: center;
 }
-.img{
+.img {
     height: 240px;
-    width: 240px;
-    padding-top: -150px;
+    width: 100%;
+    object-fit: cover;
 }
-.home-product-item-name{
+.home-product-item-name {
     font-size: 1rem;
     font-weight: 400;
     color: var(--text-color);
     line-height: 1.4rem;
     height: 2.8rem;
-    margin: 10px 10px;
+    margin: 10px 0;
     overflow: hidden;
-    display: block;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
 }
-.home-product-item-price{
+.home-product-item-price {
     display: flex;
-    margin-left: 10px;
+    justify-content: center;
     color: red;
     font-size: 1.4rem;
+    margin-bottom: 10px;
 }
-.change{
+.change, .delete {
     position: absolute;
-    top: 0%;
+    top: 10px;
+}
+.change {
+    left: 10px;
     background-color: blue;
     border-radius: 0 4px 4px 0;
 }
-.delete{
-    position: absolute;
-    top: 0%;
-    right: 0%;
+.delete {
+    right: 10px;
     background-color: #dc3545;
     border-radius: 4px 0 0 4px;
 }
 
 /* filter */
-.filter{
+.filter {
     display: flex;
     align-items: center;
     background-color: rgba(0,0,0,0.1);
     padding: 12px 22px;
     border-radius: 5px;
+    margin-bottom: 20px;
 }
-.filter-label{
+.filter-label {
     font-size: 1rem;
-    color: 5555;
+    color: #555;
     margin-right: 14px;
 }
-.btn{
+.btn {
     margin-right: 15px;
     min-width: 100px;
     height: 34px;
@@ -153,12 +160,12 @@
     justify-content: center;
     line-height: 1.6rem;
 }
-.filter-page{
+.filter-page {
     display: flex;
     align-items: center;
     margin-left: auto;
 }
-.select{
+.select {
     position: relative;
     min-width: 200px;
     height: 34px;
@@ -167,12 +174,12 @@
     background-color: white;
     display: flex;
     align-items: center;
-    justify-content:space-between;
+    justify-content: space-between;
 }
-.salect-label{
+.salect-label {
     font-size: 1rem;
 }
-.sellect-list{
+.sellect-list {
     position: absolute;
     left: 0;
     right: 0;
@@ -183,37 +190,37 @@
     list-style: none;
     display: none;
 }
-.select-input{
+.select-input {
     font-size: 1rem;
     text-decoration: none; 
     color: var(--text-color);
     display: block;
     padding: 4px 0;
 }
-.select-input:hover{
+.select-input:hover {
     color: #FFA500;
 }
-.select:hover .sellect-list{
+.select:hover .sellect-list {
     display: block;
 }
-.page-num{
+.page-num {
     font-size: 1rem;
     color: var(--text-color);
     margin-left: 20px;
 }
-.page-current{
+.page-current {
     color:#FFA500;
 }
-.page-button{
+.page-button {
     text-decoration: none;
     color: var(--text-color);
     flex: 1;
     margin: auto;
 }
-.page-button page-button--disabled{
+.page-button.page-button--disabled {
     background-color: #f9f9f9;
 }
-.page-control{
+.page-control {
     padding-left: 25px;
     border-radius: 2px;
     overflow: hidden;

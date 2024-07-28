@@ -1,5 +1,4 @@
 const ProductModel = require("../models/ProductModel");
-
 const ProductController = {
     showAll: async (req, res) => {
         ProductModel.find()
@@ -21,13 +20,16 @@ const ProductController = {
             .catch((err) => res.status(500).json({ message: err.message }))
     },
     createProduct: async (req, res) => {
-        ProductModel.create(req.body)
-            .then((data) => res.status(200).json({ message: "Tạo SP thành công" }))
-            .catch((err) => {
-                console.log(err)
-                res.status(500).json(err.message)
-            })
-    }
+        try {
+            const product = new ProductModel(req.body);
+            const savedProduct = await product.save();
+            res.status(200).json({ message: "Sản phẩm đã được tạo thành công", data: savedProduct });
+        } catch (err) {
+            console.error('Lỗi khi tạo sản phẩm:', err);
+            res.status(500).json({ message: "Lỗi khi tạo sản phẩm", error: err.message });
+        }
+    },
+        
 }
 
 module.exports = ProductController
