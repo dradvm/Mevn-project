@@ -44,10 +44,6 @@
                 <div class="home-product-item" v-if="items && items.length" v-for="item of items" :key="item.name_product">
                     <div class="home-product-item-img">
                         <img class="img" :src=" item.display.coverPhoto ">
-<<<<<<< HEAD
-
-=======
->>>>>>> 5d04ee63a8dff4229572627c2e9fcb741d0b86d4
                         <h4 class="home-product-item-name">{{ item.name_product}}</h4>
                         <div class="home-product-item-price">{{ item.price }}</div>
                         <div class="change">
@@ -58,22 +54,16 @@
                         </router-link>
                         </div>
                         <div class="delete">
-                          <button @click="deleteItem(item._id)" >  <font-awesome-icon :icon="['fas', 'delete-left']" /></button>
+                          <button @click="deleteItem(item._id)"> <font-awesome-icon :icon="['fas', 'delete-left']" /></button>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            
         </div>
-        
     </div>
 </template>
 
-
 <style scoped>
-
-
 .row{
     display: flex;
     flex-wrap: wrap;
@@ -84,10 +74,7 @@
     padding-left: 12px;
     padding-right: 5px;
     width: 20%;
-    
 }
-
-
 
 /* product */
 .home-product-item{
@@ -99,14 +86,11 @@
     padding-top: 0;
     background-repeat: no-repeat;
     background-size: contain;
-    
-
 }
 .img{
     height: 240px;
     width: 240px;
     padding-top: -150px;
-  
 }
 .home-product-item-name{
     font-size: 1rem;
@@ -120,7 +104,6 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
-
 }
 .home-product-item-price{
     display: flex;
@@ -141,9 +124,6 @@
     background-color: #dc3545;
     border-radius: 4px 0 0 4px;
 }
-
-
-
 
 /* filter */
 .filter{
@@ -191,10 +171,8 @@
 }
 .salect-label{
     font-size: 1rem;
-
 }
 .sellect-list{
-
     position: absolute;
     left: 0;
     right: 0;
@@ -204,9 +182,6 @@
     padding: 8px 16px;
     list-style: none;
     display: none;
-  
-    
-
 }
 .select-input{
     font-size: 1rem;
@@ -218,11 +193,9 @@
 .select-input:hover{
     color: #FFA500;
 }
-
 .select:hover .sellect-list{
     display: block;
 }
-
 .page-num{
     font-size: 1rem;
     color: var(--text-color);
@@ -240,7 +213,6 @@
 .page-button page-button--disabled{
     background-color: #f9f9f9;
 }
-
 .page-control{
     padding-left: 25px;
     border-radius: 2px;
@@ -250,23 +222,46 @@
     height: 25px;
 }
 </style>
-<script>
-    import ProductService from '@/services/ProductService';
-    // import { toast } from 'vue3-toastify';
-    export default {
-      name: "MyShop",
-      data() {
-        return {
-            items: [],
-        }
-      },
-        created() {
-          ProductService.getAll()
-            .then((res) => {
-              this.items = res.data
-            })
-            .catch((err) => console.log(err))
-        }
-}
 
+<script>
+import ProductService from '@/services/ProductService';
+import Swal from 'sweetalert2';
+
+export default {
+  name: "MyShop",
+  data() {
+    return {
+      items: [],
+    }
+  },
+  created() {
+    ProductService.getAll()
+      .then((res) => {
+        this.items = res.data;
+      })
+      .catch((err) => console.log(err));
+  },
+  methods: {
+    deleteItem(id) {
+      Swal.fire({
+        title: "Do you want to delete?",
+        showDenyButton: false,
+        showCancelButton: true,
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          ProductService.deleteItem(id)
+            .then(() => {
+              Swal.fire("Deleted!", "", "success");
+              this.items = this.items.filter(item => item._id !== id); // Cập nhật danh sách các mục
+            })
+            .catch((err) => {
+              Swal.fire("Error!", "Unable to delete item.", "error");
+              console.log(err);
+            });
+        }
+      });
+    }
+  }
+}
 </script>
