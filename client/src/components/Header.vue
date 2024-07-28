@@ -30,15 +30,18 @@
             
           </ul>
         </div>
-
-
-        <a href="/cart" class="p-2 bd-highlight">
-          <font-awesome-icon :icon="['fas', 'cart-shopping']" style="font-size: 32px;"/>
-        </a>
-        <a href="/order" class="p-2 bd-highlight" v-if="isLoggedIn">
-          <font-awesome-icon :icon="['fas', 'receipt']" style="font-size: 32px;"/>
-        </a>
-        
+        <div v-if="isLoggedIn" style="display: flex; flex-direction: row;">
+          <RouterLink to="/cart" class="p-2 bd-highlight"> 
+            <font-awesome-icon :icon="['fas', 'cart-shopping']" style="font-size: 32px;"/></RouterLink>
+          <RouterLink to="/order" class="p-2 bd-highlight"> 
+            <font-awesome-icon :icon="['fas', 'receipt']" style="font-size: 32px;"/></RouterLink>
+          <!-- <a href="/cart" class="p-2 bd-highlight">
+            <font-awesome-icon :icon="['fas', 'cart-shopping']" style="font-size: 32px;"/>
+          </a>
+          <a href="/order" class="p-2 bd-highlight" v-if="isLoggedIn">
+            <font-awesome-icon :icon="['fas', 'receipt']" style="font-size: 32px;"/>
+          </a> -->
+        </div>
       </div>
     </div>
   
@@ -47,7 +50,7 @@
       <nav class="nav">
         <a class="nav-link" aria-current="page"><RouterLink to="/" style="color: #fff;">Home</RouterLink></a>
         <a class="nav-link"><RouterLink to="/about" style="color: #fff;">About</RouterLink></a>
-        <a class="nav-link"><RouterLink to="/myshop" style="color: #fff;">My Shop</RouterLink></a>
+        <a v-if="isLoggedIn" class="nav-link"><RouterLink to="/myshop" style="color: #fff;">My Shop</RouterLink></a>
         
         
       </nav>
