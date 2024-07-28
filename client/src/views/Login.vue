@@ -139,7 +139,7 @@ export default {
 		return {
 			email: "",
 			password: "",
-			check: true
+			check: true,
 		}
 
 	},
@@ -152,18 +152,18 @@ export default {
 				.then((res) => {
 					if(res.data.length != 0){
 						alert("Login successful!");
+						this.login(this.email);
 						this.$router.push('/');
 					} else alert("Incorrect password!");
 				})
 				.catch((err) => console.log(err))
 			}
-			this.login();
 			
 
 		},
-		login() {
+		login(Email) {
 			const authStore = useAuthStore();
-			authStore.login({ username: 'exampleUser' });
+			authStore.login( Email );
 		},
 		ValidateEmail(){
           UsersService.checkAccount(this.email)

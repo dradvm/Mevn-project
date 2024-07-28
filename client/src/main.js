@@ -32,6 +32,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 
 import App from './App.vue'
@@ -47,3 +49,4 @@ app.use(Toast)
 app.component('VueDatePicker', VueDatePicker);
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.mount('#app')
+app.use(VueSweetalert2);

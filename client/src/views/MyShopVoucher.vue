@@ -73,10 +73,10 @@
                             </div>         
                             <div class="v-stack fs-7" style="width: 15%">
                                 <div class="fw-medium">
-                                    {{ item.startDate }}
+                                    {{ getDateString(item.startDate) }}
                                 </div>
                                 <div class="fw-medium">
-                                    {{ item.expiredDate }}
+                                    {{ getDateString(item.expiredDate) }}
                                 </div>
                             </div>
                             <div style="width: 20%">
@@ -144,6 +144,7 @@
 
 <script>
 import VoucherService from '@/services/VoucherService';
+import ProductService from '@/services/ProductService';
 import { toast } from 'vue3-toastify';
 export default {
     name: "MyShopVoucher",
@@ -261,11 +262,15 @@ export default {
         },
         getDetailsString(item) {
             var str = ["Voucher giảm"]
+            var products = []
             switch (item.type) {
                 case "Percent One": {
                     str.push(`${item.discount < 1 ? item.discount * 100 + "%" : item.discount}`)
                     str.push("cho sản phẩm")
-                    str.push("DN đẹp trai")
+                    item.applicableProducts.forEach((product) => {
+                        products.push(product.name_product)
+                    })
+                    str.push(products.join(", "))
                     break
                 }
                 case "Percent All": {
@@ -303,7 +308,10 @@ export default {
                 case "Fixed One": {
                     str.push(`${item.discount}VNĐ`)
                     str.push("cho sản phẩm")
-                    str.push("DN đẹp trai")
+                    item.applicableProducts.forEach((product) => {
+                        products.push(product.name_product)
+                    })
+                    str.push(products.join(", "))
                     break
                 }
                 case "First Order Percent": {
@@ -325,6 +333,12 @@ export default {
             }
             return str.join(" ")
         },
+        getDateString(date) {
+            const pad = (n) => n < 10 ? "0" + n : "" + n
+            date = new Date(date)
+            return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())} ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+        }
+
     }
 }
 </script>

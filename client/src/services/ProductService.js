@@ -2,7 +2,9 @@ import createAxios from "@/utils/axios"
 const axios = createAxios("/product")
 const ProductService = {
     getAll: () => axios.get(""),
-    showOne: (id) =>axios.get(`/detail/${id}`)
+
+    showOne: (id) =>axios.get(`/detail/${id}`),
+    deleteItem: (id) => axios.delete(`/delete/${id}`),
     // getByPage: () => axios.get(`/`, {
     //     params: {}
     // }),

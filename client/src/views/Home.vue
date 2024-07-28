@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div v-if="authStore.isLoggedIn">
+      <div v-if="userLogin && userLogin.length" v-for="user of userLogin" :key="user._id">
+        <h1 style="text-align: center;">Chào bạn:   {{ user.name }} </h1>
+      </div>
+    </div>
     <div class="main image-container">
       <div class="card" style="width: 18rem;" v-if="items && items.length" v-for="item of items" :key="item._id">
           <img class="card_img" :src=" item.display.coverPhoto " alt="Ảnh sản phẩm">
@@ -16,12 +21,17 @@
 
 <script>
     import ProductService from '@/services/ProductService';
+    import UsersService from '@/services/UsersService';
+    import { useAuthStore } from '@/stores/counter';
     // import { toast } from 'vue3-toastify';
     export default {
       name: "Home",
       data() {
         return {
             items: [],
+            emailUser: '',
+            userLogin: [],
+            authStore: useAuthStore(),
         }
       },
         created() {
@@ -30,7 +40,22 @@
               this.items = res.data
             })
             .catch((err) => console.log(err))
+          
+        
+          this.emailUser = this.authStore.user;
+          this.getUser(this.emailUser)
+
         },
+        methods: {
+          getUser(Email) {
+            UsersService.checkAccount(Email)
+            .then((res) => {
+              this.userLogin = res.data
+            })
+            .catch((err) => console.log(err))
+          }
+        },
+        
 }
 
 </script>

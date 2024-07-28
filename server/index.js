@@ -8,7 +8,7 @@ const UsersRouter = require("./routes/UsersRoute")
 const ProductRouter = require("./routes/ProductRoute")
 const CartRouter = require("./routes/CartRoute")
 const OrderRouter = require("./routes/OrderRoute")
-
+const schedule = require("./utils/nodecron")
 require("dotenv").config()
 
 const app = express()
@@ -19,7 +19,7 @@ app.use(express.json())
 app.use(morgan)
 
 connection()
-
+schedule.start()
 app.use("/name", NameRouter)
 app.use("/voucher", VoucherRouter)
 app.use("/user", UsersRouter)
