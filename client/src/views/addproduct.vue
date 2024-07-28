@@ -90,16 +90,14 @@ export default {
   },
   methods: {
     submitForm() {
-      console.log('Submitting form with data:', this.product);
-      this.ValidateForm();
-      if (this.check) {
-        ProductService.createProduct(this.product)
-          .then(res => {
-            console.log('Product created:', res.data);
-            this.$router.push('/myshop');
-          })
-
-      }
+    if(this.check == true){
+      ProductService.createProduct(this.product)
+      .then((res)=>{
+        alert("them san pham thanh cong");
+        this.$router.push('/myshop');
+      })
+      .catch((err) => alert("Them san pham that bai"))
+    }
     },
     ValidateForm() {
       this.check = true;
