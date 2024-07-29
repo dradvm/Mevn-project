@@ -4,7 +4,7 @@
     <form @submit.prevent="submitForm">
       <!-- Ảnh sản phẩm -->
       <div class="mb-3">
-        <label for="coverPhoto" class="form-label">Ảnh sản phẩm</label>
+        <label for="coverPhoto" class="form-label">Ảnh bìa sản phẩm</label>
         <input class="form-control" type="text" id="coverPhoto" v-model="product.display.coverPhoto" placeholder="Nhập URL ảnh bìa sản phẩm" required />
       </div>
 
@@ -32,10 +32,20 @@
         <input type="text" class="form-control" id="categories" placeholder="Nhập danh mục sản phẩm" v-model="product.categories" required>
       </div>
 
-      <!-- From Shop ID -->
+      <!-- Display video -->
       <div class="mb-3">
-        <label for="displayvideo">display video</label>
-        <input type="text" class="form-control" id="displayvideo" placeholder="Nhập display video" v-model="product.display.video" required>
+        <label for="displayvideo">Display Video</label>
+        <input type="text" class="form-control" id="displayvideo" placeholder="Nhập URL display video" v-model="product.display.video" required>
+      </div>
+
+      <!-- Ảnh sản phẩm (mảng) -->
+      <div class="mb-3">
+        <label for="images">Ảnh sản phẩm</label>
+        <div v-for="(image, index) in product.display.images" :key="index" class="mb-2">
+          <input type="text" class="form-control" :id="'image' + index" v-model="product.display.images[index]" placeholder="Nhập URL ảnh sản phẩm" required>
+          <button type="button" class="btn btn-danger mt-2" @click="removeImage(index)">Xóa ảnh</button>
+        </div>
+        <button type="button" class="btn btn-secondary mt-2" @click="addImage">Thêm ảnh</button>
       </div>
 
       <!-- Chi tiết sản phẩm -->
@@ -67,9 +77,7 @@
 </template>
 
 <script>
-
 import ProductService from '@/services/ProductService';
-
 
 export default {
   name: "addproduct",
@@ -80,8 +88,8 @@ export default {
         description: '',
         price: null,
         categories: '',
+        display: { coverPhoto: '', video: '', images: [''] },
         detail: [{ key: '', value: '' }],
-        display: { coverPhoto: '', video: '' },
         quantityList: [{ properties: '', quantity: null }]
       },
       check: true
@@ -89,14 +97,15 @@ export default {
   },
   methods: {
     submitForm() {
-    if(this.check == true){
-      ProductService.createProduct(this.product)
-      .then((res)=>{
-        alert("them san pham thanh cong");
-        this.$router.push('/myshop');
-      })
-      .catch((err) => alert("Them san pham that bai"))
-    }
+      this.ValidateForm();
+      if (this.check) {
+        ProductService.createProduct(this.product)
+          .then((res) => {
+            alert("Thêm sản phẩm thành công");
+            this.$router.push('/myshop');
+          })
+          .catch((err) => alert("Thêm sản phẩm thất bại"));
+      }
     },
     ValidateForm() {
       this.check = true;
@@ -105,6 +114,7 @@ export default {
       this.ValidateCategories();
       this.ValidateDetails();
       this.ValidateQuantities();
+      this.ValidateImages();
     },
     ValidateName() {
       if (this.product.name_product.trim() === "") {
@@ -141,6 +151,21 @@ export default {
           break;
         }
       }
+    },
+    ValidateImages() {
+      for (const image of this.product.display.images) {
+        if (image.trim() === "") {
+          alert("Vui lòng nhập tất cả các URL ảnh sản phẩm");
+          this.check = false;
+          break;
+        }
+      }
+    },
+    addImage() {
+      this.product.display.images.push('');
+    },
+    removeImage(index) {
+      this.product.display.images.splice(index, 1);
     },
     addDetail() {
       this.product.detail.push({ key: '', value: '' });
