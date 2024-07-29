@@ -34,8 +34,8 @@
 
       <!-- From Shop ID -->
       <div class="mb-3">
-        <label for="fromShopId">From Shop ID:</label>
-        <input type="text" class="form-control" id="fromShopId" placeholder="Nhập From Shop ID" v-model="product.fromShopId" required>
+        <label for="displayvideo">display video</label>
+        <input type="text" class="form-control" id="displayvideo" placeholder="Nhập display video" v-model="product.display.video" required>
       </div>
 
       <!-- Chi tiết sản phẩm -->
@@ -76,7 +76,6 @@ export default {
   data() {
     return {
       product: {
-        fromShopId: '',
         name_product: '',
         description: '',
         price: null,

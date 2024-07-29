@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const ProductSchema = mongoose.Schema({
     fromShopId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        //required: true
     },
     name_product: {
         type: String,

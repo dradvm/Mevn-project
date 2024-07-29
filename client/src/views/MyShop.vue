@@ -47,7 +47,7 @@
                         <h4 class="home-product-item-name">{{ item.name_product}}</h4>
                         <div class="home-product-item-price">{{ item.price }}</div>
                         <div class="change">
-                           <router-link to="/myshop/changeproduct">
+                           <router-link :to="`/myshop/changeproduct`">
                               <button>
                                 <font-awesome-icon :icon="['fas', 'pen']" />
                             </button>
@@ -260,7 +260,7 @@ export default {
           ProductService.deleteItem(id)
             .then(() => {
               Swal.fire("Deleted!", "", "success");
-              this.items = this.items.filter(item => item._id !== id); // Cập nhật danh sách các mục
+              this.items = this.items.filter(item => item._id !== id); 
             })
             .catch((err) => {
               Swal.fire("Error!", "Unable to delete item.", "error");
