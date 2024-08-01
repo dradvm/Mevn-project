@@ -3,18 +3,20 @@ const axios = createAxios("/voucher")
 const VoucherService = {
     getAll: () => axios.get(""),
     getVoucher: (code) => axios.get(`/find/${code}`),
-    getByPage: (page, search, check, sort) => axios.get(`/`, {
+    getByPage: (page, search, check, sort, shopId) => axios.get(`/`, {
         params: {
             page,
             search,
             check,
-            sort
+            sort,
+            shopId
         }
     }),
-    getPages: (search, check) => axios.get(`/pages`, {
+    getPages: (search, check, shopId) => axios.get(`/pages`, {
         params: {
             search,
-            check
+            check,
+            shopId
         }
     }),
     getTypes: () => axios.get("/type"),

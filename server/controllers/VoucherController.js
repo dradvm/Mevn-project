@@ -16,16 +16,18 @@ const VoucherController = {
             .catch((err) => res.status(500).json(err.message))
     },
     findVouchers: async (req, res) => {
-        const { page, search, check, sort } = req.query
+        const { page, search, check, sort, shopId } = req.query
         const regex = new RegExp(search !== undefined ? search : "")
         var sortObj = JSON.parse(sort)
         var sortValue = Object.keys(sortObj).reduce((obj, sortItem) => {
             obj[sortItem] = sortObj[sortItem] === true ? 1 : -1
             return obj
         }, {})
+        console.log(req.query)
         VoucherModel.find({
             state: check === "true" ? available : notAvailable,
-            code: regex
+            code: regex,
+            shopId
         })
             .populate({
                 path: "applicableProducts",
@@ -37,11 +39,12 @@ const VoucherController = {
             .catch((err) => res.status(500).json(err.message))
     },
     getPagesOfVouchersActive: async (req, res) => {
-        const { search, check } = req.query
+        const { search, check, shopId } = req.query
         const regex = new RegExp(search !== undefined ? search : "")
         VoucherModel.countDocuments({
             state: check === "true" ? available : notAvailable,
-            code: regex
+            code: regex,
+            shopId
         })
             .then((data) => res.status(200).json({ count: Math.ceil(parseInt(data) / 5) }))
             .catch((err) => res.status(500).json(err.message))

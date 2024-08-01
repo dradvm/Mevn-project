@@ -31,7 +31,6 @@ const VoucherSchema = mongoose.Schema({
     condition: {
         type: String,
         enum: ["<=", ">=", ""],
-        required: true,
         default: null
     },
     discount: {
@@ -103,7 +102,11 @@ const VoucherSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Product"
         }
-    ]
+    ],
+    shopId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }
 }, { toJSON: { getters: true } })
 
 const VoucherModel = mongoose.model("Voucher", VoucherSchema)
