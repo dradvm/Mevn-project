@@ -20,5 +20,12 @@ const UsersService = {
     }),
     getAll: ({}) => axios.get(`/`),
 
+    getUserByEmail: (email) => axios.get(`/${email}`),
+
+    updateUser: (email, data) => axios.post(`/${email}`, data),
 }
+
+    // getName: (userId) => axios.get(`/find/${userId}`),
+    // updateUser: (userId, userData) => axios.put(`/update/${userId}`, userData),
+
 export default UsersService

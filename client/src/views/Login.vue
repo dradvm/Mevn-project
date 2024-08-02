@@ -19,7 +19,7 @@
 				</div>
 				
 				<div class="bottom">
-					<span class="forget-pass">Forgot password?</span>
+					<span class="forgot-pass"><RouterLink to="/forgotPass">Forgot password?</RouterLink></span>
 					<span class="sign-up">Don't have an account? <RouterLink to="/register" style="color: #EF8121;">Sign up</RouterLink></span>
 				</div>
 				
@@ -133,6 +133,7 @@ p{
 <script>
 import UsersService from '@/services/UsersService';
 import { useAuthStore } from '@/stores/counter';
+import { RouterLink } from 'vue-router';
 export default {
 	name: "Login",
 	data(){

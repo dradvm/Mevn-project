@@ -1,14 +1,14 @@
 <template>
-    <div class="m-3">
+    <div class="m-3" v-if="userLogin && userLogin.length" v-for="user of userLogin" :key="user._id">
         <div class="title">My Profile</div>
         <div class="d-flex justify-content-center align-items-center">  	
         <input type="checkbox" id="chk" aria-hidden="true">
-          <div class="content" style="width: 100%; padding:0px 24px;">
+          <form class="content" style="width: 100%; padding:0px 24px;" v-if="authStore.isLoggedIn" @submit.prevent="saveChanges">
               <div class="row">
   
                 <div class="col-sm-8">
                   <span class="details">Full name:</span>
-                  <input type="text" name="fullname" v-model="name" placeholder="Enter your full name" required>
+                  <input type="text" name="name" v-model="name">
                 </div>
 
                 <div class="col-sm-4">
@@ -27,12 +27,12 @@
               <div class="row">
                 <div class="col-sm-8">
                   <span class="details">Email:</span>
-                  <input type="text" name="email" v-model="email" placeholder="Enter your email" @click="validateForm" required>
+                  <input type="text" name="email" v-model="email" readonly>
                 </div>
   
                 <div class="col-sm-4">
                   <span class="details">Phone number:</span>
-                  <input type="text" name="phone" v-model="phone" maxlength="10" placeholder="Enter your number" @click="validateForm" required>
+                  <input type="text" name="phone" v-model="phone" maxlength="10">
                 </div>
               </div>
                 
@@ -41,30 +41,142 @@
               <div class="row">
                 <div class="col-sm">
                     <span class="details">Birthday:</span>
-                    <input type="date" name="birthday" v-model="birthday" required>
+                    <input type="date" name="birthday" v-model="birthday">
                   </div>
   
                 <div class="col-sm">
                   <span class="details">Address:</span>
-                  <input type="text" name="address" v-model="address" placeholder="Enter your address" required>
+                  <input type="text" name="address" v-model="address">
                   
                 </div>
 
                 <div class="col-sm">
-                    <button type="button" @click="ValidateForm">SAVE</button>
+                    <button type="submit">SAVE</button>
                 </div>
   
               </div>
   
 
               
-          </div>
+            </form>
 
       </div>
     </div>
 </template>
 
+<script>
+  import UsersService from '@/services/UsersService';
+  import { useAuthStore } from '@/stores/counter';
+  import { toast } from 'vue3-toastify';
+  export default {
+    name: "information",
+    data() {
+      return {
+        userLogin: [],
+        authStore: useAuthStore(),
+        isUpdate: false,
+        name: '',
+        address: '',
+        email: '',
+        birthday: '',
+        gender: '',
+        phone: '',
+        
 
+      }
+    },
+    created() {
+      UsersService.checkAccount(this.authStore.user)
+        .then((res) => {
+          this.userLogin = res.data
+        })
+        .catch((err) => console.log(err))
+
+      this.fetchDataUpdate();
+    },
+    methods: {
+
+        fetchDataUpdate() {
+          console.log(this.authStore.user)
+            UsersService.getUserByEmail(this.authStore.user)
+                .then((res) => {
+                    this.email = res.data.email
+                    this.name = res.data.name
+                    this.phone = res.data.phone
+                    this.gender = res.data.gender
+                    this.address = res.data.address
+                    this.birthday = res.data.birthday
+                    this.isUpdate = true
+          
+                })
+                .catch((err) => console.log(err))
+        },
+
+        saveChanges() {
+          var data = {
+            name: this.name,
+            address: this.address,
+            birthday: this.birthday,
+            gender: this.gender,
+            phone: this.phone
+
+          }
+          var regexPhone = /^0[0-9]*$/;
+          var today = new Date();
+          if(this.name === ""){
+            alert("Full name can't be blank");
+            return
+          }
+          else if(this.gender === ""){
+            alert("Gender can't be blank!");
+            return
+          }
+          else if(this.phone === ""){
+            alert("Phone can't be blank!");
+            return
+          } else if(this.phone.match(regexPhone)){
+          } else {
+            alert("Phone number is not valid!");
+            return
+          }
+          if(this.address === ""){
+            alert("Address can't be blank!");
+            return
+          }
+          
+          if(this.birthday === ""){
+            alert("Birthday can't be blank!");
+            return
+          } else if(Date.parse(this.birthday) >= today){
+            alert("Birthday is not valid!");
+            return
+          }
+
+
+          if (this.isUpdate) {
+                UsersService.updateUser(this.authStore.user, data)
+                .then((res) => {
+                    toast(res.data.message, {
+                        type: 'success',
+                        autoClose: 2000,
+                        onClose: () => {
+                            this.$router.push({name: "home"})
+                        }
+                    })
+                })
+                .catch((err) => {
+                    toast(err, {
+                        type: 'error',
+                        autoClose: 2000
+                    })
+                })
+            }
+
+        },
+  
+    }
+  }
+  </script>
 
 
       
@@ -78,6 +190,7 @@
       cursor: pointer;
       margin: 20px auto;
       text-shadow: 2px 2px 3px  #EF8121;
+      text-align: center;
     }
     #chk{
       display: none;
