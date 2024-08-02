@@ -9,6 +9,7 @@
             <div>
               <div class="cards-container">
                 <div v-for="image in item.display.images">
+                    
                   <img :src="image" :alt="'Ảnh ' + item.name_product">
                 </div>
               </div>
@@ -80,6 +81,7 @@
       ProductService.showOne(this.idOfProduct)
               .then((res) => {
                 this.item = res.data
+                console.log(this.item)
               })
               .catch((err) => console.log(err))
       // this.idOfProduct = item._id

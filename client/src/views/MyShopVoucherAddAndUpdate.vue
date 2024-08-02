@@ -13,7 +13,7 @@
                             <div class="h-25 d-flex flex-column justify-content-evenly align-items-center">
                                 <div class="fw-medium">{{ currency(item.price) }}</div>
                                 <button class="w-100 fw-medium py-1" @click="addSelectedProduct(item._id)" :class="{'bg-success': checkSelected(item._id), 'bg-primary': !checkSelected(item._id),'btn-dis': checkDisable(item._id)}">{{ checkSelected(item._id) ? 'Selected' : 'Select' }}</button>
-                            </div>
+                            </div> 
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                             <div class="col-6">
                                 <div class="fw-medium mb-1">Code</div>
                                 <div class="my-input-group bg-white d-flex align-items-center justify-content-between">
-                                    <input required class="fw-medium" length="8" autocomplete="off" disabled v-model="code" type="text" aria-label="code" aria-describedby="basic-addon1">
+                                    <input required class="fw-medium" style="width: 80%" length="8" autocomplete="off" disabled v-model="code" type="text" aria-label="code" aria-describedby="basic-addon1">
                                     <span v-if="!isUpdate" class="cur-p px-3" @click="generateRandomCode"><font-awesome-icon :icon="['fas', 'rotate-right']" /></span>
                                 </div>
                             </div>
@@ -146,6 +146,8 @@
 import { ref } from 'vue';
 import VoucherService from '@/services/VoucherService';
 import ProductService from '@/services/ProductService';
+import UsersService from '@/services/UsersService';
+import { useAuthStore } from '@/stores/counter';
 import { toast } from 'vue3-toastify';
 export default {
     name: "MyShopVoucherAddAndUpdate",
@@ -168,6 +170,8 @@ export default {
         const modal = ref(false)
         const items = ref([])
         const isUpdate = ref(false)
+        const user = ref(useAuthStore())
+        const shopId = ref(null)
         return {
             check,
             code,
@@ -186,12 +190,15 @@ export default {
             products,
             modal,
             items,
-            isUpdate
+            isUpdate,
+            user,
+            shopId
         }
     },
     created() {
         this.getTypes()
         this.getProducts()
+        this.getShopId()
         switch (this.$router.currentRoute.value.name) {
             case "voucherAdd": {
                 this.generateRandomCode()
@@ -301,42 +308,52 @@ export default {
                 quantity: this.quantity,
                 usedQuantity: 0,
                 limitEachUser: this.limit,
-                applicableProducts: this.products
+                applicableProducts: this.products,
+                shopId: this.shopId
             }
-            if (this.isUpdate) {
-                VoucherService.updateVoucher(this.$router.currentRoute.value.params.id, data)
-                .then((res) => {
-                    toast(res.data.message, {
-                        type: 'success',
-                        autoClose: 2000,
-                        onClose: () => {
-                            this.$router.push({name: "voucher"})
-                        }
+            console.log(data)
+            if (this.shopId !== null) {
+                if (this.isUpdate) {
+                    VoucherService.updateVoucher(this.$router.currentRoute.value.params.id, data)
+                    .then((res) => {
+                        toast(res.data.message, {
+                            type: 'success',
+                            autoClose: 2000,
+                            onClose: () => {
+                                this.$router.push({name: "voucher"})
+                            }
+                        })
                     })
-                })
-                .catch((err) => {
-                    toast(err, {
-                        type: 'error',
-                        autoClose: 2000
+                    .catch((err) => {
+                        toast(err, {
+                            type: 'error',
+                            autoClose: 2000
+                        })
                     })
-                })
+                }
+                else {
+                    VoucherService.createVoucher(data)
+                    .then((res) => {
+                        toast(res.data.message, {
+                            type: 'success',
+                            autoClose: 2000,
+                            onClose: () => {
+                                this.$router.push({name: "voucher"})
+                            }
+                        })
+                    })
+                    .catch((err) => {
+                        toast(err, {
+                            type: 'error',
+                            autoClose: 2000
+                        })
+                    })
+                }
             }
             else {
-                VoucherService.createVoucher(data)
-                .then((res) => {
-                    toast(res.data.message, {
-                        type: 'success',
-                        autoClose: 2000,
-                        onClose: () => {
-                            this.$router.push({name: "voucher"})
-                        }
-                    })
-                })
-                .catch((err) => {
-                    toast(err, {
-                        type: 'error',
-                        autoClose: 2000
-                    })
+                toast("Shop id error", {
+                    type: 'error',
+                    autoClose: 2000
                 })
             }
         },
@@ -394,6 +411,14 @@ export default {
                     this.limit = voucher.limitEachUser
                     this.products.push(...voucher.applicableProducts)
                     this.isUpdate = true
+                    this.shopId = voucher.shopId
+                })
+                .catch((err) => console.log(err))
+        },
+        getShopId() {
+            UsersService.checkAccount(this.user.user)
+                .then((res) => {
+                    this.shopId = res.data[0]._id
                 })
                 .catch((err) => console.log(err))
         }

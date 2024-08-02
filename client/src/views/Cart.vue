@@ -65,7 +65,6 @@
             },
             getPrice(priceOne, quantity) {
                 var Price= priceOne*quantity;
-                
                 console.log(this.priceAll)
                 return Price
             },

@@ -98,7 +98,7 @@
                             </div>
                             <div  class="d-flex justify-content-center"  style="width: 10%">
                                 <div v-if="check" class="d-flex">
-                                    <RouterLink :to="{ name: 'voucherUpdate', params: {id: item.code}}">
+                                    <RouterLink v-if="item.state=='Upcoming'" :to="{ name: 'voucherUpdate', params: {id: item.code}}">
                                         <button class="rounded px-3 py-1 bg-primary text-white">
                                             <font-awesome-icon :icon="['fas', 'pen']" />
                                         </button>
@@ -144,7 +144,8 @@
 
 <script>
 import VoucherService from '@/services/VoucherService';
-import ProductService from '@/services/ProductService';
+import UsersService from '@/services/UsersService';
+import { useAuthStore } from '@/stores/counter';
 import { toast } from 'vue3-toastify';
 export default {
     name: "MyShopVoucher",
@@ -160,6 +161,8 @@ export default {
             sort: ["startDateSort", "typeSort", "stateSort"],
             items: [""],
             isLoading: true,
+            user: useAuthStore(),
+            shopId: null
         }
     },
     computed: {
@@ -219,7 +222,8 @@ export default {
             return cssString.join(" ")
         },
         fetchItems(pageValue, searchValue, checkValue, sortValue) {
-            VoucherService.getByPage(pageValue, searchValue, checkValue, sortValue)
+            console.log(this.shopId)
+            VoucherService.getByPage(pageValue, searchValue, checkValue, sortValue, this.shopId)
                 .then((res) => {
                     this.items = res.data
                     this.isLoading = false
@@ -227,14 +231,21 @@ export default {
                 .catch((err) => console.log(err))
         },
         getPages(searchValue, checkValue) {
-            VoucherService.getPages(searchValue, checkValue)
+            VoucherService.getPages(searchValue, checkValue, this.shopId)
                 .then((res) => this.pages = res.data.count )
                 .catch((err) => console.log(err))
         },
         fetchItemsAndGetPages({pageValue = this.page, searchValue = this.search, checkValue = this.check}) {
             this.isLoading = true
-            this.fetchItems(pageValue, searchValue, checkValue, this.jsonSort)
-            this.getPages(searchValue, checkValue)
+            this.getShopId()
+            UsersService.checkAccount(this.user.user)
+                .then((res) => {
+                    this.shopId = res.data[0]._id
+                    this.fetchItems(pageValue, searchValue, checkValue, this.jsonSort)
+                    this.getPages(searchValue, checkValue)
+                })
+                .catch((err) => console.log(err))
+            
         },
         
         toggleSort(sortValue) {
@@ -274,7 +285,7 @@ export default {
                     break
                 }
                 case "Percent All": {
-                    str.push(`${item.discount}%`)
+                    str.push(`${item.discount*100}%`)
                     str.push("cho đơn hàng")
                     if (item.condition === "<=") {
                         str.push("dưới")
@@ -337,6 +348,9 @@ export default {
             const pad = (n) => n < 10 ? "0" + n : "" + n
             date = new Date(date)
             return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())} ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+        },
+        getShopId() {
+            
         }
 
     }
