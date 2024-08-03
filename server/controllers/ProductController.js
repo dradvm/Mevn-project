@@ -6,7 +6,7 @@ const ProductController = {
             .catch((err) => res.status(500).json(err.message))
     },
     findOne: async (req, res) => {
-        console.log(req.params.id)
+        // console.log(req.params.id)
         const targetId = req.params.id
         ProductModel.findById(targetId )
             .then((data) => res.status(200).json(data))

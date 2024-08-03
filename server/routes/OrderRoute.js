@@ -4,7 +4,7 @@ const OrderRouter = express.Router()
 
 
 OrderRouter.delete("/:id", OrderController.delete)
-OrderRouter.post("/find", OrderController.find)
+OrderRouter.post("/findOrders", OrderController.findOrders)
 OrderRouter.get("/", OrderController.showAll);
 
 module.exports = OrderRouter
