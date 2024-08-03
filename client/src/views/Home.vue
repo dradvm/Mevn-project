@@ -1,10 +1,12 @@
 <template>
   <div>
     <div v-if="authStore.isLoggedIn">
-      <div v-if="userLogin && userLogin.length" v-for="user of userLogin" :key="user._id">
-        <h1 style="text-align: center;">Chào bạn:   {{ user.name }} </h1>
-        {{ this.getIdUser(user._id) }}
-        {{ this.addUserInfor(user._id, user.name) }}
+      <div>
+        <h1 style="text-align: center;">Chào bạn:   {{ this.userLogin[0].name }} </h1>
+        {{ this.getIdUser(this.userLogin[0]._id) }}
+        {{ this.checkCartExist() }}
+        {{ this.createCart() }}
+        {{ this.addUserInfor(this.userLogin[0]._id, this.userLogin[0].name) }}
       </div>
     </div>
     <div class="main image-container">
@@ -24,6 +26,7 @@
 <script>
     import ProductService from '@/services/ProductService';
     import UsersService from '@/services/UsersService';
+    import CartService from '@/services/CartService';
     import { useAuthStore } from '@/stores/counter';
     // import { toast } from 'vue3-toastify';
     export default {
@@ -34,6 +37,13 @@
             emailUser: '',
             userLogin: [],
             userId: "",
+            CartExist: null,
+            Cart: {
+              userId: "",
+              items: [],
+              createdAt: "",
+              updatedAt: ""
+            },
             authStore: useAuthStore(),
         }
       },
@@ -60,6 +70,19 @@
           },
           getIdUser(Id) {
             this.userId= Id
+          },
+          checkCartExist() {
+              CartService.CartExist(this.userId)
+              .then((res) => {
+                this.CartExist = res.data.isExist
+              })
+              .catch((err) => console.log(err))
+          },
+          createCart() {
+            if(this.CartExist === false) {
+              this.Cart.userId= this.userId
+              CartService.createCart(this.Cart)
+            }  
           },
           addUserInfor(Id,name) {
             const authStore = useAuthStore();

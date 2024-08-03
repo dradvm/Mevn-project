@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 export const useAuthStore = defineStore('Login Account', {
   state: () => ({
     isLoggedIn: false,
-    user: null,
+    user: null, //biến này chứa email của user
     idUser: null,
     nameUser: null,
   }),

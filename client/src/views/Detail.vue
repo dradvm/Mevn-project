@@ -104,7 +104,9 @@
           this.validateType()
           this.validateQuality()
           if(this.check == true) {
-            alert("Id_SP: "+this.idOfProduct+ "\ntype: "+this.chooseType+ "\nquality: "+this.chooseQuality+ "\nId_User: "+this.authStore.idUser);
+            // alert("Id_SP: "+this.idOfProduct+ "\ntype: "+this.chooseType+ "\nquality: "+this.chooseQuality+"\nGiá: "+this.item.price+ "\nId_User: "+this.authStore.idUser);
+            alert("Thêm sản Phẩm vào giỏ hàng thành công !!!")
+            CartService.addToCart(this.idOfProduct, this.chooseType, this.chooseQuality, this.item.price, this.authStore.idUser)
           }
         }
         else {
