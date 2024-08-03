@@ -48,7 +48,7 @@
         <a class="nav-link" aria-current="page"><RouterLink to="/" style="color: #fff;">Home</RouterLink></a>
         <a class="nav-link"><RouterLink to="/about" style="color: #fff;">About</RouterLink></a>
         <a v-if="isLoggedIn" class="nav-link"><RouterLink to="/myshop" style="color: #fff;">My Shop</RouterLink></a>
-        
+        <a v-if="isLoggedIn" class="nav-link"><RouterLink to="/InformationOfShop" style="color: #fff;">Thông tin 1 Shop</RouterLink></a>
         
       </nav>
     </div>

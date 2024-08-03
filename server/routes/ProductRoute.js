@@ -6,4 +6,5 @@ ProductRouter.post("/create", ProductController.createProduct);
 ProductRouter.delete("/delete/:id", ProductController.delete);
 ProductRouter.get('/detail/:id', ProductController.findOne);
 ProductRouter.get('/', ProductController.showAll);
+// ProductRouter.get('/:fromShopId', ProductController.getfromShopId)
 module.exports = ProductRouter;
