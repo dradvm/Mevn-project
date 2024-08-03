@@ -4,13 +4,17 @@ const UsersRouter = express.Router()
 
 
 UsersRouter.post('/register', UsersController.createUser)
-UsersRouter.post('/checkAccount', UsersController.checkAccount)
+
 UsersRouter.post('/login', UsersController.login)
 
 UsersRouter.get('/', UsersController.getAll)
-// UsersRouter.post('/', UsersController.getOne)
-// UsersRouter.get('/:id', UsersController.updateOne)
-// UsersRouter.delete('/:id', UsersController.deleteOne)
-// UsersRouter.delete('/', UsersController.deleteAll)
+UsersRouter.post('/checkAccount', UsersController.checkAccount)
+
+UsersRouter.get('/:email', UsersController.getUserByEmail)
+UsersRouter.post('/:email', UsersController.updateUser)
+// UsersRouter.get('/:id', UsersController.getUserById)
+// UsersRouter.post('/:id', UsersController.updateUser)
+
+
 
 module.exports = UsersRouter

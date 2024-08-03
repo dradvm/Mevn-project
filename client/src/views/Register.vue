@@ -50,7 +50,7 @@
             <div class="row">
               <div class="col-sm">
                 <span class="details">Password:</span>
-                <input type="text" name="password" v-model="password" placeholder="Enter your password" pattern=".{6,}" title="Six or more characters">
+                <input type="password" name="password" v-model="password" placeholder="Enter your password" pattern=".{6,}" title="Six or more characters">
                 <div class="error" id="passErr"></div>
               </div>
 
@@ -62,7 +62,6 @@
               <div class="col-sm">
                 <span class="details">Address:</span>
                 <input type="text" name="address" v-model="address" placeholder="Enter your address" required>
-                
               </div>
 
             </div>
@@ -246,14 +245,14 @@ import UsersService from '@/services/UsersService';
           }
         },
         ValidateBirthday(){
-          const today = new Date();
+          var today = new Date()
           if(this.birthday == ""){
             alert("Birthday can't be blank!");
             document.focus();
             this.check = false;
             return false;
-          } else if(this.birthday > today){
-            alert("Ngày không hợp lệ");
+          } else if(Date.parse(this.birthday) >= today){
+            alert("Birthday is not valid!");
             document.focus();
             this.check = false;
             return false;

@@ -38,15 +38,27 @@ const UsersController = {
         .then((data) => res.status(200).json(data))
         .catch((err) => res.status(500).json(err))
     },
-    // getOne: async (req, res) => {
-    //     UsersModel.find({})
-    //     .then((data) => {
-    //         if(!data){
-    //             res.status(404).json({message: `Không tìm thấy ${req.body}` })
-    //         }
-    //         res.status(200).json(data);
-    //     })
-    //     .catch((err) => res.status(500).json({ massage: `Error getOne! ${err}` }))
-    // },
+    getUserByEmail: async (req, res) => {
+        console.log(req.params.email)
+        UsersModel.findOne({
+            email: req.params.email
+            
+        })
+        .then((data) => res.status(200).json(data))
+        .catch((err) => res.status(500).json(err))
+    },
+
+    updateUser: async (req, res) => {
+        console.log(req.params.email)
+        UsersModel.updateOne({
+            email: req.params.email
+        
+        }, req.body)
+        .then((data) => res.status(200).json({ message: "Cập nhật thông tin thành công" }))
+        .catch((err) => {
+            res.status(500).json(err.message)
+        })
+    },
+    
 }
 module.exports = UsersController
