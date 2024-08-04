@@ -29,6 +29,23 @@ const ProductController = {
             res.status(500).json({ message: "Lỗi khi tạo sản phẩm", error: err.message });
         }
     },
+    updateProduct: async (req, res) => {
+        const targetId = req.params.id;
+        const updatedData = req.body;
+
+        try {
+            const updatedProduct = await ProductModel.findByIdAndUpdate(targetId, updatedData, { new: true, runValidators: true });
+
+            if (!updatedProduct) {
+                return res.status(404).json({ message: "Sản phẩm không tìm thấy" });
+            }
+
+            res.status(200).json({ message: "Sản phẩm đã được cập nhật thành công", data: updatedProduct });
+        } catch (err) {
+            console.error('Lỗi khi cập nhật sản phẩm:', err);
+            res.status(500).json({ message: "Lỗi khi cập nhật sản phẩm", error: err.message });
+        }
+    },
     getProductByShop: async (req, res) => {
         ProductModel.find({
             fromShopId: req.params.id

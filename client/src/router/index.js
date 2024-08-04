@@ -34,7 +34,7 @@ const router = createRouter({
           component: () => import("../views/MyShopVoucherAddAndUpdate.vue")
         },
         {
-          path: "changeproduct",
+          path: "changeproduct/:id",
           name: "changeproduct",
           component: () => import("../views/changeproduct.vue")
         },

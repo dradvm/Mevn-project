@@ -9,6 +9,11 @@ const ProductService = {
     createProduct: (product) => axios.post("/create", product),
     getProductByShop: (id) => axios.get(`/productByShop/${id}`),
     getfromShopId: (fromShopId) => axios.get(`/${fromShopId}`),
+
+    updateProduct: (id, product) => axios.put(`/update/${id}`, product),
+    
+
+
 };
 
 export default ProductService;

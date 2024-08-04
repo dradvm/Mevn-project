@@ -47,7 +47,7 @@
                         <h4 class="home-product-item-name">{{ item.name_product}}</h4>
                         <div class="home-product-item-price">{{ item.price }}</div>
                         <div class="change">
-                           <router-link :to="`/myshop/changeproduct`">
+                           <router-link :to="`/myshop/changeproduct/`+item._id">
                               <button>
                                 <font-awesome-icon :icon="['fas', 'pen']" />
                             </button>

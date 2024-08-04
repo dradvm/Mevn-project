@@ -1,11 +1,11 @@
 <template>
     <!-- <div>
-        <h6>{{ order }}</h6>
+        <h6>{{ order[1].status }}</h6>
     </div> -->
     
     <div class="main">
         <hr>
-        <h1>Orders-Product</h1>
+        <h1 class="title">Orders-Product</h1>
         <h4>User: {{ authStore.nameUser }}</h4>
         <h3>User Id: {{ authStore.idUser }}</h3>
         <hr>
@@ -36,7 +36,7 @@
                             <p>StatusPayment: {{ index.payment.statusPayment }}</p>
                         </div>
                     <div>
-                        <button class="delete-Order"> Hủy Đơn Hàng</button>
+                        <button v-if="index.status !== 'Received'" class="delete-Order"> Hủy Đơn Hàng</button>
                     </div>
                 <hr>
                 </div>
@@ -72,6 +72,17 @@
 <style>
     .main {
         text-align: center;
+    }
+    .title{
+      color: #225771;
+      font-size: 2.5em;
+      justify-content: center;
+      display: flex;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 20px auto;
+      text-shadow: 2px 2px 3px  #EF8121;
+      text-align: center;
     }
     .delete-Order {
         font-size: 20px;
