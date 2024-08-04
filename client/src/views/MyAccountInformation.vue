@@ -5,7 +5,6 @@
         <input type="checkbox" id="chk" aria-hidden="true">
           <form class="content" style="width: 100%; padding:0px 24px;" v-if="authStore.isLoggedIn" @submit.prevent="saveChanges">
               <div class="row">
-  
                 <div class="col-sm-8">
                   <span class="details">Full name:</span>
                   <input type="text" name="name" v-model="name">

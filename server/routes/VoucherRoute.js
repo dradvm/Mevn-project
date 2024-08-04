@@ -11,4 +11,6 @@ VoucherRouter.get("/find/:code", VoucherController.findVoucher)
 VoucherRouter.delete("/:id", VoucherController.deleteVoucher)
 VoucherRouter.post("/create", VoucherController.createVoucher)
 VoucherRouter.post("/update/:code", VoucherController.updateVoucher)
+VoucherRouter.get("/voucherListByProduct/:id", VoucherController.getVoucherListByProduct)
+VoucherRouter.post("/saveVoucher/:id", VoucherController.saveVoucher)
 module.exports = VoucherRouter

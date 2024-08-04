@@ -81,7 +81,7 @@
                                     <input v-model="discount" required class="fw-medium w-100" type="number" min="1000" step="1000" aria-label="discount" aria-describedby="basic-addon1">
                                 </div>
                             </div>
-                            <div v-if="!typeSelected.includes('One')" class="col-6">
+                            <div v-if="typeSelected.includes('Percent All') || typeSelected.includes('First Order Percent')" class="col-6">
                                 <div class="fw-medium mb-1">Max discount (VNĐ)</div>
                                 <div class="my-input-group bg-white">
                                     <input v-model="maxDiscount" required class="fw-medium w-100" type="number" min="0" step="1000" aria-label="discount" aria-describedby="basic-addon1">
@@ -216,9 +216,7 @@ export default {
             this.endDate = this.getDateString(newDate[1])
         },
         typeSelected(newTypeSelected, oldTypeSelected) {
-            if (newTypeSelected.length != 0 && oldTypeSelected.length != 0) {
-                this.products = []
-            }
+            this.resetForm(newTypeSelected, oldTypeSelected)
         },
     },
     methods: {
@@ -261,6 +259,12 @@ export default {
                     autoClose: 2000
                 })
                 return 
+            }
+            if (this.conditionDiscount != 0 && this.condition != "") {
+                toast("Please select condition!", {
+                    type: 'warning',
+                    autoClose: 2000
+                })
             }
             if (this.discount === 0) {
                 toast("Discount must be greater than 0!", {
@@ -364,7 +368,7 @@ export default {
             this.modal = false
         },
         getProducts() {
-            ProductService.getAll()
+            ProductService.getProductByShop(this.user.idUser)
                 .then((res) => this.items = res.data)
                 .catch((err) => console.log(err))
         },
@@ -421,6 +425,16 @@ export default {
                     this.shopId = res.data[0]._id
                 })
                 .catch((err) => console.log(err))
+        },
+        resetForm(newTypeSelected, oldTypeSelected) {
+            if (newTypeSelected.length != 0 && oldTypeSelected.length != 0) {
+                this.products = []
+            }
+            this.discount = 0
+            this.maxDiscount = 0
+            this.condition = ""
+            this.conditionDiscount = 0
+            
         }
     }
 }

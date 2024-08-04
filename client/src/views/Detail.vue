@@ -53,9 +53,27 @@
       <div v-if="item.display.video!=''">
         <br>
           <iframe width="560" height="385" :src="item.display.video"  frameborder="0" allowfullscreen></iframe>
-          <hr>
       </div>
-
+      <hr>
+      <div class="w-100 overflow-x-scroll text-start">
+        <div class="d-flex" :style="{'width': (vouchers.length+1)*500 + 'px' }">
+          <div class="d-flex ms-5 border" style="width: 500px" v-for="voucher in vouchers">
+            <div style="width: 25%;">
+              <img src="../assets/img/voucher.jpg" class="w-100 h-100" />
+            </div>
+            <div class="px-3 py-2 d-flex flex-column justify-content-between" style="width: 70%">
+              <div>
+                <div class="fs-6 fw-medium text-center">{{ getTitleVoucher(voucher) }}</div>
+                <div class="fs-7" v-html="getDetailVoucher(voucher)">
+                </div>
+              </div>
+              <div>
+                <button @click="saveVoucher(voucher)" class="fs-6 fw-medium w-100 bg-primary py-1" :class="{'btn-dis': voucher.checkSave}" :disabled="voucher.checkSave">{{ !voucher.checkSave ? "Save" : "Saved" }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     
     
@@ -65,6 +83,8 @@
   import ProductService from '@/services/ProductService';
   import CartService from '@/services/CartService';
   import { useAuthStore } from '@/stores/counter';
+import VoucherService from '@/services/VoucherService';
+import { toast } from 'vue3-toastify';
   export default {
     data() {
       return {
@@ -75,6 +95,7 @@
         chooseQuality: 0,
         authStore: useAuthStore(),
         check: false,
+        vouchers: []
       };
     },
     created() {
@@ -82,10 +103,10 @@
       ProductService.showOne(this.idOfProduct)
               .then((res) => {
                 this.item = res.data
-                console.log(this.item)
               })
               .catch((err) => console.log(err))
       // this.idOfProduct = item._id
+      this.fetchVoucherList()
     },
     methods: {
       toggleDropdown() {
@@ -134,7 +155,71 @@
             return false;
           }
       },
-
+      fetchVoucherList() {
+        VoucherService.getVoucherListByProduct(this.idOfProduct, this.authStore.idUser)
+          .then((res) => this.vouchers = res.data.map((item) => {
+            return {
+              ...item,
+              checkSave: false
+            }
+          }))
+          .catch((err) => console.log(err))
+      },
+      getTitleVoucher(voucher) {
+        var str = ["Giảm"]
+        if (voucher.type.includes("Percent")) {
+          str.push(`${voucher.discount*100}%`)
+          if (voucher.maxDiscount != 0) {
+            str.push(`Giảm tối đa ${this.currency(voucher.maxDiscount)}`)
+          }
+        }
+        else {
+          str.push(`${this.currency(voucher.discount)}`)
+        }
+        return str.join(" ")
+      },
+      getDetailVoucher(voucher) {
+        var str = []
+        if (voucher.type.includes("First")) {
+          str.push("Áp dụng cho đơn hàng đầu tiên<br/>")
+        }
+        if(!voucher.type.includes("One")) {
+          if (voucher.condition === "<=") {
+            str.push(`Đơn tối đa ${this.currency(voucher.conditionDiscount)}<br/>`)
+          }
+          else if (voucher.condition === ">=") {
+            str.push(`Đơn tối thiểu ${this.currency(voucher.conditionDiscount)}<br/>`)
+          }
+        }
+        str.push(`Hiệu lực từ ${this.getDateString(voucher.startDate)}`)
+        return str.join(" ")
+      },
+      currency(value, locale = 'vi-VN', currency = 'VND') {
+          if (typeof value !== "number") {
+              value = parseFloat(value);
+          }
+          return new Intl.NumberFormat(locale, {
+              style: 'currency',
+              currency: currency
+          }).format(value);
+      },
+      getDateString(date) {
+          const pad = (n) => n < 10 ? "0" + n : "" + n
+          date = new Date(date)
+          return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())} ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+      },
+      saveVoucher(voucher) {
+        VoucherService.saveVoucher(voucher._id, this.authStore.idUser)
+          .then((res) => {
+            voucher.checkSave = true
+          })
+          .catch((err) => {
+            toast(err, {
+              type: 'error',
+              autoClose: 2000
+            })
+          })
+      }
     }
   };
 
@@ -202,5 +287,25 @@
     width: 50px;
     text-align: center;
     border: 2px solid blue;
+  }
+  button {
+    position: relative;
+    transition: .2s
+  } 
+  button:hover {
+      transform: translateY(-2px);
+  }
+  button:active {
+      transform: translateY(-1px)
+  }
+  button.btn-dis {
+      background-color: #bbb !important;
+      color: white !important;
+  }
+  button.btn-dis:active {
+      transform: translateY(0px);
+  }
+  button.btn-dis {
+      transform: translateY(0px);
   }
 </style>

@@ -23,7 +23,15 @@ const VoucherService = {
     deleteItem: (id) => axios.delete(`/${id}`),
     getRandomCode: () => axios.get("/randomcode"),
     createVoucher: (data) => axios.post("/create", data),
-    updateVoucher: (code, data) => axios.post(`/update/${code}`, data)
+    updateVoucher: (code, data) => axios.post(`/update/${code}`, data),
+    getVoucherListByProduct: (id, idUser) => axios.get(`/voucherListByProduct/${id}`, {
+        params: {
+            idUser
+        }
+    }),
+    saveVoucher: (id, idUser) => axios.post(`/saveVoucher/${id}`, {
+        idUser
+    })
 }
 
 export default VoucherService
