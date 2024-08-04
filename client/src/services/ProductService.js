@@ -7,7 +7,10 @@ const ProductService = {
     showOne: (id) => axios.get(`/detail/${id}`),
     deleteItem: (id) => axios.delete(`/delete/${id}`),
     createProduct: (product) => axios.post("/create", product),
-    // getfromShopId: (fromShopId) => axios.get(`/${fromShopId}`),
+    updateProduct: (id, product) => axios.put(`/update/${id}`, product),
+    getProductsByUserId: (userId) => axios.get(`/user/${userId}`),
+
+
 };
 
 export default ProductService;
