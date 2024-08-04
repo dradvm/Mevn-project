@@ -38,8 +38,13 @@ const UserSchema = new mongoose.Schema({
     phone: {
         type: String,
         required: true,
-    }
-
+    },
+    vouchers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Voucher",
+        }
+    ]
     
 });
 

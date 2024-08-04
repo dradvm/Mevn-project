@@ -153,6 +153,7 @@ export default {
 				.then((res) => {
 					if(res.data.length != 0){
 						alert("Login successful!");
+						console.log(this.email)
 						this.login(this.email);
 						this.$router.push('/');
 					} else alert("Incorrect password!");

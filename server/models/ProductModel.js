@@ -1,8 +1,9 @@
 const mongoose = require("mongoose")
 
-const ProductSchema = mongoose.Schema({
+const ProductSchema = new mongoose.Schema({
     fromShopId: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
         //required: true
     },
     name_product: {

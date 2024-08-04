@@ -2,7 +2,7 @@
   <div>
     <div v-if="authStore.isLoggedIn">
       <div>
-        <h1 style="text-align: center;">Chào bạn:   {{ this.userLogin[0].name }} </h1>
+        <h1 class="title" style="text-align: center;">Chào bạn:   {{ this.userLogin[0].name }} </h1>
         {{ this.getIdUser(this.userLogin[0]._id) }}
         {{ this.checkCartExist() }}
         {{ this.createCart() }}
@@ -12,8 +12,10 @@
     <div class="main image-container">
       <div class="card" style="width: 18rem;" v-if="items && items.length" v-for="item of items" :key="item._id">
           <img class="card_img" :src=" item.display.coverPhoto " alt="Ảnh sản phẩm">
-        <div class="card_body">       
-            <h5 class="card_name">{{ item.name_product}}</h5>       
+        <div class="card_body">
+            <div class="card_name">
+              <h5 >{{ item.name_product}}</h5>       
+            </div>       
           <h6 class="card_price">{{ item.price }}đ</h6>
           <router-link :to="'/detail/' + item._id" class="routerlink">Xem Ngay</router-link>
         </div>
@@ -95,6 +97,17 @@
 </script>
 
 <style scoped>
+  .title{
+    color: #225771;
+    font-size: 2.5em;
+    justify-content: center;
+    display: flex;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 20px auto;
+    text-shadow: 2px 2px 3px  #EF8121;
+    text-align: center;
+    }
   .routerlink {
     color: blue;
     margin: 0px 33% 0px;
@@ -104,8 +117,7 @@
   }
   .routerlink.router-link-active,
     .my-link.router-link-exact-active {
-        /* Màu cho liên kết khi đã được truy cập hoặc đang kích hoạt */
-        color: purple;
+      color: purple;
     }
 
   .routerlink:hover {
@@ -114,6 +126,9 @@
   .card_name {
     text-align: center;
     font-size: 30px;
+    height: 72px;
+    margin-top: 5px;
+    padding: 10px;
   }
   .card_price {
     text-align: center;
@@ -121,13 +136,14 @@
     color: red
   }
   .main {
-    background-color: rgba(0, 255, 255, 0.2);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
   .button_text {
     border-style: solid;
     border-radius: 5px;
     padding: 5px;
-    /* background-color: red; */
     color: whitesmoke;
   }
   .button {
@@ -137,12 +153,20 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: flex-start; /* Hoặc sử dụng space-around, space-evenly, etc. */
+    justify-content: space-between; 
+    margin: 4px 10px 0px;
     
   }
   .card {
-    border: 5px solid rgba(30, 144, 255, 0.5);
+    width: 288;
+    height: 418;
+    border: 2px solid ;
     max-width: 100%; 
+    margin: 0px;
+    margin-bottom: 4px;
+    
+  }
+  h5{
     margin: 0px;
   }
 </style>

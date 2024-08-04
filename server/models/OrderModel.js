@@ -42,8 +42,8 @@ const OrderSchema = mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
             },
             priceAtOrdering: {
-                type: Number,               
-            }, 
+                type: Number,
+            },
             quantity: {
                 type: Number,
             },

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 
-const VoucherSchema = mongoose.Schema({
+const VoucherSchema = new mongoose.Schema({
     code: {
         type: String,
         min: 8,
@@ -25,7 +25,7 @@ const VoucherSchema = mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ["Percent One", "Percent All", "Fixed One", "Fixed All", "First Order"],
+        enum: ["Percent One", "Percent All", "Fixed One", "Fixed All", "First Order Percent", "First Order Fixed"],
         required: true
     },
     condition: {

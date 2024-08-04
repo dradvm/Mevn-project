@@ -178,6 +178,7 @@ export default {
         }
     },
     created() {
+        this.shopId = this.user.idUser
         this.fetchItemsAndGetPages({})
     },
     watch: {
@@ -222,7 +223,6 @@ export default {
             return cssString.join(" ")
         },
         fetchItems(pageValue, searchValue, checkValue, sortValue) {
-            console.log(this.shopId)
             VoucherService.getByPage(pageValue, searchValue, checkValue, sortValue, this.shopId)
                 .then((res) => {
                     this.items = res.data
@@ -237,14 +237,8 @@ export default {
         },
         fetchItemsAndGetPages({pageValue = this.page, searchValue = this.search, checkValue = this.check}) {
             this.isLoading = true
-            this.getShopId()
-            UsersService.checkAccount(this.user.user)
-                .then((res) => {
-                    this.shopId = res.data[0]._id
-                    this.fetchItems(pageValue, searchValue, checkValue, this.jsonSort)
-                    this.getPages(searchValue, checkValue)
-                })
-                .catch((err) => console.log(err))
+            this.fetchItems(pageValue, searchValue, checkValue, this.jsonSort)
+            this.getPages(searchValue, checkValue)
             
         },
         
@@ -349,9 +343,6 @@ export default {
             date = new Date(date)
             return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())} ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
         },
-        getShopId() {
-            
-        }
 
     }
 }

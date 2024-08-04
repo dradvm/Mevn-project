@@ -28,17 +28,39 @@ const CartController = {
                 res.status(500).json(err.message)
             })
     },
-    updateCart: async (req, res) => {
+    addtoCart: async (req, res) => {
         console.log(req.params.userId)
         console.log(req.body)
         CartModel.findOneAndUpdate({
             userId: req.params.userId
         },{ $push: { items: req.body } },)
-            .then((data) => res.status(200).json({ message: "Cập nhật Cart thành công" }))
+            .then((data) => res.status(200).json({ message: "thêm SP thành công" }))
             .catch((err) => {
                 console.log(err)
                 res.status(500).json(err.message)
             })
+    },
+    UpdateCart: async (req, res) => {
+        console.log(req.params.userId)
+        console.log(req.body)
+        // if (req.body.items != null) {
+        CartModel.findOneAndUpdate(
+            {userId: req.params.userId},{ $set: { items: req.body.items } },)
+            .then((data) => res.status(200).json({ message: "Chỉnh sửa cart thành công" }))
+            .catch((err) => {
+                console.log(err)
+                res.status(500).json(err.message)
+            })
+        // }
+        // else {
+        //     CartModel.findOneAndUpdate(
+        //         {userId: req.params.userId},{ $unset: { items: 1 } },)
+        //         .then((data) => res.status(200).json({ message: "Chỉnh sửa cart thành công" }))
+        //         .catch((err) => {
+        //             console.log(err)
+        //             res.status(500).json(err.message)
+        //         })
+        // }
     },
 }
 module.exports = CartController
