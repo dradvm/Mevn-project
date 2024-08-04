@@ -35,17 +35,17 @@ const ProductController = {
         })
             .then((data) => res.status(200).json(data))
             .catch((err) => res.status(500).json(err.message))
-    }
+    },
 
-    // getfromShopId: async (req, res) => {
-    //     console.log(req.params.fromShopId)
-    //     ProductModel.findOne({
-    //         fromShopId: req.params.fromShopId
+    getfromShopId: async (req, res) => {
+        console.log(req.params.fromShopId)
+        ProductModel.findOne({
+            fromShopId: req.params.fromShopId
 
-    //     })
-    //     .then((data) => res.status(200).json(data))
-    //     .catch((err) => res.status(500).json(err))
-    // },
+        })
+        .then((data) => res.status(200).json(data))
+        .catch((err) => res.status(500).json(err))
+    },
 }
 
 module.exports = ProductController

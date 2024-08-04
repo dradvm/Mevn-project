@@ -136,21 +136,24 @@
             userLogin: [],
             userId: "",
             authStore: useAuthStore(),
-            
+            fromShopId: '669483f88fc3ef66797c64a0'
 
         }
       },
         created() {
           this.getProducts(),
+          console.log(this.price)
           this.emailUser = this.authStore.user;
           this.getUser(this.emailUser)
 
         },
         methods: {
           getProducts() {
+            console.log(this.fromShopId)
             ProductService.getAll()
             .then((res) => {
               this.items = res.data
+
             })
             .catch((err) => console.log(err))
           },
