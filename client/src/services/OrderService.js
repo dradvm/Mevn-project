@@ -5,6 +5,10 @@ const OrderService = {
     findOfUser: (userId) => axios.post(`/findOrders`, {
         userId
     }),
+    addToOrder: (cart) => axios.post(`/addOrder`, {
+        cart
+    }),
+    deleteOrder: (id) => axios.get(`/delete/${id}`),
     
 }
     

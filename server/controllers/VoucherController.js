@@ -16,6 +16,12 @@ const VoucherController = {
             .then((data) => res.status(200).json(data))
             .catch((err) => res.status(500).json(err.message))
     },
+    findById: async (req, res) => {
+        const targetId = req.params.id
+        VoucherModel.findById(targetId)
+            .then((data) => res.status(200).json(data))
+            .catch((err) => res.status(500).json({ message: `Error checkAccount! ${err}` }))
+    },
     findVouchers: async (req, res) => {
         const { page, search, check, sort, shopId } = req.query
         const regex = new RegExp(search !== undefined ? search : "")

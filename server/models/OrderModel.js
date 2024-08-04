@@ -55,6 +55,9 @@ const OrderSchema = mongoose.Schema({
     totalAmount: {
         type: Number
     },
+    status: {
+        type: String
+    }
 })
 
 const OrderModel = mongoose.model("Order", OrderSchema)

@@ -3,6 +3,10 @@
        <div class="header">
             <h1 class="title">CartProduct</h1>
             <!-- <p>{{ this.cart[0].items }}</p> -->
+             <!-- <p>{{ this.selectedVoucher }}</p> -->
+             <!-- {{ checkvouchersuitable() }}
+             <p>{{ this.voucher }}</p> -->
+              <!-- <p>{{ this.account[0] }}</p> -->
             <hr>
        </div>
        <div class="list-Product">
@@ -35,30 +39,73 @@
        <hr>
        <div class="addVoucher">
             <h4 class="voucher-title">Voucher: </h4>
-            <button class="Voucher-dropDown">Chọn Voucher của bạn</button>
-       </div>
+            <div class="show-list-voucher"> 
+            <button class="Voucher-dropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="toggleDropdown">Chọn Voucher của bạn</button>
+                <div v-if="showDropdown">
+                    <h4>Danh sách voucher phù hợp:</h4>
+                    
+                    <ul>
+                        <li v-for="voucher in this.account[0].vouchers" :key="index">
+                            <div style="display: flex;flex-direction: row;">
+                                <p style="padding-top: 15px; width: 215px;">{{ voucher }}  </p> <!-- Hiển thị tên voucher -->
+                                <button class="Delete-dropDown select-voucher" @click="selectVoucher(voucher)">Chọn</button> <!-- Nút chọn voucher -->
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
        <hr>
        <div class="checkOutCart">
             <h4>Tổng tiền: <h4 style="color: red;">{{ priceAll() }}đ</h4></h4>
-            <button class="Voucher-dropDown">Check Out</button>
+            <button class="Voucher-dropDown" @click="addToOrder()">Check Out</button>
        </div>
     </div>
 </template>
 
 <script>
     import CartService from '@/services/CartService';
+    // import VoucherService from '@/services/VoucherService';
     import { useAuthStore } from '@/stores/counter';
+    import UsersService from '@/services/UsersService';
+    import OrderService from '@/services/OrderService';
     import Swal from 'sweetalert2';
+import Order from './Order.vue';
     export default {
     name: "Cart",
         data() {
             return {
                 cart: [],
+                account: [],
                 authStore: useAuthStore(),
+                showDropdown: false,
+                selectedVoucher: [],
+                
+            
+                order: {
+                    voucher: [],
+                    shipping: {
+                        address: "",
+                        shippingCost: 10000,
+                        shippingMethod: "express"
+                    },
+                    payment: {
+                        method: "Phương thức thanh toán",
+                        transactionId: "ID giao dịch",
+                        statusPayment: "Trạng thái thanh toán"
+                    },
+                    status: "Pending",
+                    totalAmount: 0,
+                    userId: "",
+                    items: []
+                }
+                // voucher: null,
+                // vouchersuitable: ['nothing']
             }
         },
         created() {
             this.getCartOfUser(this.authStore.idUser)
+            this.getUser(this.authStore.user)
         },
         methods: {
             getCartOfUser(idUser) {
@@ -66,10 +113,26 @@
                     .then((res) => {this.cart = res.data})
                     .catch((err) => console.log(err))
             },
+            getUser(Email) {
+                UsersService.checkAccount(Email)
+                .then((res) => {
+                this.account = res.data
+                })
+                .catch((err) => console.log(err))
+            },
+            // getVoucher(id) {
+            //     if(this.voucher._id !== id)
+            //     VoucherService.showOne(id)
+            //         .then((res) => {this.voucher = res.data})
+            //         .catch((err) => console.log(err))
+            // },
             getPrice(priceOne, quantity) {
                 var Price= priceOne*quantity;
                 console.log(this.priceAll)
                 return Price
+            },
+            toggleDropdown() {
+                this.showDropdown = !this.showDropdown;
             },
             increment(item) {
                 item.quantity++;
@@ -84,6 +147,24 @@
             myInputHandler() {
                 CartService.UpdateCart(this.cart[0].items, this.authStore.idUser)
             },
+            selectVoucher(voucher) {
+                this.selectedVoucher.push(voucher)
+                
+            },
+            // checkvouchersuitable() {
+            //     for (const voucher of this.account[0].vouchers ) {
+            //         this.getVoucher(voucher)
+            //         for (const i_OfApplicableProducts of this.voucher[0].vouchers) {
+            //             for ( const j_OfProductOfCart of this.cart[0].items) {
+            //                 if (i_OfApplicableProducts == j_OfProductOfCart.productId) {
+            //                     this.vouchersuitable.push(this.voucher[0])
+                                
+            //                 }
+            //             }
+            //         }
+            //     }
+
+            // },
             priceAll() {
                 let totalPrice = 0;
                 if (this.cart && this.cart.length) {
@@ -96,6 +177,17 @@
                     }
                 }
                 return totalPrice;
+            },
+            addToOrder() {
+                this.order.voucher= this.selectedVoucher
+                this.order.shipping.address= this.account[0].address
+                this.order.totalAmount= this.priceAll()
+                this.order.userId= this.account[0]._id
+                this.order.items= this.cart[0].items
+
+                OrderService.addToOrder(this.order)
+                alert("Tạo đơn hàng thành công !!!")
+
             },
             deleteProduct(Id) {
 
@@ -122,15 +214,7 @@
 
                 
             },
-            // watch: {
-            //     'this.cart[0].items': {
-            //         deep: true, // Theo dõi cả sự thay đổi của các thuộc tính con bên trong cart[]
-            //         handler(newCart, oldCart) {
-            //             console.log('Cart items changed:', newCart);
-            //             CartService.UpdateCart(this.cart[0].items, this.authStore.idUser)
-            //         },
-            //     },
-            // },
+            
         }
 }
 
@@ -214,9 +298,6 @@
         /* border: 2px solid blue; */
         margin: 0px;
     }
-    .column-Actions:hover {
-        
-    }
     .list-column {
        margin: 0px 0px 10px;
         display: flex;
@@ -258,7 +339,7 @@
     }
     .voucher-title {
         padding: 10px;
-        margin: 0px 0px 0px 70%;
+        margin: 0px 0px 0px 34%;
         box-sizing: border-box;
     }
     .Voucher-dropDown {
@@ -273,8 +354,15 @@
         border-radius: 5px;
         cursor: pointer;
     }
+    .select-voucher {
+        padding: 5px;
+        margin: 10px;
+    }
     .Delete-dropDown:hover {
         background-color: red;
+    }
+    .select-voucher:hover {
+        background-color: greenyellow;
     }
     .Voucher-dropDown {
         background-color: #007bff;

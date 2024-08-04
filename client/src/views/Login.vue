@@ -152,7 +152,7 @@ export default {
 				UsersService.login(this.email, this.password)
 				.then((res) => {
 					if(res.data.length != 0){
-						alert("Login successful!");
+						// alert("Login successful!");
 						console.log(this.email)
 						this.login(this.email);
 						this.$router.push('/');
