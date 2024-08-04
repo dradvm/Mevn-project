@@ -20,7 +20,7 @@ const UsersController = {
         })
     },
     login: async(req, res) => {
-        console.log(req.body)
+        // console.log(req.body)
         const{email, password} =  req.body
         UsersModel.find({email, password})
         .then((data) => res.status(200).json(data))

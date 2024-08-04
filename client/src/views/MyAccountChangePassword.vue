@@ -12,13 +12,13 @@
 
               <div class="col-sm-6">
                 <span class="details">Password:</span>
-                <input type="text" name="password" v-model="oldPassword">
+                <input type="text" name="password" v-model="password">
           
               </div>
             </div>
               
 
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-sm-6">
                 <span class="details">New Password:</span>
                 <input type="password" name="password"  v-model="password" pattern=".{6,}" title="Six or more characters">
@@ -28,12 +28,12 @@
                 <span class="details">Confirm New Password:</span>
                 <input type="password" name="password-confirmation" v-model="newPassConfirm">
               </div>
-            </div>
+            </div> -->
 
 
             <div class="row">
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button class="btn btn-primary me-md-2" type="button" style="background-color: #22577158;">CANCEL</button>
+                <button class="btn btn-primary me-md-2" style="background-color: #22577158;"><RouterLink to="/myaccount/information">CANCEL</RouterLink></button>
                 <button class="btn btn-primary" type="submit">SAVE</button>
               </div>
             </div>
@@ -58,7 +58,6 @@
         isUpdate: false,
         email: '',
         password: '',
-        newPassConfirm: ''
 
       }
     },
@@ -92,32 +91,14 @@
             password: this.password,
 
           }
-          // if(this.oldPassword.match(password)){
 
-          // } else {
-          //   alert("Mật khẩu cũ khong đúng");
-          //   return
-          // }
           if(this.password === ""){
             alert("New password can't be blank");
             return
           } 
-          else if(this.newPassConfirm.match(password)){
-
-          } else {
-            alert("Nhập lại mật khẩu mới không đúng");
-            return
-          }
-          
-          // if(this.newpasswordconfirm.match(newpassword)){
-
-          // } else {
-          //   alert("Mật khẩu mới phải giống!");
-          //   return
-          // }
-        
 
 
+    
           if (this.isUpdate) {
                 UsersService.updateUser(this.authStore.user, data)
                 .then((res) => {

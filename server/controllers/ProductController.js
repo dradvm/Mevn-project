@@ -6,9 +6,9 @@ const ProductController = {
             .catch((err) => res.status(500).json(err.message))
     },
     findOne: async (req, res) => {
-        console.log(req.params.id)
+        // console.log(req.params.id)
         const targetId = req.params.id
-        ProductModel.findById(targetId )
+        ProductModel.findById(targetId)
             .then((data) => res.status(200).json(data))
             .catch((err) => res.status(500).json({ message: `Error checkAccount! ${err}` }))
     },
@@ -36,7 +36,16 @@ const ProductController = {
             .then((data) => res.status(200).json(data))
             .catch((err) => res.status(500).json(err.message))
     }
-        
+
+    // getfromShopId: async (req, res) => {
+    //     console.log(req.params.fromShopId)
+    //     ProductModel.findOne({
+    //         fromShopId: req.params.fromShopId
+
+    //     })
+    //     .then((data) => res.status(200).json(data))
+    //     .catch((err) => res.status(500).json(err))
+    // },
 }
 
 module.exports = ProductController

@@ -2,7 +2,7 @@
     <div class="main">
        <div class="header">
             <h1>CartProduct</h1>
-            <!-- <p>{{ cart }}</p> -->
+            <!-- <p>{{ this.cart[0].items }}</p> -->
             <hr>
        </div>
        <div class="list-Product">
@@ -27,7 +27,7 @@
                     </div>
 
                     <p class="column-AllPrice row">{{ this.getPrice(item.priceAtOrdering, item.quantity) }}đ</p>
-                    <button class="column-Actions">Xóa</button>
+                    <button class="column-Actions" @click="deleteProduct(item.productId)">Xóa</button>
                 </div>
             </div>
        </div>
@@ -36,7 +36,7 @@
             <button class="Voucher-dropDown">Chọn Voucher của bạn</button>
        </div>
        <div class="checkOutCart">
-            <h4>Tổng tiền: {{ priceAll }}đ</h4>
+            <!-- <h4>Tổng tiền: {{ this.priceAll() }}đ</h4> -->
             <button class="Voucher-dropDown">Check Out</button>
        </div>
     </div>
@@ -51,7 +51,6 @@
             return {
                 cart: [],
                 authStore: useAuthStore(),
-                priceAll: 0,
             }
         },
         created() {
@@ -76,9 +75,24 @@
                     this.chooseQuality--;
                 }
             },
-            getPriceOfCart(price, quality) {
-                this.priceAll= this.priceAll+ (price*quality)
-                // alert(this.priceAll)
+            // priceAll() {
+            //     var PriceAll=0
+            //     for (i of this.cart[0].items) {
+            //         PriceAll+= (i.priceAtOrdering* i.quantity)
+                    
+            //     }
+            //     return PriceAll
+            // },
+            deleteProduct(Id) {
+                const indexToRemove = this.cart[0].items.findIndex(item => item.productId === Id);
+                // alert(indexToRemove)
+                if (indexToRemove !== -1) {
+                    this.cart[0].items.splice(indexToRemove, 1);
+                    
+                    console.log("Đã xóa SP thành công!");
+                } else {
+                    console.log("Lỗi không xóa được SP");
+                }
             },
         }
 }
