@@ -6,7 +6,7 @@ function getDateString(date) {
     return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())} ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
 }
 
-const OrderSchema = mongoose.Schema({
+const OrderSchema = new mongoose.Schema({
     cartId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,

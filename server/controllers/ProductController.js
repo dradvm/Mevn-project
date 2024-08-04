@@ -29,6 +29,13 @@ const ProductController = {
             res.status(500).json({ message: "Lỗi khi tạo sản phẩm", error: err.message });
         }
     },
+    getProductByShop: async (req, res) => {
+        ProductModel.find({
+            fromShopId: req.params.id
+        })
+            .then((data) => res.status(200).json(data))
+            .catch((err) => res.status(500).json(err.message))
+    }
         
 }
 
